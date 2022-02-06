@@ -1,0 +1,19 @@
+name: BluestarGame
+version: '${project.version}'
+main: me.lanzhi.bluestargame.BluestarGame
+api-version: 1.18
+commands:
+  bluestargame:
+    aliases:
+      - bsgame
+    permission: bluestargame.use
+  bluestargamelist:
+    aliases:
+      - bsgamelist
+      - bsglist
+permissions:
+  bluestargame.use:
+    default: op
+depend:
+  - BluestarAPI
+  - NBTAPI

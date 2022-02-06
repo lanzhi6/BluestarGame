@@ -1,0 +1,302 @@
+package me.lanzhi.bluestargame.commands;
+
+import java.util.ArrayList;
+import java.util.List;
+import me.lanzhi.bluestargame.BluestarGame;
+import me.lanzhi.bluestargame.Ctrls.CTRL;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
+public class maincommand implements CommandExecutor, TabExecutor
+{
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    {
+        if (args.length != 2)
+        {
+            sender.sendMessage(ChatColor.RED + "格式错误!");
+            return false;
+        }
+        if (args[0].equals("randdamage"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.randdamage(true);
+                sender.sendMessage(ChatColor.GREEN + "已设置为true");
+            }
+            else
+            {
+                CTRL.randdamage(false);
+                sender.sendMessage(ChatColor.GREEN + "已设置为false");
+            }
+            return true;
+        }
+        if (args[0].equals("randchat"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.randchat(true);
+                sender.sendMessage(ChatColor.GREEN + "已设置为true");
+            }
+            else
+            {
+                CTRL.randchat(false);
+                sender.sendMessage(ChatColor.GREEN + "已设置为false");
+            }
+            return true;
+        }
+        if (args[0].equals("randsheep"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.randsheep(true);
+                sender.sendMessage(ChatColor.GREEN + "已设置为true");
+            }
+            else
+            {
+                CTRL.randsheep(false);
+                sender.sendMessage(ChatColor.GREEN + "已设置为false");
+            }
+            return true;
+        }
+        if (args[0].equals("24"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.the24(true);
+                sender.sendMessage(ChatColor.GREEN + "已设置为true");
+            }
+            else
+            {
+                CTRL.the24(false);
+                sender.sendMessage(ChatColor.GREEN + "已设置为false");
+            }
+            return true;
+        }
+        if (args[0].equals("morediamond"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.morediamond(true);
+                sender.sendMessage(ChatColor.GREEN + "已设置为true");
+            }
+            else
+            {
+                CTRL.morediamond(false);
+                sender.sendMessage(ChatColor.GREEN + "已设置为false");
+            }
+            return true;
+        }
+        if (args[0].equals("morecoal"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.morecoal(true);
+                sender.sendMessage(ChatColor.GREEN + "已设置为true");
+            }
+            else
+            {
+                CTRL.morecoal(false);
+                sender.sendMessage(ChatColor.GREEN + "已设置为false");
+            }
+            return true;
+        }
+        if (args[0].equals("morecopper"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.morecopper(true);
+                sender.sendMessage(ChatColor.GREEN + "已设置为true");
+            }
+            else
+            {
+                CTRL.morecopper(false);
+                sender.sendMessage(ChatColor.GREEN + "已设置为false");
+            }
+            return true;
+        }
+        if (args[0].equals("moreiron"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.moreiron(true);
+                sender.sendMessage(ChatColor.GREEN + "已设置为true");
+            }
+            else
+            {
+                CTRL.moreiron(false);
+                sender.sendMessage(ChatColor.GREEN + "已设置为false");
+            }
+            return true;
+        }
+        if (args[0].equals("moregold"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.moregold(true);
+                sender.sendMessage(ChatColor.GREEN + "已设置为true");
+            }
+            else
+            {
+                CTRL.moregold(false);
+                sender.sendMessage(ChatColor.GREEN + "已设置为false");
+            }
+            return true;
+        }
+        if (args[0].equals("moreemerald"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.moreemerald(true);
+                sender.sendMessage(ChatColor.GREEN + "已设置为true");
+            }
+            else
+            {
+                CTRL.moreemerald(false);
+                sender.sendMessage(ChatColor.GREEN + "已设置为false");
+            }
+            return true;
+        }
+        if (args[0].equals("morelapis"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.morelapis(true);
+                sender.sendMessage(ChatColor.GREEN + "已设置为true");
+            }
+            else
+            {
+                CTRL.morelapis(false);
+                sender.sendMessage(ChatColor.GREEN + "已设置为false");
+            }
+            return true;
+        }
+        if (args[0].equals("all"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.all(true);
+                sender.sendMessage(ChatColor.GREEN + "已设置为true");
+            }
+            else
+            {
+                CTRL.all(false);
+                sender.sendMessage(ChatColor.GREEN + "已设置为false");
+            }
+            return true;
+        }
+        if (args[0].equals("auto"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.runAuto(true);
+                sender.sendMessage(ChatColor.GREEN + "自动切换启动");
+            }
+            else
+            {
+                CTRL.runAuto(false);
+                sender.sendMessage(ChatColor.GREEN + "自动切换关闭");
+            }
+            return true;
+        }
+        if (args[0].equals("spongeR"))
+        {
+            int r = 0;
+            try
+            {
+                r = Integer.valueOf(args[1]).intValue();
+            }
+            catch (NumberFormatException e)
+            {
+                sender.sendMessage(ChatColor.RED + "错误!");
+                return false;
+            }
+            if ((r > 32) || (r < 1))
+            {
+                sender.sendMessage(ChatColor.RED + "错误,范围应在1-32之间!");
+                return false;
+            }
+            BluestarGame.config.getConfig().set("spongeR", Integer.valueOf(r));
+            BluestarGame.config.saveConfig();
+            BluestarGame.config.reloadConfig();
+            sender.sendMessage(ChatColor.GREEN + "设置成功");
+            return true;
+        }
+        if (args[0].equals("test"))
+        {
+            int r = 0;
+            try
+            {
+                r = Integer.valueOf(args[1]).intValue();
+            }
+            catch (NumberFormatException e)
+            {
+                sender.sendMessage(ChatColor.RED + "错误!");
+                return false;
+            }
+            if (r > 100)
+            {
+                sender.sendMessage(ChatColor.RED + "范围不能大于100");
+                return false;
+            }
+            Player player = (Player)sender;
+            player.getLocation().getWorld().createExplosion(player.getLocation(), r, true, true);
+            return true;
+        }
+
+
+        sender.sendMessage(ChatColor.RED + "格式错误!");
+        return false;
+    }
+
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args)
+    {
+        if (args.length == 1)
+        {
+            List<String> tablist = new ArrayList();
+            tablist.add("randdamage");
+            tablist.add("randchat");
+            tablist.add("randsheep");
+            tablist.add("24");
+            tablist.add("morediamond");
+            tablist.add("morecoal");
+            tablist.add("morecopper");
+            tablist.add("moreiron");
+            tablist.add("moregold");
+            tablist.add("moreemerald");
+            tablist.add("morelapis");
+            tablist.add("all");
+            tablist.add("auto");
+            tablist.add("spongeR");
+            return tablist;
+        }
+        if ((args.length == 2) && (!args[0].equals("spongeR")))
+        {
+            List<String> tablist = new ArrayList();
+            tablist.add("true");
+            tablist.add("false");
+            return tablist;
+        }
+        if (args.length == 2)
+        {
+            List<String> tablist = new ArrayList();
+            tablist.add("超级海绵吸水范围");
+            return tablist;
+        }
+
+
+        List<String> tablist = new ArrayList();
+        return tablist;
+    }
+}
+
+
