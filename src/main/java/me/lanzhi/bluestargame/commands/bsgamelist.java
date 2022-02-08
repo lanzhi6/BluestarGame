@@ -127,6 +127,15 @@ public class bsgamelist implements CommandExecutor
         {
             sender.sendMessage(ChatColor.GOLD + "更多粗铁:关闭");
         }
+
+        if (CTRL.respawn())
+        {
+            sender.sendMessage(ChatColor.GOLD + "复活:开启");
+        }
+        else
+        {
+            sender.sendMessage(ChatColor.GOLD + "复活:关闭");
+        }
         return true;
     }
 }

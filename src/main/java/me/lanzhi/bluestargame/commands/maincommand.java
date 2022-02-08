@@ -178,6 +178,20 @@ public class maincommand implements CommandExecutor, TabExecutor
             }
             return true;
         }
+        if (args[0].equals("respawn"))
+        {
+            if (args[1].equals("true"))
+            {
+                CTRL.respawn(true);
+                sender.sendMessage(ChatColor.GREEN + "已设置为true");
+            }
+            else
+            {
+                CTRL.respawn(false);
+                sender.sendMessage(ChatColor.GREEN + "已设置为false");
+            }
+            return true;
+        }
         if (args[0].equals("all"))
         {
             if (args[1].equals("true"))
@@ -250,8 +264,6 @@ public class maincommand implements CommandExecutor, TabExecutor
             player.getLocation().getWorld().createExplosion(player.getLocation(), r, true, true);
             return true;
         }
-
-
         sender.sendMessage(ChatColor.RED + "格式错误!");
         return false;
     }
@@ -274,6 +286,7 @@ public class maincommand implements CommandExecutor, TabExecutor
             tablist.add("moregold");
             tablist.add("moreemerald");
             tablist.add("morelapis");
+            tablist.add("respawn");
             tablist.add("all");
             tablist.add("auto");
             tablist.add("spongeR");

@@ -23,7 +23,7 @@ public class AutoCtrl
             }
             if (AutoCtrl.this.on == 0)
             {
-                AutoCtrl.this.on = ((int)(Math.random() * 11.0D) + 1);
+                AutoCtrl.this.on = ((int)(Math.random() * 12) + 1);
                 AutoCtrl.this.change(true);
             }
             else
@@ -34,7 +34,8 @@ public class AutoCtrl
         }
     };
 
-    public void change(boolean b) {
+    public void change(boolean b)
+    {
         if (this.on == 1)
         {
             CTRL.randdamage(b);
@@ -78,6 +79,10 @@ public class AutoCtrl
         else if (this.on == 11)
         {
             CTRL.moreiron(b);
+        }
+        else if (this.on == 12)
+        {
+            CTRL.respawn(b);
         }
     }
 }

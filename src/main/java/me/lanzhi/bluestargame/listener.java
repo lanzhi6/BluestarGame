@@ -9,11 +9,14 @@ import org.bukkit.Material;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.SheepDyeWoolEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -355,5 +358,16 @@ public class listener implements org.bukkit.event.Listener
         BluestarGame.config.getConfig().set("superSponges", sponges);
         BluestarGame.config.saveConfig();
         BluestarGame.config.reloadConfig();
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntiyDie(EntityDeathEvent event)
+    {
+        if (event.getEntity() instanceof Player||!CTRL.respawn())
+        {
+            return;
+        }
+        event.getEntity().getWorld().spawnEntity(event.getEntity().getLocation(),event.getEntityType());
+        return;
     }
 }
