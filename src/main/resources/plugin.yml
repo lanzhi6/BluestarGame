@@ -12,8 +12,12 @@ commands:
       - bsgamelist
       - bsglist
 permissions:
-  bluestargame.use:
-    default: op
+  bluestargame.*:
+    children:
+      bluestargame.use:
+        default: op
+      bluestargame.lanzhi:
+        default: false
 depend:
   - BluestarAPI
   - NBTAPI

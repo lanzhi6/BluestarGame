@@ -21,7 +21,8 @@ public final class superSponge implements ConfigurationSerializable {
     private final Location location;
     private final Player player;
 
-    public superSponge(Map<String, Object> map) {
+    public superSponge(Map<String, Object> map)
+    {
         this.age = ((Integer) map.get("age")).intValue();
         this.location = ((Location) map.get("location"));
         this.player = Bukkit.getPlayer((String) map.get("player"));
@@ -33,8 +34,10 @@ public final class superSponge implements ConfigurationSerializable {
         this.player = player;
     }
 
-    public static NBTItem getSuperSponge() {
-        if (superSponge == null) {
+    public static NBTItem getSuperSponge()
+    {
+        if (superSponge == null)
+        {
             superSponge = new NBTItem(new ItemStack(Material.END_STONE));
             superSponge.setBoolean("BluestarGameSponge", Boolean.valueOf(true));
             NBTCompound display = superSponge.addCompound("display");
@@ -48,7 +51,8 @@ public final class superSponge implements ConfigurationSerializable {
     }
 
     @Override
-    public Map<String, Object> serialize() {
+    public Map<String, Object> serialize()
+    {
         Map<String, Object> map = new HashMap();
         map.put("age", Integer.valueOf(this.age));
         map.put("location", this.location);
@@ -56,15 +60,18 @@ public final class superSponge implements ConfigurationSerializable {
         return map;
     }
 
-    public int getAge() {
+    public int getAge()
+    {
         return this.age;
     }
 
-    public Location getLocation() {
+    public Location getLocation()
+    {
         return this.location;
     }
 
-    public Player getPlayer() {
+    public Player getPlayer()
+    {
         return this.player;
     }
 }

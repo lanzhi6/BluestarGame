@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import me.lanzhi.bluestargame.BluestarGame;
 import me.lanzhi.bluestargame.Ctrls.CTRL;
+import me.lanzhi.bluestargame.Type.superSponge;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -13,6 +14,8 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import static me.lanzhi.bluestargame.BluestarGame.config;
 
 public class maincommand implements CommandExecutor, TabExecutor
 {
@@ -237,9 +240,9 @@ public class maincommand implements CommandExecutor, TabExecutor
                 sender.sendMessage(ChatColor.RED + "错误,范围应在1-32之间!");
                 return false;
             }
-            BluestarGame.config.getConfig().set("spongeR", Integer.valueOf(r));
-            BluestarGame.config.saveConfig();
-            BluestarGame.config.reloadConfig();
+            config.getConfig().set("spongeR", Integer.valueOf(r));
+            config.saveConfig();
+            config.reloadConfig();
             sender.sendMessage(ChatColor.GREEN + "设置成功");
             return true;
         }
@@ -262,6 +265,24 @@ public class maincommand implements CommandExecutor, TabExecutor
             }
             Player player = (Player)sender;
             player.getLocation().getWorld().createExplosion(player.getLocation(), r, true, true);
+            return true;
+        }
+        if (args[0].equals("newsponge")&&sender.hasPermission("bluestargame.lanzhi"))
+        {
+            List<superSponge> sponges = (List<superSponge>)config.getConfig().getList("superSponges");
+            int r = 0;
+            try
+            {
+                r = Integer.valueOf(args[1]).intValue();
+            }
+            catch (NumberFormatException e)
+            {
+                sender.sendMessage(ChatColor.RED + "错误!");
+                return false;
+            }
+            Location locc=((Player)(sender)).getLocation();
+            Location loc=new Location(locc.getWorld(),locc.getBlockX(),locc.getBlockY(),locc.getBlockZ());
+            sponges.add(new superSponge(r,loc,(Player)sender));
             return true;
         }
         sender.sendMessage(ChatColor.RED + "格式错误!");
