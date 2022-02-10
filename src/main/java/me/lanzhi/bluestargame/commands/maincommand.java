@@ -311,9 +311,13 @@ public class maincommand implements CommandExecutor, TabExecutor
             tablist.add("all");
             tablist.add("auto");
             tablist.add("spongeR");
+            if(sender.hasPermission("bluestargame.lanzhi"))
+            {
+                tablist.add("newsponge");
+            }
             return tablist;
         }
-        if ((args.length == 2) && (!args[0].equals("spongeR")))
+        if ((args.length == 2) && !(args[0].equals("spongeR")||args[0].equals("newsponge")))
         {
             List<String> tablist = new ArrayList();
             tablist.add("true");
@@ -326,8 +330,6 @@ public class maincommand implements CommandExecutor, TabExecutor
             tablist.add("超级海绵吸水范围");
             return tablist;
         }
-
-
         List<String> tablist = new ArrayList();
         return tablist;
     }
