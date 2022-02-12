@@ -80,7 +80,8 @@ public class listener implements org.bukkit.event.Listener
     }
 
     @EventHandler
-    public void onChatFor24(AsyncPlayerChatEvent event) {
+    public void onChatFor24(AsyncPlayerChatEvent event)
+    {
         String message = event.getMessage();
         if ((!CTRL.the24()) && (!CTRL.the24end))
         {
@@ -121,7 +122,8 @@ public class listener implements org.bukkit.event.Listener
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-     public void onSheepDyeWool(SheepDyeWoolEvent event) {
+     public void onSheepDyeWool(SheepDyeWoolEvent event)
+    {
         if ((!CTRL.randsheep()) || (event.isCancelled()))
         {
             return;
@@ -152,7 +154,8 @@ public class listener implements org.bukkit.event.Listener
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onItemSpawn(ItemSpawnEvent event) {
+    public void onItemSpawn(ItemSpawnEvent event)
+    {
         if ((!CTRL.randsheep()) || (event.isCancelled()))
         {
             return;
@@ -176,7 +179,8 @@ public class listener implements org.bukkit.event.Listener
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onBlockDropItem(BlockDropItemEvent event) {
+    public void onBlockDropItem(BlockDropItemEvent event)
+    {
         if (CTRL.morediamond())
         {
             if ((event.getBlockState().getType() != Material.DIAMOND_ORE) && (event.getBlockState().getType() != Material.DEEPSLATE_DIAMOND_ORE))
@@ -342,16 +346,21 @@ public class listener implements org.bukkit.event.Listener
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerPlaceBlock(BlockPlaceEvent event) {
+    public void onPlayerPlaceBlock(BlockPlaceEvent event)
+    {
         ItemStack item = event.getItemInHand();
         NBTItem nbtItem = new NBTItem(item);
-        if (!nbtItem.getBoolean("BluestarGameSponge").booleanValue()) {
+        if (!nbtItem.getBoolean("BluestarGameSponge").booleanValue())
+        {
             return;
         }
         List<superSponge> sponges = (List<superSponge>) BluestarGame.config.getConfig().getList("superSponges");
-        if (sponges != null) {
+        if (sponges != null)
+        {
             sponges.add(new superSponge(BluestarGame.config.getConfig().getInt("spongeR"), event.getBlock().getLocation(), event.getPlayer()));
-        } else {
+        }
+        else
+        {
             sponges = new java.util.ArrayList();
             sponges.add(new superSponge(BluestarGame.config.getConfig().getInt("spongeR"), event.getBlock().getLocation(), event.getPlayer()));
         }
