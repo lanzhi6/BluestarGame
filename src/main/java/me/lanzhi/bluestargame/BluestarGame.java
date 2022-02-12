@@ -8,6 +8,7 @@ import me.lanzhi.bluestargame.commands.bsgamelist;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -42,10 +43,21 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         {
             CTRL.runAuto(true);
         }
-        ShapedRecipe recipe = new ShapedRecipe(new org.bukkit.NamespacedKey(this, "supersponge"), superSponge.getSuperSponge().getItem());
-        recipe = recipe.shape("aaa", "aaa", "aaa");
-        recipe = recipe.setIngredient('a', Material.SPONGE);
-        Bukkit.addRecipe(recipe);
+
+        ShapedRecipe bluestarsponge = new ShapedRecipe(new org.bukkit.NamespacedKey(this, "bluestarsponge"), superSponge.getSuperSponge().getItem());
+        bluestarsponge = bluestarsponge.shape("aaa", "aaa", "aaa");
+        bluestarsponge = bluestarsponge.setIngredient('a', Material.SPONGE);
+        Bukkit.addRecipe(bluestarsponge);
+
+        ShapedRecipe supersponge = new ShapedRecipe(new org.bukkit.NamespacedKey(this, "supersponge"), superSponge.getSuperSponge().getItem());
+        supersponge = supersponge.shape("a");
+        supersponge = supersponge.setIngredient('a', new RecipeChoice.ExactChoice(superSponge.getlavaSponge().getItem()));
+        Bukkit.addRecipe(supersponge);
+
+        ShapedRecipe lavasponge = new ShapedRecipe(new org.bukkit.NamespacedKey(this, "lavasponge"), superSponge.getlavaSponge().getItem());
+        lavasponge = lavasponge.shape("a");
+        lavasponge = lavasponge.setIngredient('a', new RecipeChoice.ExactChoice(superSponge.getSuperSponge().getItem()));
+        Bukkit.addRecipe(lavasponge);
         this.task = new CtrlSponge().ctrlsponge.runTaskTimer(getPlugin(BluestarGame.class), 0L, 2L);
         System.out.println("BluestarGame已加载");
     }

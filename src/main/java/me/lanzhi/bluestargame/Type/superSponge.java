@@ -17,13 +17,14 @@ import java.util.Map;
 
 public final class superSponge implements ConfigurationSerializable {
     private static NBTItem superSponge = null;
+    private static NBTItem lavaSponge = null;
     private final int age;
     private final Location location;
     private final Player player;
 
     public superSponge(Map<String, Object> map)
     {
-        this.age = ((Integer) map.get("age")).intValue();
+        this.age = (int)map.get("age");
         this.location = ((Location) map.get("location"));
         this.player = Bukkit.getPlayer((String) map.get("player"));
     }
@@ -39,9 +40,9 @@ public final class superSponge implements ConfigurationSerializable {
         if (superSponge == null)
         {
             superSponge = new NBTItem(new ItemStack(Material.END_STONE));
-            superSponge.setBoolean("BluestarGameSponge", Boolean.valueOf(true));
+            superSponge.setBoolean("BluestarGameSponge",true);
             NBTCompound display = superSponge.addCompound("display");
-            display.setString("Name", "\"" + ChatColor.GOLD + "超级海绵\"");
+            display.setString("Name", "\"" + ChatColor.GOLD + "超级海绵(原版)\"");
             List<String> list = display.getStringList("Lore");
             list.add("\"" + ChatColor.AQUA + "放在 水/岩浆 中或 水/岩浆 旁边\"");
             list.add("\"" + ChatColor.AQUA + "即可吸干附近" + BluestarGame.config.getConfig().getInt("spongeR") + "格的 水/岩浆\"");
@@ -49,12 +50,27 @@ public final class superSponge implements ConfigurationSerializable {
         }
         return superSponge;
     }
+    public static NBTItem getlavaSponge()
+    {
+        if (lavaSponge == null)
+        {
+            lavaSponge = new NBTItem(new ItemStack(Material.OBSIDIAN));
+            lavaSponge.setBoolean("BluestarGameSponge",true);
+            NBTCompound display = lavaSponge.addCompound("display");
+            display.setString("Name", "\"" + ChatColor.GOLD + "超级海绵(岩浆版)\"");
+            List<String> list = display.getStringList("Lore");
+            list.add("\"" + ChatColor.AQUA + "放在 水/岩浆 中或 水/岩浆 旁边\"");
+            list.add("\"" + ChatColor.AQUA + "即可吸干附近" + BluestarGame.config.getConfig().getInt("spongeR") + "格的 水/岩浆\"");
+            list.add("\"" + ChatColor.RED + "放在没 水/岩浆 的地方会直接消失哦!\"");
+        }
+        return lavaSponge;
+    }
 
     @Override
     public Map<String, Object> serialize()
     {
         Map<String, Object> map = new HashMap();
-        map.put("age", Integer.valueOf(this.age));
+        map.put("age",this.age);
         map.put("location", this.location);
         map.put("player", this.player.getName());
         return map;
