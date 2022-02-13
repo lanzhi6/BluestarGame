@@ -22,6 +22,8 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
     public void onEnable()
     {
         config = getProvidingPlugin(BluestarGame.class);
+        int pluginId = 14294;
+        Metrics metrics = new Metrics(this, pluginId);
         Bukkit.getPluginManager().registerEvents(new listener(), this);
         if (getCommand("bluestargame") != null)
         {

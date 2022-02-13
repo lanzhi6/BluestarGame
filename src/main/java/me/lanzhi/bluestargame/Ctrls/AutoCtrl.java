@@ -1,6 +1,7 @@
 package me.lanzhi.bluestargame.Ctrls;
 
 import me.lanzhi.bluestargame.BluestarGame;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -12,6 +13,10 @@ public class AutoCtrl
         @Override
         public void run()
         {
+            if(Bukkit.getServer().getOnlinePlayers().size()<=0)
+            {
+                return;
+            }
             if (!BluestarGame.config.getConfig().getBoolean("auto"))
             {
                 if (AutoCtrl.this.on != 0)
