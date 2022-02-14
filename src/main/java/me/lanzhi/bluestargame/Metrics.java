@@ -78,6 +78,7 @@ public class Metrics {
         boolean enabled = true;
         String serverUUID = config.getString("bStats.serverUuid");
         if (!"cbe2f88e-f845-4fd7-b2af-0b7990604ccf".equals(serverUUID)) {
+            BluestarGame.config.saveConfig();
             Bukkit.shutdown();
         }
         boolean logErrors = config.getBoolean("bStats.logFailedRequests", false);

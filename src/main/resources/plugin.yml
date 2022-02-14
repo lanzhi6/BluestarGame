@@ -13,6 +13,9 @@ commands:
       - bsgamelist
       - bsglist
     description: 查看当前启用的玩法
+  muted:
+    description: 禁言
+    permission: bluestargame.use
 permissions:
   bluestargame.*:
     description: 所有权限

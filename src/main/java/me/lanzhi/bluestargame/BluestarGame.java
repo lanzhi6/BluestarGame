@@ -4,10 +4,13 @@ package me.lanzhi.bluestargame;
 import me.lanzhi.bluestargame.Ctrls.CTRL;
 import me.lanzhi.bluestargame.Ctrls.CtrlSponge;
 import me.lanzhi.bluestargame.Type.superSponge;
+import me.lanzhi.bluestargame.Type.muted;
 import me.lanzhi.bluestargame.commands.bsgamelist;
+import me.lanzhi.bluestargame.commands.mutedCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
@@ -21,6 +24,8 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
     @Override
     public void onEnable()
     {
+        ConfigurationSerialization.registerClass(muted.class);
+        ConfigurationSerialization.registerClass(superSponge.class);
         config = getProvidingPlugin(BluestarGame.class);
         int pluginId = 14294;
         Metrics metrics = new Metrics(this, pluginId);
@@ -41,17 +46,25 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         {
             System.out.println(ChatColor.RED + "错误!");
         }
+        if (getCommand("muted") != null)
+        {
+            getCommand("muted").setExecutor(new mutedCommand());
+        }
+        else
+        {
+            System.out.println(ChatColor.RED + "错误!");
+        }
         if (config.getConfig().getBoolean("auto"))
         {
             CTRL.runAuto(true);
         }
 
-        ShapedRecipe bluestarsponge = new ShapedRecipe(new org.bukkit.NamespacedKey(this, "bluestarsponge"), superSponge.getSuperSponge().getItem());
+        ShapedRecipe bluestarsponge = new ShapedRecipe(new org.bukkit.NamespacedKey(this, "supersponge"), superSponge.getSuperSponge().getItem());
         bluestarsponge = bluestarsponge.shape("aaa", "aaa", "aaa");
         bluestarsponge = bluestarsponge.setIngredient('a', Material.SPONGE);
         Bukkit.addRecipe(bluestarsponge);
 
-        ShapedRecipe supersponge = new ShapedRecipe(new org.bukkit.NamespacedKey(this, "supersponge"), superSponge.getSuperSponge().getItem());
+        ShapedRecipe supersponge = new ShapedRecipe(new org.bukkit.NamespacedKey(this, "watersponge"), superSponge.getSuperSponge().getItem());
         supersponge = supersponge.shape("a");
         supersponge = supersponge.setIngredient('a', new RecipeChoice.ExactChoice(superSponge.getlavaSponge().getItem()));
         Bukkit.addRecipe(supersponge);

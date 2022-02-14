@@ -282,7 +282,7 @@ public class maincommand implements CommandExecutor, TabExecutor
             }
             Location locc=((Player)(sender)).getLocation();
             Location loc=new Location(locc.getWorld(),locc.getBlockX(),locc.getBlockY(),locc.getBlockZ());
-            sponges.add(new superSponge(r,loc,(Player)sender));
+            sponges.add(new superSponge(r,loc,(Player)sender,true,true));
             return true;
         }
         sender.sendMessage(ChatColor.RED + "格式错误!");

@@ -1,7 +1,9 @@
 package me.lanzhi.bluestargame;
 
+import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import me.lanzhi.bluestargame.Ctrls.CTRL;
+import me.lanzhi.bluestargame.Type.muted;
 import me.lanzhi.bluestargame.Type.superSponge;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -22,6 +24,7 @@ import org.bukkit.event.entity.SheepDyeWoolEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class listener implements org.bukkit.event.Listener
@@ -118,6 +121,20 @@ public class listener implements org.bukkit.event.Listener
             org.bukkit.Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "[BluestarGame]获得1000!");
             CTRL.the24end = true;
             me.lanzhi.bluestarapi.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(), "eco give " + event.getPlayer().getName() + " 1000");
+        }
+    }
+
+    @EventHandler
+    public void onChatForMuted(AsyncPlayerChatEvent event)
+    {
+        if(event.isCancelled())
+        {
+            return;
+        }
+        if(((muted)BluestarGame.config.getConfig().get("muted")).get(event.getPlayer().getName()))
+        {
+            event.getPlayer().sendMessage(ChatColor.RED+"你已被禁言,有疑问请联系管理员");
+            event.setCancelled(true);
         }
     }
 
@@ -349,24 +366,23 @@ public class listener implements org.bukkit.event.Listener
     public void onPlayerPlaceBlock(BlockPlaceEvent event)
     {
         ItemStack item = event.getItemInHand();
-        NBTItem nbtItem = new NBTItem(item);
-        if (!nbtItem.getBoolean("BluestarGameSponge").booleanValue())
+        NBTCompound bluestar = new NBTItem(item).getCompound("BluestarGame");
+        if (!bluestar.getBoolean("waterSponge")&&!bluestar.getBoolean("lavaSponge"))
         {
             return;
         }
         List<superSponge> sponges = (List<superSponge>) BluestarGame.config.getConfig().getList("superSponges");
-        if (sponges != null)
+        if (sponges == null)
         {
-            sponges.add(new superSponge(BluestarGame.config.getConfig().getInt("spongeR"), event.getBlock().getLocation(), event.getPlayer()));
+            sponges = new ArrayList<>();
         }
-        else
-        {
-            sponges = new java.util.ArrayList();
-            sponges.add(new superSponge(BluestarGame.config.getConfig().getInt("spongeR"), event.getBlock().getLocation(), event.getPlayer()));
-        }
+        sponges.add(new superSponge(
+                BluestarGame.config.getConfig().getInt("spongeR"),
+                event.getBlock().getLocation(), event.getPlayer(),
+                bluestar.getBoolean("lavaSponge"),
+                bluestar.getBoolean("waterSponge")
+        ));
         BluestarGame.config.getConfig().set("superSponges", sponges);
-        BluestarGame.config.saveConfig();
-        BluestarGame.config.reloadConfig();
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
