@@ -119,7 +119,7 @@ public class listener implements org.bukkit.event.Listener
             org.bukkit.Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "[BluestarGame]" + event.getPlayer().getName() + "答案正确!");
             org.bukkit.Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "[BluestarGame]获得1000!");
             CTRL.the24end = true;
-            me.lanzhi.bluestarapi.Api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(), "eco give "+event.getPlayer().getName()+" 1000",BluestarGame.config);
+            me.lanzhi.bluestarapi.Api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(), "eco give "+event.getPlayer().getName()+" 1000",BluestarGame.plugin);
         }
     }
 
@@ -130,7 +130,7 @@ public class listener implements org.bukkit.event.Listener
         {
             return;
         }
-        if(((muted)BluestarGame.config.getConfig().get("muted")).get(event.getPlayer().getName()))
+        if(((muted)BluestarGame.config.get("muted")).get(event.getPlayer().getName()))
         {
             event.getPlayer().sendMessage(ChatColor.RED+"你已被禁言,有疑问请联系管理员");
             event.setCancelled(true);
@@ -374,18 +374,18 @@ public class listener implements org.bukkit.event.Listener
         {
             return;
         }
-        List<superSponge> sponges = (List<superSponge>) BluestarGame.config.getConfig().getList("superSponges");
+        List<superSponge> sponges = (List<superSponge>) BluestarGame.config.getList("superSponges");
         if (sponges == null)
         {
             sponges = new ArrayList<>();
         }
         sponges.add(new superSponge(
-                BluestarGame.config.getConfig().getInt("spongeR"),
+                BluestarGame.config.getInt("spongeR"),
                 event.getBlock().getLocation(), event.getPlayer(),
                 bluestar.getBoolean("lavaSponge"),
                 bluestar.getBoolean("waterSponge")
         ));
-        BluestarGame.config.getConfig().set("superSponges", sponges);
+        BluestarGame.config.set("superSponges", sponges);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

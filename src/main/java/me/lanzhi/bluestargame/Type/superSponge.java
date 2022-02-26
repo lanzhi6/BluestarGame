@@ -56,7 +56,7 @@ public final class superSponge implements ConfigurationSerializable
             display.setString("Name", "\"" + ChatColor.GOLD + "超级海绵(吸水版)\"");
             List<String> list = display.getStringList("Lore");
             list.add("\"" + ChatColor.AQUA + "放在 水/岩浆 中或 水/岩浆 旁边\"");
-            list.add("\"" + ChatColor.AQUA + "即可吸干附近" + BluestarGame.config.getConfig().getInt("spongeR") + "格的 水/岩浆\"");
+            list.add("\"" + ChatColor.AQUA + "即可吸干附近" + BluestarGame.config.getInt("spongeR") + "格的 水/岩浆\"");
             list.add("\"" + ChatColor.RED + "放在没 水/岩浆 的地方会直接消失哦!\"");
         }
         return waterSponge;
@@ -73,7 +73,7 @@ public final class superSponge implements ConfigurationSerializable
             display.setString("Name", "\"" + ChatColor.GOLD + "超级海绵(吸岩浆版)\"");
             List<String> list = display.getStringList("Lore");
             list.add("\"" + ChatColor.AQUA + "放在 水/岩浆 中或 水/岩浆 旁边\"");
-            list.add("\"" + ChatColor.AQUA + "即可吸干附近" + BluestarGame.config.getConfig().getInt("spongeR") + "格的 水/岩浆\"");
+            list.add("\"" + ChatColor.AQUA + "即可吸干附近" + BluestarGame.config.getInt("spongeR") + "格的 水/岩浆\"");
             list.add("\"" + ChatColor.RED + "放在没 水/岩浆 的地方会直接消失哦!\"");
         }
         return lavaSponge;

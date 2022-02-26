@@ -238,9 +238,8 @@ public class maincommand implements CommandExecutor, TabExecutor
                 sender.sendMessage(ChatColor.RED + "错误,范围应在1-32之间!");
                 return false;
             }
-            config.getConfig().set("spongeR", Integer.valueOf(r));
-            config.saveConfig();
-            config.reloadConfig();
+            config.set("spongeR", Integer.valueOf(r));
+            config.save();
             sender.sendMessage(ChatColor.GREEN + "设置成功");
             return true;
         }
@@ -267,7 +266,7 @@ public class maincommand implements CommandExecutor, TabExecutor
         }
         if (args[0].equals("newsponge")&&sender.hasPermission("bluestargame.lanzhi"))
         {
-            List<superSponge> sponges = (List<superSponge>)config.getConfig().getList("superSponges");
+            List<superSponge> sponges = (List<superSponge>)config.getList("superSponges");
             int r;
             r=Integer.parseInt(args[1]);
             Location locc=((Player)(sender)).getLocation();

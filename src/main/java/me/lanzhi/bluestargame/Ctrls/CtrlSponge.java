@@ -18,7 +18,7 @@ public class CtrlSponge
         @Override
         public void run()
         {
-            List<superSponge> sponges=(List<superSponge>)BluestarGame.config.getConfig().getList("superSponges");
+            List<superSponge> sponges=(List<superSponge>)BluestarGame.config.getList("superSponges");
             if ((sponges == null) || (sponges.isEmpty()))
             {
                 return;
@@ -41,7 +41,7 @@ public class CtrlSponge
                     CtrlSponge.this.decide(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ() - 1.0D), age, sponge.getPlayer(),iswater,islava);
                 }
             }
-            BluestarGame.config.getConfig().set("superSponges", CtrlSponge.this.nextSponges);
+            BluestarGame.config.set("superSponges", CtrlSponge.this.nextSponges);
         }
     };
 

@@ -15,10 +15,14 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
+import me.lanzhi.bluestarapi.Api.yamlConfig;
+
+import java.io.File;
 
 public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
 {
-    public static Plugin config;
+    public static Plugin plugin;
+    public static yamlConfig config;
     BukkitTask task;
 
     @Override
@@ -26,7 +30,9 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
     {
         ConfigurationSerialization.registerClass(muted.class);
         ConfigurationSerialization.registerClass(superSponge.class);
-        config = getProvidingPlugin(BluestarGame.class);
+        saveDefaultConfig();
+        plugin = getProvidingPlugin(BluestarGame.class);
+        config = new yamlConfig(new File(plugin.getDataFolder(),"config.yml"));
         int pluginId = 14294;
         Metrics metrics = new Metrics(this, pluginId);
         Bukkit.getPluginManager().registerEvents(new listener(), this);
@@ -54,7 +60,7 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         {
             System.out.println(ChatColor.RED + "错误!");
         }
-        if (config.getConfig().getBoolean("auto"))
+        if (config.getBoolean("auto"))
         {
             CTRL.runAuto(true);
         }

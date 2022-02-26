@@ -17,7 +17,7 @@ public class AutoCtrl
             {
                 return;
             }
-            if (!BluestarGame.config.getConfig().getBoolean("auto"))
+            if (!BluestarGame.config.getBoolean("auto"))
             {
                 if (AutoCtrl.this.on != 0)
                 {

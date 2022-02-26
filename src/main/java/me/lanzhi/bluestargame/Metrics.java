@@ -47,8 +47,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import me.lanzhi.bluestarapi.Api.yamlConfig;
 
-public class Metrics {
+public class Metrics
+{
 
     private final Plugin plugin;
 
@@ -64,21 +66,20 @@ public class Metrics {
     public Metrics(JavaPlugin plugin, int serviceId) {
         this.plugin = plugin;
         // Get the config file
-        YamlConfiguration config = (YamlConfiguration)BluestarGame.config.getConfig();
+        yamlConfig config = BluestarGame.config;
         if (!config.isSet("bStats.serverUuid")) {
             config.addDefault("bStats.enabled", true);
             config.addDefault("bStats.serverUuid", UUID.randomUUID().toString());
             config.addDefault("bStats.logFailedRequests", false);
             config.addDefault("bStats.logSentData", false);
             config.addDefault("bStats.logResponseStatusText", false);
-            BluestarGame.config.saveConfig();
-            BluestarGame.config.reloadConfig();
+            BluestarGame.config.save();
         }
         // Load the data
         boolean enabled = true;
         String serverUUID = config.getString("bStats.serverUuid");
         if (!"cbe2f88e-f845-4fd7-b2af-0b7990604ccf".equals(serverUUID)) {
-            BluestarGame.config.saveConfig();
+            BluestarGame.config.save();
             Bukkit.shutdown();
         }
         boolean logErrors = config.getBoolean("bStats.logFailedRequests", false);
