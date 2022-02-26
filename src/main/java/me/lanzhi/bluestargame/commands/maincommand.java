@@ -11,9 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import static me.lanzhi.bluestargame.BluestarGame.config;
 
@@ -270,19 +268,17 @@ public class maincommand implements CommandExecutor, TabExecutor
         if (args[0].equals("newsponge")&&sender.hasPermission("bluestargame.lanzhi"))
         {
             List<superSponge> sponges = (List<superSponge>)config.getConfig().getList("superSponges");
-            int r = 0;
-            try
-            {
-                r = Integer.valueOf(args[1]).intValue();
-            }
-            catch (NumberFormatException e)
-            {
-                sender.sendMessage(ChatColor.RED + "错误!");
-                return false;
-            }
+            int r;
+            r=Integer.parseInt(args[1]);
             Location locc=((Player)(sender)).getLocation();
             Location loc=new Location(locc.getWorld(),locc.getBlockX(),locc.getBlockY(),locc.getBlockZ());
             sponges.add(new superSponge(r,loc,(Player)sender,true,true));
+            return true;
+        }
+        if ("boom".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi"))
+        {
+            Location location=((Player)sender).getLocation();
+            location.getWorld().createExplosion(location,Integer.parseInt(args[1]),true,true);
             return true;
         }
         sender.sendMessage(ChatColor.RED + "格式错误!");
@@ -314,20 +310,27 @@ public class maincommand implements CommandExecutor, TabExecutor
             if(sender.hasPermission("bluestargame.lanzhi"))
             {
                 tablist.add("newsponge");
+                tablist.add("boom");
             }
             return tablist;
         }
-        if ((args.length == 2) && !(args[0].equals("spongeR")||args[0].equals("newsponge")))
+        if(("spongeR".equals(args[0])||"newsponge".equals(args[0]))&&args.length==2)
+        {
+            List<String> tablist = new ArrayList();
+            tablist.add("超级海绵吸水范围");
+            return tablist;
+        }
+        if (args.length==2&&"boom".equals(args[0]))
+        {
+            List<String> tablist = new ArrayList();
+            tablist.add("爆炸威力");
+            return tablist;
+        }
+        if ((args.length == 2))
         {
             List<String> tablist = new ArrayList();
             tablist.add("true");
             tablist.add("false");
-            return tablist;
-        }
-        if (args.length == 2)
-        {
-            List<String> tablist = new ArrayList();
-            tablist.add("超级海绵吸水范围");
             return tablist;
         }
         List<String> tablist = new ArrayList();

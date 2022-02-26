@@ -12,7 +12,6 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockDropItemEvent;
@@ -120,7 +119,7 @@ public class listener implements org.bukkit.event.Listener
             org.bukkit.Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "[BluestarGame]" + event.getPlayer().getName() + "答案正确!");
             org.bukkit.Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "[BluestarGame]获得1000!");
             CTRL.the24end = true;
-            me.lanzhi.bluestarapi.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(), "eco give " + event.getPlayer().getName() + " 1000");
+            me.lanzhi.bluestarapi.Api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(), "eco give "+event.getPlayer().getName()+" 1000",BluestarGame.config);
         }
     }
 
@@ -367,6 +366,10 @@ public class listener implements org.bukkit.event.Listener
     {
         ItemStack item = event.getItemInHand();
         NBTCompound bluestar = new NBTItem(item).getCompound("BluestarGame");
+        if (bluestar==null)
+        {
+            return;
+        }
         if (!bluestar.getBoolean("waterSponge")&&!bluestar.getBoolean("lavaSponge"))
         {
             return;

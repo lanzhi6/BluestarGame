@@ -1,6 +1,6 @@
 package me.lanzhi.bluestargame.Ctrls;
 
-import me.lanzhi.bluestarapi.Bluestar;
+import me.lanzhi.bluestarapi.Api.Bluestar;
 import me.lanzhi.bluestargame.BluestarGame;
 import me.lanzhi.bluestargame.Type.superSponge;
 import org.bukkit.Location;

@@ -4,9 +4,6 @@ import java.util.Arrays;
 import me.lanzhi.bluestargame.BluestarGame;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 public class CTRL
