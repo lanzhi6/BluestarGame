@@ -25,7 +25,7 @@ public class muted implements ConfigurationSerializable
 
     public boolean get(String name)
     {
-        return Boolean.parseBoolean(map.get(name).toString());
+        return Boolean.parseBoolean(map.get(name)+"");
     }
     public Map getall()
     {
