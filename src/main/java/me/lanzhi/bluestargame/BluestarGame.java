@@ -6,6 +6,7 @@ import me.lanzhi.bluestargame.Ctrls.CtrlSponge;
 import me.lanzhi.bluestargame.Type.superSponge;
 import me.lanzhi.bluestargame.Type.muted;
 import me.lanzhi.bluestargame.commands.bsgamelist;
+import me.lanzhi.bluestargame.commands.chat;
 import me.lanzhi.bluestargame.commands.mutedCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,14 +16,14 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
-import me.lanzhi.bluestarapi.Api.yamlConfig;
+import me.lanzhi.bluestarapi.Api.YamlFile;
 
 import java.io.File;
 
 public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
 {
     public static Plugin plugin;
-    public static yamlConfig config;
+    public static YamlFile config;
     BukkitTask task;
 
     @Override
@@ -32,34 +33,14 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         ConfigurationSerialization.registerClass(superSponge.class);
         saveDefaultConfig();
         plugin = getProvidingPlugin(BluestarGame.class);
-        config = new yamlConfig(new File(plugin.getDataFolder(),"config.yml"));
+        config = new YamlFile(new File(plugin.getDataFolder(),"config.yml"));
         int pluginId = 14294;
         Metrics metrics = new Metrics(this, pluginId);
         Bukkit.getPluginManager().registerEvents(new listener(), this);
-        if (getCommand("bluestargame") != null)
-        {
-            getCommand("bluestargame").setExecutor(new me.lanzhi.bluestargame.commands.maincommand());
-        }
-        else
-        {
-            System.out.println(ChatColor.RED + "错误!");
-        }
-        if (getCommand("bluestargamelist") != null)
-        {
-            getCommand("bluestargamelist").setExecutor(new bsgamelist());
-        }
-        else
-        {
-            System.out.println(ChatColor.RED + "错误!");
-        }
-        if (getCommand("muted") != null)
-        {
-            getCommand("muted").setExecutor(new mutedCommand());
-        }
-        else
-        {
-            System.out.println(ChatColor.RED + "错误!");
-        }
+        getCommand("bluestargame").setExecutor(new me.lanzhi.bluestargame.commands.maincommand());
+        getCommand("bluestargamelist").setExecutor(new bsgamelist());
+        getCommand("muted").setExecutor(new mutedCommand());
+        getCommand("chat").setExecutor(new chat());
         if (config.getBoolean("auto"))
         {
             CTRL.runAuto(true);

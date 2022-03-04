@@ -41,13 +41,12 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPOutputStream;
 import javax.net.ssl.HttpsURLConnection;
+
+import me.lanzhi.bluestarapi.Api.YamlFile;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import me.lanzhi.bluestarapi.Api.yamlConfig;
 
 public class Metrics
 {
@@ -66,7 +65,7 @@ public class Metrics
     public Metrics(JavaPlugin plugin, int serviceId) {
         this.plugin = plugin;
         // Get the config file
-        yamlConfig config = BluestarGame.config;
+        YamlFile config = BluestarGame.config;
         if (!config.isSet("bStats.serverUuid")) {
             config.addDefault("bStats.enabled", true);
             config.addDefault("bStats.serverUuid", UUID.randomUUID().toString());

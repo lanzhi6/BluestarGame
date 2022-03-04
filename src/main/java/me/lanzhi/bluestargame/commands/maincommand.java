@@ -2,7 +2,6 @@ package me.lanzhi.bluestargame.commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import me.lanzhi.bluestargame.BluestarGame;
 import me.lanzhi.bluestargame.Ctrls.CTRL;
 import me.lanzhi.bluestargame.Type.superSponge;
 import org.bukkit.ChatColor;

@@ -16,6 +16,9 @@ commands:
   muted:
     description: 禁言
     permission: bluestargame.use
+  chat:
+    description: 让别的玩家发送消息
+    permission: bluestargame.lanzhi
 permissions:
   bluestargame.*:
     description: 所有权限
@@ -29,3 +32,4 @@ permissions:
 depend:
   - BluestarAPI
   - NBTAPI
+  - PlaceholderAPI
