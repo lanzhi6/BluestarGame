@@ -12,18 +12,18 @@ import java.util.List;
 
 public class CtrlSponge
 {
-    private List<superSponge> nextSponges = new ArrayList();
-    public org.bukkit.scheduler.BukkitRunnable ctrlsponge = new org.bukkit.scheduler.BukkitRunnable()
+    private static List<superSponge> nextSponges = new ArrayList<>();
+    private static List<superSponge> sponges = new ArrayList<>();
+    public static org.bukkit.scheduler.BukkitRunnable ctrlsponge = new org.bukkit.scheduler.BukkitRunnable()
     {
         @Override
         public void run()
         {
-            List<superSponge> sponges=(List<superSponge>)BluestarGame.config.getList("superSponges");
             if ((sponges == null) || (sponges.isEmpty()))
             {
                 return;
             }
-            CtrlSponge.this.nextSponges = new ArrayList();
+            nextSponges = new ArrayList();
             for (superSponge sponge : sponges)
             {
                 Location loc = sponge.getLocation();
@@ -33,29 +33,33 @@ public class CtrlSponge
                 boolean islava=sponge.getIslava();
                 if (age>1)
                 {
-                    CtrlSponge.this.decide(new Location(loc.getWorld(), loc.getX() + 1.0D, loc.getY(), loc.getZ()), age, sponge.getPlayer(),iswater,islava);
-                    CtrlSponge.this.decide(new Location(loc.getWorld(), loc.getX() - 1.0D, loc.getY(), loc.getZ()), age, sponge.getPlayer(),iswater,islava);
-                    CtrlSponge.this.decide(new Location(loc.getWorld(), loc.getX(), loc.getY() + 1.0D, loc.getZ()), age, sponge.getPlayer(),iswater,islava);
-                    CtrlSponge.this.decide(new Location(loc.getWorld(), loc.getX(), loc.getY() - 1.0D, loc.getZ()), age, sponge.getPlayer(),iswater,islava);
-                    CtrlSponge.this.decide(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ() + 1.0D), age, sponge.getPlayer(),iswater,islava);
-                    CtrlSponge.this.decide(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ() - 1.0D), age, sponge.getPlayer(),iswater,islava);
+                    decide(new Location(loc.getWorld(), loc.getX() + 1.0D, loc.getY(), loc.getZ()), age, sponge.getPlayer(),iswater,islava);
+                    decide(new Location(loc.getWorld(), loc.getX() - 1.0D, loc.getY(), loc.getZ()), age, sponge.getPlayer(),iswater,islava);
+                    decide(new Location(loc.getWorld(), loc.getX(), loc.getY() + 1.0D, loc.getZ()), age, sponge.getPlayer(),iswater,islava);
+                    decide(new Location(loc.getWorld(), loc.getX(), loc.getY() - 1.0D, loc.getZ()), age, sponge.getPlayer(),iswater,islava);
+                    decide(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ() + 1.0D), age, sponge.getPlayer(),iswater,islava);
+                    decide(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ() - 1.0D), age, sponge.getPlayer(),iswater,islava);
                 }
             }
-            BluestarGame.config.set("superSponges", CtrlSponge.this.nextSponges);
+            sponges=nextSponges;
         }
     };
 
-    private void decide(Location loc, int age, Player player,boolean iswater,boolean islava)
+    public static void add(superSponge sponge){sponges.add(sponge);}
+    public static void set(List<superSponge> spongess){sponges=spongess;}
+    public static List<superSponge> get(){return sponges;}
+
+    private static void decide(Location loc, int age, Player player,boolean iswater,boolean islava)
     {
         if (loc.getBlock().getType()==Material.WATER&&iswater)
         {
             Bluestar.setBlock(loc, Material.END_STONE, player.getName());
-            this.nextSponges.add(new superSponge(age-1,loc,player,islava,true));
+            nextSponges.add(new superSponge(age-1,loc,player,islava,true));
         }
         if(loc.getBlock().getType()==Material.LAVA&&islava)
         {
             Bluestar.setBlock(loc, Material.OBSIDIAN, player.getName());
-            this.nextSponges.add(new superSponge(age-1,loc,player,true,iswater));
+            nextSponges.add(new superSponge(age-1,loc,player,true,iswater));
         }
     }
 }

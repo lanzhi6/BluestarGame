@@ -2,6 +2,7 @@ name: BluestarGame
 version: '${project.version}'
 main: me.lanzhi.bluestargame.BluestarGame
 api-version: 1.18
+website: https://github.com/lanzhi6/BluestarGame
 commands:
   bluestargame:
     aliases:
@@ -16,9 +17,17 @@ commands:
   muted:
     description: 禁言
     permission: bluestargame.use
+    permission-message: bluestargame.use
   chat:
     description: 让别的玩家发送消息
-    permission: bluestargame.lanzhi
+    permission: bluestargame.use
+  bluestaritem:
+    aliases:
+      - bsitem
+      - bsgitem
+      - bsgameitem
+      - bluestargameitem
+    permission: bluestargame.use
 permissions:
   bluestargame.*:
     description: 所有权限

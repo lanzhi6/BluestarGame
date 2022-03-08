@@ -5,6 +5,7 @@ import me.lanzhi.bluestargame.Ctrls.CTRL;
 import me.lanzhi.bluestargame.Ctrls.CtrlSponge;
 import me.lanzhi.bluestargame.Type.superSponge;
 import me.lanzhi.bluestargame.Type.muted;
+import me.lanzhi.bluestargame.commands.bluestaritem;
 import me.lanzhi.bluestargame.commands.bsgamelist;
 import me.lanzhi.bluestargame.commands.chat;
 import me.lanzhi.bluestargame.commands.mutedCommand;
@@ -19,6 +20,7 @@ import org.bukkit.scheduler.BukkitTask;
 import me.lanzhi.bluestarapi.Api.YamlFile;
 
 import java.io.File;
+import java.util.List;
 
 public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
 {
@@ -41,6 +43,7 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         getCommand("bluestargamelist").setExecutor(new bsgamelist());
         getCommand("muted").setExecutor(new mutedCommand());
         getCommand("chat").setExecutor(new chat());
+        getCommand("bluestaritem").setExecutor(new bluestaritem());
         if (config.getBoolean("auto"))
         {
             CTRL.runAuto(true);
@@ -60,7 +63,8 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         lavasponge = lavasponge.shape("a");
         lavasponge = lavasponge.setIngredient('a', new RecipeChoice.ExactChoice(superSponge.getSuperSponge().getItem()));
         Bukkit.addRecipe(lavasponge);
-        this.task = new CtrlSponge().ctrlsponge.runTaskTimer(getPlugin(BluestarGame.class), 0L, 2L);
+        CtrlSponge.set((List<superSponge>) config.getList("superSponges"));
+        this.task = CtrlSponge.ctrlsponge.runTaskTimer(plugin, 0L, 2L);
         System.out.println("BluestarGame已加载");
     }
 
@@ -71,6 +75,8 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         CTRL.theend();
         CTRL.all(false);
         Bukkit.clearRecipes();
+        config.set("superSponges",CtrlSponge.get());
+        config.save();
         System.out.println("BluestarGame已卸载");
     }
 }

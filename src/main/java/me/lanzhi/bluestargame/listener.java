@@ -3,31 +3,50 @@ package me.lanzhi.bluestargame;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import me.lanzhi.bluestargame.Ctrls.CTRL;
+import me.lanzhi.bluestargame.Ctrls.CtrlSponge;
 import me.lanzhi.bluestargame.Type.muted;
 import me.lanzhi.bluestargame.Type.superSponge;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.Attributable;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.event.entity.SheepDyeWoolEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.scheduler.BukkitRunnable;
+import static me.lanzhi.bluestargame.BluestarGame.plugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class listener implements org.bukkit.event.Listener
 {
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerJoin(AsyncPlayerPreLoginEvent event)
+    {
+        UUID uuid=event.getUniqueId();
+        new BukkitRunnable()
+        {
+            @Override
+            public void run()
+            {
+                System.out.println(Bukkit.getPlayer(uuid).isHealthScaled());
+                Bukkit.getPlayer(uuid).setHealthScaled(false);
+            }
+        }.runTaskLater(plugin,5);
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamage(EntityDamageEvent event)
     {
@@ -46,7 +65,10 @@ public class listener implements org.bukkit.event.Listener
         else
         {
             event.setCancelled(true);
-            ((Damageable) entity).setMaxHealth(Math.max(((Damageable) entity).getHealth() - hurt, ((Damageable) entity).getMaxHealth()));
+            if (((Damageable) entity).getHealth()-hurt>((Attributable)entity).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue())
+            {
+                ((Attributable)entity).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(((Damageable) entity).getHealth()-hurt);
+            }
             ((Damageable) entity).setHealth(((Damageable) entity).getHealth() - hurt);
         }
     }
@@ -94,7 +116,11 @@ public class listener implements org.bukkit.event.Listener
         {
             return;
         }
-        if ((int) Double.parseDouble(ans[0]) != 24)
+        try {
+            if ((int) Double.parseDouble(ans[0]) != 24) {
+                return;
+            }
+        } catch (NumberFormatException e)
         {
             return;
         }
@@ -374,28 +400,104 @@ public class listener implements org.bukkit.event.Listener
         {
             return;
         }
-        List<superSponge> sponges = (List<superSponge>) BluestarGame.config.getList("superSponges");
-        if (sponges == null)
-        {
-            sponges = new ArrayList<>();
-        }
-        sponges.add(new superSponge(
+        CtrlSponge.add(new superSponge(
                 BluestarGame.config.getInt("spongeR"),
                 event.getBlock().getLocation(), event.getPlayer(),
                 bluestar.getBoolean("lavaSponge"),
                 bluestar.getBoolean("waterSponge")
         ));
-        BluestarGame.config.set("superSponges", sponges);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntiyDie(EntityDeathEvent event)
     {
+        if (event.getEntity() instanceof Player)
+        {
+            ((Player) event.getEntity()).setHealthScaled(false);
+        }
         if (event.getEntity() instanceof Player||!CTRL.respawn())
         {
             return;
         }
         event.getEntity().getWorld().spawnEntity(event.getEntity().getLocation(),event.getEntityType());
         return;
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerDamage(EntityDamageEvent event)
+    {
+        if(!(event.getEntity() instanceof Player))
+        {
+            return;
+        }
+        Player player = (Player)event.getEntity();
+        boolean flag = false;
+        if (!player.getInventory().getItemInMainHand().getType().isAir())
+        {
+            NBTItem item=new NBTItem(player.getInventory().getItemInMainHand());
+            NBTCompound bluestargame=item.getCompound("BluestarGame");
+            if(bluestargame!=null&&bluestargame.getBoolean("sword"))
+            {
+                flag = true;
+            }
+        }
+        if (!player.getInventory().getItemInOffHand().getType().isAir()&&!flag)
+        {
+            NBTItem item=new NBTItem(player.getInventory().getItemInOffHand());
+            NBTCompound bluestargame=item.getCompound("BluestarGame");
+            if(bluestargame!=null&&bluestargame.getBoolean("sword"))
+            {
+                flag = true;
+            }
+        }
+        if (!flag)
+        {
+            return;
+        }
+        event.setCancelled(true);
+        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onEntityDamageByPlayer(EntityDamageByEntityEvent event)
+    {
+        if(!(event.getDamager() instanceof Player)){return;}
+        Player player = (Player)event.getDamager();
+        boolean flag = false;
+        if (!player.getInventory().getItemInMainHand().getType().isAir())
+        {
+            NBTItem item=new NBTItem(player.getInventory().getItemInMainHand());
+            NBTCompound bluestargame=item.getCompound("BluestarGame");
+            if(bluestargame!=null&&bluestargame.getBoolean("sword"))
+            {
+                flag = true;
+            }
+        }
+        if (!player.getInventory().getItemInOffHand().getType().isAir()&&!flag)
+        {
+            NBTItem item=new NBTItem(player.getInventory().getItemInOffHand());
+            NBTCompound bluestargame=item.getCompound("BluestarGame");
+            if(bluestargame!=null&&bluestargame.getBoolean("sword"))
+            {
+                flag = true;
+            }
+        }
+        if (!flag)
+        {
+            return;
+        }
+        event.setDamage(Integer.MAX_VALUE);
+        if (((Damageable)event.getEntity()).getHealth()!=0)
+        {
+            ((Damageable) event.getEntity()).setHealth(0);
+        }
+        if (event.getEntity() instanceof Player)
+        {
+            PlayerInventory inventory=((Player)event.getEntity()).getInventory();
+            inventory.setChestplate(new ItemStack(Material.AIR));
+            inventory.setHelmet(new ItemStack(Material.AIR));
+            inventory.setBoots(new ItemStack(Material.AIR));
+            inventory.setLeggings(new ItemStack(Material.AIR));
+        }
     }
 }

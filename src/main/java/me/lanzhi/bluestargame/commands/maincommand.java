@@ -3,9 +3,13 @@ package me.lanzhi.bluestargame.commands;
 import java.util.ArrayList;
 import java.util.List;
 import me.lanzhi.bluestargame.Ctrls.CTRL;
+import me.lanzhi.bluestargame.Ctrls.CtrlSponge;
 import me.lanzhi.bluestargame.Type.superSponge;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -242,41 +246,39 @@ public class maincommand implements CommandExecutor, TabExecutor
             sender.sendMessage(ChatColor.GREEN + "设置成功");
             return true;
         }
-        if (args[0].equals("test"))
-        {
-            int r = 0;
-            try
-            {
-                r = Integer.valueOf(args[1]).intValue();
-            }
-            catch (NumberFormatException e)
-            {
-                sender.sendMessage(ChatColor.RED + "错误!");
-                return false;
-            }
-            if (r > 100)
-            {
-                sender.sendMessage(ChatColor.RED + "范围不能大于100");
-                return false;
-            }
-            Player player = (Player)sender;
-            player.getLocation().getWorld().createExplosion(player.getLocation(), r, true, true);
-            return true;
-        }
         if (args[0].equals("newsponge")&&sender.hasPermission("bluestargame.lanzhi"))
         {
-            List<superSponge> sponges = (List<superSponge>)config.getList("superSponges");
             int r;
             r=Integer.parseInt(args[1]);
             Location locc=((Player)(sender)).getLocation();
             Location loc=new Location(locc.getWorld(),locc.getBlockX(),locc.getBlockY(),locc.getBlockZ());
-            sponges.add(new superSponge(r,loc,(Player)sender,true,true));
+            CtrlSponge.add(new superSponge(r,loc,(Player)sender,true,true));
             return true;
         }
         if ("boom".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi"))
         {
             Location location=((Player)sender).getLocation();
-            location.getWorld().createExplosion(location,Integer.parseInt(args[1]),true,true);
+            try
+            {
+                location.getWorld().createExplosion(location,Integer.parseInt(args[1]),true,true);
+            }
+            catch (NumberFormatException e)
+            {
+                sender.sendMessage(ChatColor.RED + "错误!");
+            }
+            return true;
+        }
+        if ("health".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi"))
+        {
+            Player player=(Player)sender;
+            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(Long.parseLong(args[1]));
+            player.setHealthScaled(false);
+            return true;
+        }
+        if ("test".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi"))
+        {
+            Player player=(Player)sender;
+            player.setHealthScaled(!player.isHealthScaled());
             return true;
         }
         sender.sendMessage(ChatColor.RED + "格式错误!");
@@ -309,6 +311,8 @@ public class maincommand implements CommandExecutor, TabExecutor
             {
                 tablist.add("newsponge");
                 tablist.add("boom");
+                tablist.add("health");
+                tablist.add("reload");
             }
             return tablist;
         }
