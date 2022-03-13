@@ -3,6 +3,7 @@ version: '${project.version}'
 main: me.lanzhi.bluestargame.BluestarGame
 api-version: 1.18
 website: https://github.com/lanzhi6/BluestarGame
+author: lanzhi
 commands:
   bluestargame:
     aliases:

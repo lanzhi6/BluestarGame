@@ -25,6 +25,11 @@ public class bluestaritem implements CommandExecutor, TabExecutor
             sender.sendMessage(ChatColor.RED + "此命令仅允许玩家输入!");
             return false;
         }
+        if (args.length<1)
+        {
+            sender.sendMessage(ChatColor.RED + "格式错误!");
+            return false;
+        }
         Player player=(Player) sender;
         if ("watersponge".equals(args[0]))
         {
@@ -55,7 +60,7 @@ public class bluestaritem implements CommandExecutor, TabExecutor
                 player.sendMessage(messagehead+ChatColor.RED + "检测到您手持的物品不是方块,可能无法放置使得超级海绵生效");
             }
             NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
-            item.addCompound("BluestarGame").setBoolean("lavasponge",true);
+            item.addCompound("BluestarGame").setBoolean("lavaSponge",true);
             player.getInventory().setItemInMainHand(item.getItem());
             player.sendMessage(messagehead+ChatColor.GREEN+"已为您手持的物品添加\"岩浆海绵\"属性");
             return true;

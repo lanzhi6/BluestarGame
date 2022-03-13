@@ -9,12 +9,13 @@ import me.lanzhi.bluestargame.commands.bluestaritem;
 import me.lanzhi.bluestargame.commands.bsgamelist;
 import me.lanzhi.bluestargame.commands.chat;
 import me.lanzhi.bluestargame.commands.mutedCommand;
+import me.lanzhi.bluestargame.listener.HealthFix;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import me.lanzhi.bluestarapi.Api.YamlFile;
@@ -26,6 +27,8 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
 {
     public static Plugin plugin;
     public static YamlFile config;
+    public static File PlayerData;
+    public static YamlFile PlayerMap;
     BukkitTask task;
 
     @Override
@@ -33,25 +36,33 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
     {
         ConfigurationSerialization.registerClass(muted.class);
         ConfigurationSerialization.registerClass(superSponge.class);
+
         saveDefaultConfig();
-        plugin = getProvidingPlugin(BluestarGame.class);
+
+        plugin = this;
         config = new YamlFile(new File(plugin.getDataFolder(),"config.yml"));
+        PlayerMap=new YamlFile(new File(plugin.getDataFolder(),"playerMap.yml"));
+        PlayerData = new File(plugin.getDataFolder(),"PlayerData");
+        PlayerData.mkdirs();
+
         int pluginId = 14294;
         Metrics metrics = new Metrics(this, pluginId);
-        Bukkit.getPluginManager().registerEvents(new listener(), this);
+
+        RegisterListeners.registerListeners();
+
         getCommand("bluestargame").setExecutor(new me.lanzhi.bluestargame.commands.maincommand());
         getCommand("bluestargamelist").setExecutor(new bsgamelist());
         getCommand("muted").setExecutor(new mutedCommand());
         getCommand("chat").setExecutor(new chat());
         getCommand("bluestaritem").setExecutor(new bluestaritem());
+
         if (config.getBoolean("auto"))
         {
             CTRL.runAuto(true);
         }
 
-        ShapedRecipe bluestarsponge = new ShapedRecipe(new org.bukkit.NamespacedKey(this, "supersponge"), superSponge.getSuperSponge().getItem());
-        bluestarsponge = bluestarsponge.shape("aaa", "aaa", "aaa");
-        bluestarsponge = bluestarsponge.setIngredient('a', Material.SPONGE);
+        ShapelessRecipe bluestarsponge = new ShapelessRecipe(new org.bukkit.NamespacedKey(this, "supersponge"), superSponge.getSuperSponge().getItem());
+        bluestarsponge = bluestarsponge.addIngredient(9, Material.SPONGE);
         Bukkit.addRecipe(bluestarsponge);
 
         ShapedRecipe supersponge = new ShapedRecipe(new org.bukkit.NamespacedKey(this, "watersponge"), superSponge.getSuperSponge().getItem());
@@ -65,6 +76,7 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         Bukkit.addRecipe(lavasponge);
         CtrlSponge.set((List<superSponge>) config.getList("superSponges"));
         this.task = CtrlSponge.ctrlsponge.runTaskTimer(plugin, 0L, 2L);
+
         System.out.println("BluestarGame已加载");
     }
 
@@ -77,6 +89,7 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         Bukkit.clearRecipes();
         config.set("superSponges",CtrlSponge.get());
         config.save();
+        PlayerMap.save();
         System.out.println("BluestarGame已卸载");
     }
 }

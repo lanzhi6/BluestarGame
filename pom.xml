@@ -6,7 +6,7 @@
 
     <groupId>me.lanzhi</groupId>
     <artifactId>BluestarGame</artifactId>
-    <version>2.2.0</version>
+    <version>2.2.2</version>
     <packaging>jar</packaging>
 
     <name>BluestarGame</name>
@@ -80,18 +80,20 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.18.1-R0.1-SNAPSHOT</version>
+            <version>1.18.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api-plugin</artifactId>
-            <version>2.9.0</version>
+            <version>2.9.2</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.lanzhi6</groupId>
             <artifactId>BluestarAPI</artifactId>
-            <version>1.5</version>
+            <version>1.7</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
