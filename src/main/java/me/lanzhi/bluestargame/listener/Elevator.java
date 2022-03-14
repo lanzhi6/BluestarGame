@@ -32,7 +32,7 @@ public class Elevator implements Listener
                 locc.setY(y);
                 Location loccc=loc.clone();
                 loccc.setY(y-1);
-                if (!locc.getBlock().getType().isSolid()&&loccc.getBlock().getType().isSolid())
+                if ((!locc.getBlock().getType().isSolid()||locc.getBlock().getType().name().endsWith("SIGN"))&&(loccc.getBlock().getType().isSolid()&&!loccc.getBlock().getType().name().endsWith("SIGN")))
                 {
                     event.getPlayer().teleport(locc);
                     return;
@@ -58,7 +58,7 @@ public class Elevator implements Listener
                 locc.setY(y);
                 Location loccc=loc.clone();
                 loccc.setY(y-1);
-                if (!locc.getBlock().getType().isSolid()&&loccc.getBlock().getType().isSolid())
+                if ((!locc.getBlock().getType().isSolid()||locc.getBlock().getType().name().endsWith("SIGN"))&&(loccc.getBlock().getType().isSolid()&&!loccc.getBlock().getType().name().endsWith("SIGN")))
                 {
                     event.getPlayer().teleport(locc);
                     return;
