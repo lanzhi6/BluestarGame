@@ -3,12 +3,11 @@ package me.lanzhi.bluestargame;
 
 import me.lanzhi.bluestargame.Ctrls.CTRL;
 import me.lanzhi.bluestargame.Ctrls.CtrlSponge;
+import me.lanzhi.bluestargame.Type.Public;
+import me.lanzhi.bluestargame.Type.elevator;
 import me.lanzhi.bluestargame.Type.superSponge;
 import me.lanzhi.bluestargame.Type.muted;
-import me.lanzhi.bluestargame.commands.bluestaritem;
-import me.lanzhi.bluestargame.commands.bsgamelist;
-import me.lanzhi.bluestargame.commands.chat;
-import me.lanzhi.bluestargame.commands.mutedCommand;
+import me.lanzhi.bluestargame.commands.*;
 import me.lanzhi.bluestargame.listener.HealthFix;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -29,6 +28,7 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
     public static YamlFile config;
     public static File PlayerData;
     public static YamlFile PlayerMap;
+    public static YamlFile Data;
     BukkitTask task;
 
     @Override
@@ -36,12 +36,15 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
     {
         ConfigurationSerialization.registerClass(muted.class);
         ConfigurationSerialization.registerClass(superSponge.class);
+        ConfigurationSerialization.registerClass(elevator.class);
+        ConfigurationSerialization.registerClass(Public.class);
 
         saveDefaultConfig();
 
         plugin = this;
         config = new YamlFile(new File(plugin.getDataFolder(),"config.yml"));
-        PlayerMap=new YamlFile(new File(plugin.getDataFolder(),"playerMap.yml"));
+        PlayerMap = new YamlFile(new File(plugin.getDataFolder(),"playerMap.yml"));
+        Data = new YamlFile(new File(plugin.getDataFolder(),"data.yml"));
         PlayerData = new File(plugin.getDataFolder(),"PlayerData");
         PlayerData.mkdirs();
 
@@ -55,6 +58,7 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         getCommand("muted").setExecutor(new mutedCommand());
         getCommand("chat").setExecutor(new chat());
         getCommand("bluestaritem").setExecutor(new bluestaritem());
+        getCommand("elevator").setExecutor(new elevatorCommand());
 
         if (config.getBoolean("auto"))
         {
@@ -90,6 +94,7 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         config.set("superSponges",CtrlSponge.get());
         config.save();
         PlayerMap.save();
+        Data.save();
         System.out.println("BluestarGame已卸载");
     }
 }

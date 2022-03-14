@@ -1,9 +1,6 @@
 package me.lanzhi.bluestargame;
 
-import me.lanzhi.bluestargame.listener.DoMute;
-import me.lanzhi.bluestargame.listener.HealthFix;
-import me.lanzhi.bluestargame.listener.PlaceSponge;
-import me.lanzhi.bluestargame.listener.Sword;
+import me.lanzhi.bluestargame.listener.*;
 import me.lanzhi.bluestargame.listener.randoms.*;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -28,6 +25,7 @@ public class RegisterListeners
         registerlistener(new RandSheepColor());
         registerlistener(new Respawn());
         registerlistener(new The24Point());
+        registerlistener(new Elevator());
     }
     private static void registerlistener(Listener listener)
     {

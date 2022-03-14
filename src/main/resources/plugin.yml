@@ -29,10 +29,15 @@ commands:
       - bsgameitem
       - bluestargameitem
     permission: bluestargame.use
+  elevator:
+    permission: bluestargame.elevator
 permissions:
   bluestargame.*:
     description: 所有权限
     children:
+      bluestargame.elevator:
+        description: 允许使用电梯相关功能
+        default: op
       bluestargame.use:
         description: 允许使用/bluestargame,默认op
         default: op

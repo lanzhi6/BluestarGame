@@ -1,6 +1,7 @@
 package me.lanzhi.bluestargame.commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import me.lanzhi.bluestargame.Ctrls.CTRL;
 import me.lanzhi.bluestargame.Ctrls.CtrlSponge;
@@ -23,6 +24,18 @@ public class maincommand implements CommandExecutor, TabExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
+        if ("health".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi")&&args.length==3)
+        {
+            Player player=Bukkit.getPlayer(args[1]);
+            if (player==null)
+            {
+                sender.sendMessage(ChatColor.RED+"未找到玩家");
+                return false;
+            }
+            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(Double.parseDouble(args[2]));
+            player.setHealthScaled(false);
+            return true;
+        }
         if (args.length != 2)
         {
             sender.sendMessage(ChatColor.RED + "格式错误!");
@@ -268,19 +281,6 @@ public class maincommand implements CommandExecutor, TabExecutor
             }
             return true;
         }
-        if ("health".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi"))
-        {
-            Player player=(Player)sender;
-            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(Long.parseLong(args[1]));
-            player.setHealthScaled(false);
-            return true;
-        }
-        if ("test".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi"))
-        {
-            Player player=(Player)sender;
-            player.setHealthScaled(!player.isHealthScaled());
-            return true;
-        }
         sender.sendMessage(ChatColor.RED + "格式错误!");
         return false;
     }
@@ -327,6 +327,14 @@ public class maincommand implements CommandExecutor, TabExecutor
             List<String> tablist = new ArrayList();
             tablist.add("爆炸威力");
             return tablist;
+        }
+        if (args.length==2&&"health".equals(args[0]))
+        {
+            return null;
+        }
+        if (args.length==3&&"health".equals(args[0]))
+        {
+            return Arrays.asList("血量");
         }
         if ((args.length == 2))
         {
