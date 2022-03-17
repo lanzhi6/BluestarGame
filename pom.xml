@@ -6,7 +6,7 @@
 
     <groupId>me.lanzhi</groupId>
     <artifactId>BluestarGame</artifactId>
-    <version>2.3.1</version>
+    <version>2.3.2</version>
     <packaging>jar</packaging>
 
     <name>BluestarGame</name>
@@ -92,13 +92,25 @@
         <dependency>
             <groupId>com.github.lanzhi6</groupId>
             <artifactId>BluestarAPI</artifactId>
-            <version>1.7</version>
+            <version>1.8</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.lanzhi6</groupId>
+            <artifactId>BluestarQQ</artifactId>
+            <version>1.0.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.11.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.DreamVoid.MiraiMC</groupId>
+            <artifactId>MiraiMC-Integration</artifactId>
+            <version>1.6</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

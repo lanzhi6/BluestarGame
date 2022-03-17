@@ -28,7 +28,7 @@ public class CTRL
         if ((b) && (task == null))
         {
             autoCtrl = new AutoCtrl();
-            task = autoCtrl.thread.runTaskTimer(BluestarGame.getPlugin(BluestarGame.class), 0L, 12000L);
+            task = autoCtrl.thread.runTaskTimerAsynchronously(BluestarGame.getPlugin(BluestarGame.class), 0L, 12000L);
         }
         else if ((!b) && (task != null))
         {

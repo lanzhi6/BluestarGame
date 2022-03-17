@@ -29,6 +29,10 @@ public class AutoCtrl
             if (AutoCtrl.this.on == 0)
             {
                 AutoCtrl.this.on = ((int)(Math.random() * 12) + 1);
+                if(Bukkit.getServer().getOnlinePlayers().size()<=0&&on!=4)
+                {
+                    return;
+                }
                 AutoCtrl.this.change(true);
             }
             else
