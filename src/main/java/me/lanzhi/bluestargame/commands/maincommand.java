@@ -3,6 +3,8 @@ package me.lanzhi.bluestargame.commands;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import me.lanzhi.bluestargame.BluestarGame;
 import me.lanzhi.bluestargame.Ctrls.CTRL;
 import me.lanzhi.bluestargame.Ctrls.CtrlSponge;
 import me.lanzhi.bluestargame.Type.superSponge;
@@ -17,23 +19,36 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
-import static me.lanzhi.bluestargame.BluestarGame.config;
+import static me.lanzhi.bluestargame.BluestarGame.Data;
 
 public class maincommand implements CommandExecutor, TabExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        if ("health".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi")&&args.length==3)
+        if ("maxhealth".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi"))
         {
-            Player player=Bukkit.getPlayer(args[1]);
-            if (player==null)
+            if (args.length==3)
             {
-                sender.sendMessage(ChatColor.RED+"未找到玩家");
+                Player player=Bukkit.getPlayer(args[1]);
+                if (player==null)
+                {
+                    sender.sendMessage(ChatColor.RED+"未找到玩家");
+                    return false;
+                }
+                player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(Double.parseDouble(args[2]));
+            }
+            else if (args.length==2&&sender instanceof Player)
+            {
+                Player player=(Player)sender;
+                player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(Double.parseDouble(args[1]));
+            }
+            else
+            {
+                sender.sendMessage(ChatColor.RED + "格式错误!");
                 return false;
             }
-            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(Double.parseDouble(args[2]));
-            player.setHealthScaled(false);
+            sender.sendMessage("设置成功");
             return true;
         }
         if (args.length != 2)
@@ -254,8 +269,8 @@ public class maincommand implements CommandExecutor, TabExecutor
                 sender.sendMessage(ChatColor.RED + "错误,范围应在1-32之间!");
                 return false;
             }
-            config.set("spongeR", Integer.valueOf(r));
-            config.save();
+            BluestarGame.config.set("spongeR",r);
+            BluestarGame.config.save();
             sender.sendMessage(ChatColor.GREEN + "设置成功");
             return true;
         }
@@ -311,7 +326,7 @@ public class maincommand implements CommandExecutor, TabExecutor
             {
                 tablist.add("newsponge");
                 tablist.add("boom");
-                tablist.add("health");
+                tablist.add("maxhealth");
                 tablist.add("reload");
             }
             return tablist;
@@ -328,11 +343,11 @@ public class maincommand implements CommandExecutor, TabExecutor
             tablist.add("爆炸威力");
             return tablist;
         }
-        if (args.length==2&&"health".equals(args[0]))
+        if (args.length==2&&"maxhealth".equals(args[0]))
         {
             return null;
         }
-        if (args.length==3&&"health".equals(args[0]))
+        if (args.length==3&&"maxhealth".equals(args[0]))
         {
             return Arrays.asList("血量");
         }

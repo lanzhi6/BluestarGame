@@ -5,95 +5,91 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class AutoCtrl
+public class AutoCtrl extends BukkitRunnable
 {
-    public int on = 0;
-    public BukkitRunnable thread = new BukkitRunnable()
+    public static int on = 0;
+    @Override
+    public void run()
     {
-        @Override
-        public void run()
+        if (!BluestarGame.config.getBoolean("auto"))
         {
-            if(Bukkit.getServer().getOnlinePlayers().size()<=0)
+            if (on != 0)
             {
-                return;
+                AutoCtrl.change(false);
+                on = 0;
             }
-            if (!BluestarGame.config.getBoolean("auto"))
-            {
-                if (AutoCtrl.this.on != 0)
-                {
-                    AutoCtrl.this.change(false);
-                    AutoCtrl.this.on = 0;
-                }
-                return;
-            }
-            if (AutoCtrl.this.on == 0)
-            {
-                AutoCtrl.this.on = ((int)(Math.random() * 12) + 1);
-                if(Bukkit.getServer().getOnlinePlayers().size()<=0&&on!=4)
-                {
-                    return;
-                }
-                AutoCtrl.this.change(true);
-            }
-            else
-            {
-                AutoCtrl.this.change(false);
-                AutoCtrl.this.on = 0;
-            }
+            return;
         }
-    };
-
-    public void change(boolean b)
+        if (on == 0)
+        {
+            on = ((int)(Math.random() * 12) + 1);
+            if(Bukkit.getServer().getOnlinePlayers().size()<=0&&on!=4)
+            {
+                CTRL.task=(new AutoCtrl()).runTaskLaterAsynchronously(BluestarGame.plugin,12000);
+                return;
+            }
+            AutoCtrl.change(true);
+            CTRL.task=(new AutoCtrl()).runTaskLaterAsynchronously(BluestarGame.plugin,12000);
+        }
+        else
+        {
+            AutoCtrl.change(false);
+            on=0;
+            CTRL.task=(new AutoCtrl()).runTaskLaterAsynchronously(BluestarGame.plugin,24000);
+        }
+    }
+    public static synchronized void change(boolean b)
     {
-        if (this.on == 1)
+        if (on == 1)
         {
             CTRL.randdamage(b);
         }
-        else if (this.on == 2)
+        else if (on == 2)
         {
             CTRL.randchat(b);
         }
-        else if (this.on == 3)
+        else if (on == 3)
         {
             CTRL.randsheep(b);
         }
-        else if (this.on == 4)
+        else if (on == 4)
         {
             CTRL.the24(b);
         }
-        else if (this.on == 5)
+        else if (on == 5)
         {
             CTRL.morediamond(b);
         }
-        else if (this.on == 6)
+        else if (on == 6)
         {
             CTRL.morecoal(b);
         }
-        else if (this.on == 7)
+        else if (on == 7)
         {
             CTRL.morecopper(b);
         }
-        else if (this.on == 8)
+        else if (on == 8)
         {
             CTRL.moregold(b);
         }
-        else if (this.on == 9)
+        else if (on == 9)
         {
             CTRL.moreemerald(b);
         }
-        else if (this.on == 10)
+        else if (on == 10)
         {
             CTRL.morelapis(b);
         }
-        else if (this.on == 11)
+        else if (on == 11)
         {
             CTRL.moreiron(b);
         }
-        else if (this.on == 12)
+        else if (on == 12)
         {
             CTRL.respawn(b);
         }
     }
+
 }
 
 

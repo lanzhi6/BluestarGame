@@ -64,7 +64,12 @@ public class elevatorCommand implements CommandExecutor, TabExecutor
             sender.sendMessage(ChatColor.GOLD+"电梯列表:");
             for (String s:elevators)
             {
-                sender.sendMessage(ChatColor.WHITE+s);
+                Object object=test.map.get(s);
+                if (object instanceof elevator)
+                {
+                    elevator ele=(elevator)object;
+                    sender.sendMessage(ChatColor.WHITE+s+" -- X:("+ele.getMinX()+"~"+ele.getMaxX()+"),Z:("+ele.getMinZ()+"~"+ele.getMaxZ()+"),Y:("+ele.getMinY()+"~"+ele.getMaxY()+")");
+                }
             }
             return true;
         }

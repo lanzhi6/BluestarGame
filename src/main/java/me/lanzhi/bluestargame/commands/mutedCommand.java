@@ -23,13 +23,13 @@ public class mutedCommand implements CommandExecutor, TabExecutor
         if("list".equals(args[0])&&args.length==1)
         {
             sender.sendMessage(ChatColor.GOLD + "禁言列表:");
-            muted mute = (muted) BluestarGame.config.get("muted");
+            muted mute = (muted) BluestarGame.Data.get("muted");
             if(mute==null)
             {
-                BluestarGame.config.set("muted",new muted(new HashMap<>()));
-                BluestarGame.config.save();
+                BluestarGame.Data.set("muted",new muted(new HashMap<>()));
+                BluestarGame.Data.save();
             }
-            mute=(muted) BluestarGame.config.get("muted");
+            mute=(muted) BluestarGame.Data.get("muted");
             HashMap all=(HashMap) mute.getall();
             for(String key:(Set<String>)all.keySet())
             {
@@ -45,11 +45,11 @@ public class mutedCommand implements CommandExecutor, TabExecutor
             sender.sendMessage(ChatColor.RED + "格式错误!");
             return false;
         }
-        muted mute = (muted) BluestarGame.config.get("muted");
+        muted mute = (muted) BluestarGame.Data.get("muted");
         mute.set(args[1],Boolean.parseBoolean(args[2]));
         sender.sendMessage(ChatColor.GREEN+"设置成功");
-        BluestarGame.config.set("muted",mute);
-        BluestarGame.config.save();
+        BluestarGame.Data.set("muted",mute);
+        BluestarGame.Data.save();
         return false;
     }
 

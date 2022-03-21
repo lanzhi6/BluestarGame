@@ -8,8 +8,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class CTRL
 {
-    private static BukkitTask task = null;
-    private static AutoCtrl autoCtrl = null;
+    public static BukkitTask task = null;
 
     public static synchronized void runAuto(boolean b)
     {
@@ -27,15 +26,14 @@ public class CTRL
         }
         if ((b) && (task == null))
         {
-            autoCtrl = new AutoCtrl();
-            task = autoCtrl.thread.runTaskTimerAsynchronously(BluestarGame.getPlugin(BluestarGame.class), 0L, 12000L);
+            task = (new AutoCtrl()).runTaskAsynchronously(BluestarGame.plugin);
         }
         else if ((!b) && (task != null))
         {
             task.cancel();
-            if (autoCtrl.on != 0)
+            if (AutoCtrl.on != 0)
             {
-                autoCtrl.change(false);
+                AutoCtrl.change(false);
             }
             task = null;
         }
@@ -68,16 +66,16 @@ public class CTRL
 
     public static boolean randdamage()
     {
-        return BluestarGame.config.getBoolean("randdamage");
+        return BluestarGame.Data.getBoolean("randdamage");
     }
 
     public static void randdamage(boolean b)
     {
-        if (BluestarGame.config.getBoolean("randdamage") == b)
+        if (BluestarGame.Data.getBoolean("randdamage") == b)
         {
             return;
         }
-        BluestarGame.config.set("randdamage", b);
+        BluestarGame.Data.set("randdamage", b);
         if (b)
         {
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]随机伤害已启用!");
@@ -90,16 +88,16 @@ public class CTRL
 
     public static boolean randchat()
     {
-        return BluestarGame.config.getBoolean("randchat");
+        return BluestarGame.Data.getBoolean("randchat");
     }
 
     public static void randchat(boolean b)
     {
-        if (BluestarGame.config.getBoolean("randchat") == b)
+        if (BluestarGame.Data.getBoolean("randchat") == b)
         {
             return;
         }
-        BluestarGame.config.set("randchat", b);
+        BluestarGame.Data.set("randchat", b);
         if (b)
         {
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]随机聊天颜色已启用!");
@@ -112,16 +110,16 @@ public class CTRL
 
     public static boolean randsheep()
     {
-        return BluestarGame.config.getBoolean("randsheep");
+        return BluestarGame.Data.getBoolean("randsheep");
     }
 
     public static void randsheep(boolean b)
     {
-        if (BluestarGame.config.getBoolean("randsheep") == b)
+        if (BluestarGame.Data.getBoolean("randsheep") == b)
         {
             return;
         }
-        BluestarGame.config.set("randsheep", b);
+        BluestarGame.Data.set("randsheep", b);
         if (b)
         {
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]随机羊毛颜色已启用!");
@@ -133,31 +131,39 @@ public class CTRL
         }
     }
 
-    public static boolean the24end = false;
     public static int[] fourNum = new int[4];
 
     public static boolean the24()
     {
-        return BluestarGame.config.getBoolean("the24");
+        return BluestarGame.Data.getBoolean("the24");
     }
 
     public static void the24(boolean b)
     {
-        if (BluestarGame.config.getBoolean("the24") == b)
+        if (BluestarGame.Data.getBoolean("the24") == b)
         {
             return;
         }
-        BluestarGame.config.set("the24", b);
+        BluestarGame.Data.set("the24", b);
         if (b)
         {
-            the24end = false;
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]24点开始!");
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "4个数字为:");
+            StringBuilder nums=new StringBuilder();
+            nums.append(ChatColor.GREEN);
             for (int i = 0; i <= 3; i++)
             {
                 fourNum[i] = ((int)(Math.random() * 12.0D) + 1);
-                Bukkit.getServer().broadcastMessage(ChatColor.GREEN.toString() + fourNum[i] + "");
+                if (i==3)
+                {
+                    nums.append(fourNum[i]+"");
+                }
+                else
+                {
+                    nums.append(fourNum[i]+",");
+                }
             }
+            Bukkit.getServer().broadcastMessage(nums.toString());
             Arrays.sort(fourNum);
         }
         else
@@ -168,16 +174,16 @@ public class CTRL
 
     public static boolean morediamond()
     {
-        return BluestarGame.config.getBoolean("morediamond");
+        return BluestarGame.Data.getBoolean("morediamond");
     }
 
     public static void morediamond(boolean b)
     {
-        if (BluestarGame.config.getBoolean("morediamond") == b)
+        if (BluestarGame.Data.getBoolean("morediamond") == b)
         {
             return;
         }
-        BluestarGame.config.set("morediamond", b);
+        BluestarGame.Data.set("morediamond", b);
         if (b)
         {
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多钻石已启用!");
@@ -191,16 +197,16 @@ public class CTRL
 
     public static boolean morecoal()
     {
-        return BluestarGame.config.getBoolean("morecoal");
+        return BluestarGame.Data.getBoolean("morecoal");
     }
 
     public static void morecoal(boolean b)
     {
-        if (BluestarGame.config.getBoolean("morecoal") == b)
+        if (BluestarGame.Data.getBoolean("morecoal") == b)
         {
             return;
         }
-        BluestarGame.config.set("morecoal", b);
+        BluestarGame.Data.set("morecoal", b);
         if (b)
         {
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多煤炭已启用!");
@@ -214,16 +220,16 @@ public class CTRL
 
     public static boolean moreredstone()
     {
-        return BluestarGame.config.getBoolean("moreredstone");
+        return BluestarGame.Data.getBoolean("moreredstone");
     }
 
     public static void moreredstone(boolean b)
     {
-        if (BluestarGame.config.getBoolean("moreredstone") == b)
+        if (BluestarGame.Data.getBoolean("moreredstone") == b)
         {
             return;
         }
-        BluestarGame.config.set("moreredstone", b);
+        BluestarGame.Data.set("moreredstone", b);
         if (b)
         {
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多红石已启用!");
@@ -237,16 +243,16 @@ public class CTRL
 
     public static boolean morecopper()
     {
-        return BluestarGame.config.getBoolean("morecopper");
+        return BluestarGame.Data.getBoolean("morecopper");
     }
 
     public static void morecopper(boolean b)
     {
-        if (BluestarGame.config.getBoolean("morecopper") == b)
+        if (BluestarGame.Data.getBoolean("morecopper") == b)
         {
             return;
         }
-        BluestarGame.config.set("morecopper", b);
+        BluestarGame.Data.set("morecopper", b);
         if (b)
         {
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多粗铜已启用!");
@@ -260,16 +266,16 @@ public class CTRL
 
     public static boolean moreiron()
     {
-        return BluestarGame.config.getBoolean("moreiron");
+        return BluestarGame.Data.getBoolean("moreiron");
     }
 
     public static void moreiron(boolean b)
     {
-        if (BluestarGame.config.getBoolean("moreiron") == b)
+        if (BluestarGame.Data.getBoolean("moreiron") == b)
         {
             return;
         }
-        BluestarGame.config.set("moreiron", b);
+        BluestarGame.Data.set("moreiron", b);
         if (b)
         {
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多粗铁已启用!");
@@ -283,16 +289,16 @@ public class CTRL
 
     public static boolean moregold()
     {
-        return BluestarGame.config.getBoolean("moregold");
+        return BluestarGame.Data.getBoolean("moregold");
     }
 
     public static void moregold(boolean b)
     {
-        if (BluestarGame.config.getBoolean("moregold") == b)
+        if (BluestarGame.Data.getBoolean("moregold") == b)
         {
             return;
         }
-        BluestarGame.config.set("moregold", b);
+        BluestarGame.Data.set("moregold", b);
         if (b)
         {
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多粗金已启用!");
@@ -306,16 +312,16 @@ public class CTRL
 
     public static boolean moreemerald()
     {
-        return BluestarGame.config.getBoolean("moreemerald");
+        return BluestarGame.Data.getBoolean("moreemerald");
     }
 
     public static void moreemerald(boolean b)
     {
-        if (BluestarGame.config.getBoolean("moreemerald") == b)
+        if (BluestarGame.Data.getBoolean("moreemerald") == b)
         {
             return;
         }
-        BluestarGame.config.set("moreemerald", b);
+        BluestarGame.Data.set("moreemerald", b);
         if (b)
         {
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多绿宝石已启用!");
@@ -329,16 +335,16 @@ public class CTRL
 
     public static boolean morelapis()
     {
-        return BluestarGame.config.getBoolean("morelapis");
+        return BluestarGame.Data.getBoolean("morelapis");
     }
 
     public static void morelapis(boolean b)
     {
-        if (BluestarGame.config.getBoolean("morelapis") == b)
+        if (BluestarGame.Data.getBoolean("morelapis") == b)
         {
             return;
         }
-        BluestarGame.config.set("morelapis", b);
+        BluestarGame.Data.set("morelapis", b);
         if (b)
         {
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多青金石已启用!");
@@ -352,15 +358,15 @@ public class CTRL
 
     public static boolean respawn()
     {
-        return BluestarGame.config.getBoolean("respawn");
+        return BluestarGame.Data.getBoolean("respawn");
     }
     public static void respawn(boolean b)
     {
-        if (BluestarGame.config.getBoolean("respawn") == b)
+        if (BluestarGame.Data.getBoolean("respawn") == b)
         {
             return;
         }
-        BluestarGame.config.set("respawn", b);
+        BluestarGame.Data.set("respawn", b);
         if (b)
         {
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]复活已启用!");

@@ -39,13 +39,13 @@ public class math {
                 top--;
 
 
-            } else if ("*/".indexOf(str.charAt(i)) >= 0) {
+            } else if ("*/×÷".indexOf(str.charAt(i)) >= 0) {
                 if (top == -1) {
                     top++;
                     a[top] = str.charAt(i);
 
 
-                } else if ("*/".indexOf(a[top]) >= 0) {
+                } else if ("*/×÷".indexOf(a[top]) >= 0) {
                     jieguo[j] = (a[top] + "");
                     j++;
                     a[top] = str.charAt(i);
@@ -63,7 +63,7 @@ public class math {
                     a[top] = str.charAt(i);
 
 
-                } else if ("*/".indexOf(a[top]) >= 0) {
+                } else if ("*/×÷".indexOf(a[top]) >= 0) {
                     jieguo[j] = (a[top] + "");
                     j++;
                     a[top] = str.charAt(i);
@@ -96,11 +96,11 @@ public class math {
         String[] Result = new String[100];
         int Top = -1;
         for (int i = 0; str[i] != null; i++) {
-            if ("+-*/".indexOf(str[i]) < 0) {
+            if ("+-*/×÷".indexOf(str[i]) < 0) {
                 Top++;
                 Result[Top] = str[i];
             }
-            if ("+-*/".indexOf(str[i]) >= 0) {
+            if ("+-*/×÷".indexOf(str[i]) >= 0) {
 
                 double x = Double.parseDouble(Result[Top]);
                 Top--;
@@ -116,12 +116,12 @@ public class math {
                     Top++;
                     Result[Top] = String.valueOf(n);
                 }
-                if ("*".indexOf(str[i]) >= 0) {
+                if ("*×".indexOf(str[i]) >= 0) {
                     double n = y * x;
                     Top++;
                     Result[Top] = String.valueOf(n);
                 }
-                if ("/".indexOf(str[i]) >= 0) {
+                if ("/÷".indexOf(str[i]) >= 0) {
                     if (x == 0.0D) {
                         String s = "ERROR";
                         return s;

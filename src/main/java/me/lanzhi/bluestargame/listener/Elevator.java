@@ -1,7 +1,13 @@
 package me.lanzhi.bluestargame.listener;
 
 import me.lanzhi.bluestargame.Type.elevator;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -18,7 +24,7 @@ public class Elevator implements Listener
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerMove(PlayerMoveEvent event)
     {
-        if (event.getPlayer().getVelocity().getY()<=0||event.isCancelled())
+        if (event.getPlayer().getVelocity().getY()<=0||event.getPlayer().isFlying()||event.isCancelled())
         {
             return;
         }
@@ -35,6 +41,8 @@ public class Elevator implements Listener
                 if ((!locc.getBlock().getType().isSolid()||locc.getBlock().getType().name().endsWith("SIGN"))&&(loccc.getBlock().getType().isSolid()&&!loccc.getBlock().getType().name().endsWith("SIGN")))
                 {
                     event.getPlayer().teleport(locc);
+                    event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN+"UP UPP UPPP!"));
+                    event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
                     return;
                 }
             }
@@ -61,6 +69,8 @@ public class Elevator implements Listener
                 if ((!locc.getBlock().getType().isSolid()||locc.getBlock().getType().name().endsWith("SIGN"))&&(loccc.getBlock().getType().isSolid()&&!loccc.getBlock().getType().name().endsWith("SIGN")))
                 {
                     event.getPlayer().teleport(locc);
+                    event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN+"DOWN DOWWN DOWWWN!"));
+                    event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
                     return;
                 }
             }

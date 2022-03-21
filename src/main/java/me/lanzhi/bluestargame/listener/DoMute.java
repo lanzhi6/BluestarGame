@@ -16,10 +16,15 @@ public class DoMute implements Listener
         {
             return;
         }
-        if(((muted) BluestarGame.config.get("muted")).get(event.getPlayer().getName()))
+        try
         {
-            event.getPlayer().sendMessage(ChatColor.RED+"你已被禁言,有疑问请联系管理员");
-            event.setCancelled(true);
+            if(((muted) BluestarGame.Data.get("muted")).get(event.getPlayer().getName()))
+            {
+                event.getPlayer().sendMessage(ChatColor.RED+"你已被禁言,有疑问请联系管理员");
+                event.setCancelled(true);
+            }
         }
+        catch(NullPointerException e)
+        {}
     }
 }

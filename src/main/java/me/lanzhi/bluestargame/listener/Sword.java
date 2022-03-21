@@ -2,9 +2,11 @@ package me.lanzhi.bluestargame.listener;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
+import me.lanzhi.bluestargame.BluestarGame;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,6 +15,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Sword implements Listener
 {
@@ -80,10 +83,6 @@ public class Sword implements Listener
             return;
         }
         event.setDamage(Integer.MAX_VALUE);
-        if (((Damageable)event.getEntity()).getHealth()!=0)
-        {
-            ((Damageable) event.getEntity()).setHealth(0);
-        }
         if (event.getEntity() instanceof Player)
         {
             PlayerInventory inventory=((Player)event.getEntity()).getInventory();
@@ -92,5 +91,17 @@ public class Sword implements Listener
             inventory.setBoots(new ItemStack(Material.AIR));
             inventory.setLeggings(new ItemStack(Material.AIR));
         }
+        Damageable entity=(Damageable)event.getEntity();
+        new BukkitRunnable()
+        {
+            @Override
+            public void run()
+            {
+                if (entity.getHealth()!=0)
+                {
+                    entity.setHealth(0);
+                }
+            }
+        }.runTaskLater(BluestarGame.plugin,1);
     }
 }

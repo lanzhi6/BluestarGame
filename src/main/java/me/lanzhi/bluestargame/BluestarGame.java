@@ -78,7 +78,7 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         lavasponge = lavasponge.shape("a");
         lavasponge = lavasponge.setIngredient('a', new RecipeChoice.ExactChoice(superSponge.getSuperSponge().getItem()));
         Bukkit.addRecipe(lavasponge);
-        CtrlSponge.set((List<superSponge>) config.getList("superSponges"));
+        CtrlSponge.set((List<superSponge>) Data.getList("superSponges"));
         this.task = CtrlSponge.ctrlsponge.runTaskTimer(plugin, 0L, 2L);
 
         System.out.println("BluestarGame已加载");
@@ -91,8 +91,8 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         CTRL.theend();
         CTRL.all(false);
         Bukkit.clearRecipes();
-        config.set("superSponges",CtrlSponge.get());
-        config.save();
+        Data.set("superSponges",CtrlSponge.get());
+        Data.save();
         PlayerMap.save();
         Data.save();
         System.out.println("BluestarGame已卸载");

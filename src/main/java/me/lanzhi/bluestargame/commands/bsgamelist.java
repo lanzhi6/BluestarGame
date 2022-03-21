@@ -42,14 +42,7 @@ public class bsgamelist implements CommandExecutor
         if (CTRL.the24())
         {
             sender.sendMessage(ChatColor.GOLD + "24点:开启");
-            if (CTRL.the24end)
-            {
-                sender.sendMessage(ChatColor.GOLD + "  不过答案已经被找到了哦");
-            }
-            else
-            {
-                sender.sendMessage(ChatColor.GOLD + "  数字为:" + CTRL.fourNum[0] + "," + CTRL.fourNum[1] + "," + CTRL.fourNum[2] + "," + CTRL.fourNum[3] + ",");
-            }
+            sender.sendMessage(ChatColor.GOLD + "  数字为:" + CTRL.fourNum[0] + "," + CTRL.fourNum[1] + "," + CTRL.fourNum[2] + "," + CTRL.fourNum[3] + ",");
         }
         else
         {

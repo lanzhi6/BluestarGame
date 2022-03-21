@@ -27,8 +27,8 @@ public class The24Point implements Listener
                 {
                     org.bukkit.Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "[BluestarGame]" + event.getPlayer().getName() + "答案正确!");
                     org.bukkit.Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "[BluestarGame]获得1000!");
-                    CTRL.the24end = true;
                     me.lanzhi.bluestarapi.Api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(), "eco give "+event.getPlayer().getName()+" 1000", BluestarGame.plugin);
+                    CTRL.the24(false);
                 }
             }
         }.runTaskAsynchronously(BluestarGame.plugin);
@@ -56,7 +56,7 @@ public class The24Point implements Listener
                         org.bukkit.Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "[BluestarGame]获得1000!");
                         me.lanzhi.bluestarapi.Api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(), "eco give "+Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName()+" 1000", BluestarGame.plugin);
                     }
-                    CTRL.the24end = true;
+                    CTRL.the24(false);
                 }
             }
         }.runTaskAsynchronously(BluestarGame.plugin);
@@ -64,7 +64,7 @@ public class The24Point implements Listener
 
     private boolean decide(String message)
     {
-        if ((!CTRL.the24()) && (!CTRL.the24end))
+        if (!CTRL.the24())
         {
             return false;
         }
