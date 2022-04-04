@@ -1,4 +1,4 @@
-package me.lanzhi.bluestargame;
+package me.lanzhi.bluestargame.register;
 
 import me.lanzhi.bluestargame.listener.*;
 import me.lanzhi.bluestargame.listener.randoms.*;

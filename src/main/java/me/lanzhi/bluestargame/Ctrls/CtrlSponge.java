@@ -28,7 +28,7 @@ public class CtrlSponge
             {
                 Location loc = sponge.getLocation();
                 int age = sponge.getAge();
-                Bluestar.setBlock(loc, Material.AIR, sponge.getPlayer().getName());
+                Bluestar.setBlock(loc, Material.AIR, sponge.getPlayer());
                 boolean iswater=sponge.getIswater();
                 boolean islava=sponge.getIslava();
                 if (age>1)
@@ -45,20 +45,27 @@ public class CtrlSponge
         }
     };
 
-    public static void add(superSponge sponge){sponges.add(sponge);}
+    public static void add(superSponge sponge)
+    {
+        if (sponges==null)
+        {
+            sponges=new ArrayList<>();
+        }
+        sponges.add(sponge);
+    }
     public static void set(List<superSponge> spongess){sponges=spongess;}
     public static List<superSponge> get(){return sponges;}
 
-    private static void decide(Location loc, int age, Player player,boolean iswater,boolean islava)
+    private static void decide(Location loc, int age, String player,boolean iswater,boolean islava)
     {
         if (loc.getBlock().getType()==Material.WATER&&iswater)
         {
-            Bluestar.setBlock(loc, Material.END_STONE, player.getName());
+            Bluestar.setBlock(loc, Material.END_STONE, player);
             nextSponges.add(new superSponge(age-1,loc,player,islava,true));
         }
         if(loc.getBlock().getType()==Material.LAVA&&islava)
         {
-            Bluestar.setBlock(loc, Material.OBSIDIAN, player.getName());
+            Bluestar.setBlock(loc, Material.OBSIDIAN, player);
             nextSponges.add(new superSponge(age-1,loc,player,true,iswater));
         }
     }

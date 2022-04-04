@@ -6,7 +6,7 @@ import me.lanzhi.bluestargame.BluestarGame;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,24 +22,28 @@ public class Sword implements Listener
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDamage(EntityDamageEvent event)
     {
-        if(!(event.getEntity() instanceof Player))
+        if(!(event.getEntity() instanceof LivingEntity)||event.isCancelled())
         {
             return;
         }
-        Player player = (Player)event.getEntity();
-        boolean flag = false;
-        if (!player.getInventory().getItemInMainHand().getType().isAir())
+        LivingEntity entity = (LivingEntity) event.getEntity();
+        if (entity.getEquipment()==null)
         {
-            NBTItem item=new NBTItem(player.getInventory().getItemInMainHand());
+            return;
+        }
+        boolean flag = false;
+        if (!entity.getEquipment().getItemInMainHand().getType().isAir())
+        {
+            NBTItem item=new NBTItem(entity.getEquipment().getItemInMainHand());
             NBTCompound bluestargame=item.getCompound("BluestarGame");
             if(bluestargame!=null&&bluestargame.getBoolean("sword"))
             {
                 flag = true;
             }
         }
-        if (!player.getInventory().getItemInOffHand().getType().isAir()&&!flag)
+        if (!entity.getEquipment().getItemInOffHand().getType().isAir()&&!flag)
         {
-            NBTItem item=new NBTItem(player.getInventory().getItemInOffHand());
+            NBTItem item=new NBTItem(entity.getEquipment().getItemInOffHand());
             NBTCompound bluestargame=item.getCompound("BluestarGame");
             if(bluestargame!=null&&bluestargame.getBoolean("sword"))
             {
@@ -51,27 +55,37 @@ public class Sword implements Listener
             return;
         }
         event.setCancelled(true);
-        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        try
+        {
+            entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        }
+        catch(Throwable e){}
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamageByPlayer(EntityDamageByEntityEvent event)
     {
-        if(!(event.getDamager() instanceof Player)){return;}
-        Player player = (Player)event.getDamager();
-        boolean flag = false;
-        if (!player.getInventory().getItemInMainHand().getType().isAir())
+        if(!(event.getDamager() instanceof LivingEntity)){return;}
+        if (event.isCancelled()){return;}
+        LivingEntity entity = (LivingEntity) event.getDamager();
+        if (entity.getEquipment()==null)
         {
-            NBTItem item=new NBTItem(player.getInventory().getItemInMainHand());
+            return;
+        }
+        Integer ss=null;
+        boolean flag = false;
+        if (!entity.getEquipment().getItemInMainHand().getType().isAir())
+        {
+            NBTItem item=new NBTItem(entity.getEquipment().getItemInMainHand());
             NBTCompound bluestargame=item.getCompound("BluestarGame");
             if(bluestargame!=null&&bluestargame.getBoolean("sword"))
             {
                 flag = true;
             }
         }
-        if (!player.getInventory().getItemInOffHand().getType().isAir()&&!flag)
+        if (!entity.getEquipment().getItemInOffHand().getType().isAir()&&!flag)
         {
-            NBTItem item=new NBTItem(player.getInventory().getItemInOffHand());
+            NBTItem item=new NBTItem(entity.getEquipment().getItemInOffHand());
             NBTCompound bluestargame=item.getCompound("BluestarGame");
             if(bluestargame!=null&&bluestargame.getBoolean("sword"))
             {
@@ -91,15 +105,15 @@ public class Sword implements Listener
             inventory.setBoots(new ItemStack(Material.AIR));
             inventory.setLeggings(new ItemStack(Material.AIR));
         }
-        Damageable entity=(Damageable)event.getEntity();
+        Damageable entity1=(Damageable)event.getEntity();
         new BukkitRunnable()
         {
             @Override
             public void run()
             {
-                if (entity.getHealth()!=0)
+                if (entity1.getHealth()!=0)
                 {
-                    entity.setHealth(0);
+                    entity1.setHealth(0);
                 }
             }
         }.runTaskLater(BluestarGame.plugin,1);

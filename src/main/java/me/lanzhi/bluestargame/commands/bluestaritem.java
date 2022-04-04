@@ -1,8 +1,10 @@
 package me.lanzhi.bluestargame.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import me.lanzhi.bluestarapi.Api.Bluestar;
+import org.bukkit.*;
+import org.bukkit.block.data.type.NoteBlock;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

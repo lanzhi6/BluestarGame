@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -21,17 +22,27 @@ import static me.lanzhi.bluestargame.BluestarGame.plugin;
 public class HealthFix implements Listener
 {
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerJoin(AsyncPlayerPreLoginEvent event)
+    public void onPlayerJoin(PlayerLoginEvent event)
     {
-        UUID uuid=event.getUniqueId();
+        Player player=event.getPlayer();
+        player.setHealthScaled(false);
+        YamlFile playerdata=new YamlFile(new File(BluestarGame.PlayerData,player.getUniqueId()+".yml"));
+        if (playerdata.getDouble("maxhealth")!=0)
+        {
+            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(playerdata.getDouble("maxhealth"));
+        }
+        if (playerdata.getDouble("health")!=0)
+        {
+            player.setHealth(playerdata.getDouble("health"));
+        }
         new BukkitRunnable()
         {
             @Override
             public void run()
             {
-                Player player = Bukkit.getPlayer(uuid);
+                Player player =event.getPlayer();
                 player.setHealthScaled(false);
-                YamlFile playerdata=new YamlFile(new File(BluestarGame.PlayerData,uuid+".yml"));
+                YamlFile playerdata=new YamlFile(new File(BluestarGame.PlayerData,player.getUniqueId()+".yml"));
                 if (playerdata.getDouble("maxhealth")!=0)
                 {
                     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(playerdata.getDouble("maxhealth"));
@@ -41,25 +52,7 @@ public class HealthFix implements Listener
                     player.setHealth(playerdata.getDouble("health"));
                 }
             }
-        }.runTaskLater(plugin,5);
-        new BukkitRunnable()
-        {
-            @Override
-            public void run()
-            {
-                Player player = Bukkit.getPlayer(uuid);
-                player.setHealthScaled(false);
-                YamlFile playerdata=new YamlFile(new File(BluestarGame.PlayerData,uuid+".yml"));
-                if (playerdata.getDouble("maxhealth")!=0)
-                {
-                    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(playerdata.getDouble("maxhealth"));
-                }
-                if (playerdata.getDouble("health")!=0)
-                {
-                    player.setHealth(playerdata.getDouble("health"));
-                }
-            }
-        }.runTaskLater(plugin,65);
+        }.runTaskLater(plugin,70);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

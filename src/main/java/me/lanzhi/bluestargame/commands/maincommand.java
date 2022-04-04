@@ -8,10 +8,13 @@ import me.lanzhi.bluestargame.BluestarGame;
 import me.lanzhi.bluestargame.Ctrls.CTRL;
 import me.lanzhi.bluestargame.Ctrls.CtrlSponge;
 import me.lanzhi.bluestargame.Type.superSponge;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -276,24 +279,56 @@ public class maincommand implements CommandExecutor, TabExecutor
         }
         if (args[0].equals("newsponge")&&sender.hasPermission("bluestargame.lanzhi"))
         {
+            if (!(sender instanceof Player)){return false;}
             int r;
             r=Integer.parseInt(args[1]);
             Location locc=((Player)(sender)).getLocation();
             Location loc=new Location(locc.getWorld(),locc.getBlockX(),locc.getBlockY(),locc.getBlockZ());
-            CtrlSponge.add(new superSponge(r,loc,(Player)sender,true,true));
+            CtrlSponge.add(new superSponge(r,loc,sender.getName(),true,true));
             return true;
         }
-        if ("boom".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi"))
+        if ("makeboom".equals(args[0]))
         {
             Location location=((Player)sender).getLocation();
+            long r;
             try
             {
-                location.getWorld().createExplosion(location,Integer.parseInt(args[1]),true,true);
+                r=Integer.parseInt(args[1]);
+            }
+            catch (NumberFormatException e)
+            {return false;}
+            if (r>50||r<0)
+            {
+                return false;
+            }
+            location.getWorld().createExplosion(location,Integer.parseInt(args[1]),true,true);
+            return true;
+        }
+        if ("boom".equals(args[0]))
+        {
+            long r;
+            try
+            {
+                r=Integer.parseInt(args[1]);
             }
             catch (NumberFormatException e)
             {
                 sender.sendMessage(ChatColor.RED + "错误!");
+                return false;
             }
+            if (r>50||r<0)
+            {
+                sender.sendMessage(ChatColor.RED + "错误,范围应在0-50之间");
+            }
+            TextComponent component=new TextComponent("[点击爆炸]");
+            component.setColor(net.md_5.bungee.api.ChatColor.RED);
+            component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("爆炸范围:"+r)));
+            component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/bsgame makeboom "+r));
+            TextComponent component1=new TextComponent("爆炸:");
+            component1.setColor(net.md_5.bungee.api.ChatColor.GOLD);
+            sender.sendMessage(ChatColor.GOLD+"--------------");
+            sender.spigot().sendMessage(component1,component);
+            sender.sendMessage(ChatColor.GOLD+"--------------");
             return true;
         }
         sender.sendMessage(ChatColor.RED + "格式错误!");
@@ -322,10 +357,10 @@ public class maincommand implements CommandExecutor, TabExecutor
             tablist.add("all");
             tablist.add("auto");
             tablist.add("spongeR");
+            tablist.add("boom");
             if(sender.hasPermission("bluestargame.lanzhi"))
             {
                 tablist.add("newsponge");
-                tablist.add("boom");
                 tablist.add("maxhealth");
                 tablist.add("reload");
             }
