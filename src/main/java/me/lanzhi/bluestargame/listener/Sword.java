@@ -60,6 +60,14 @@ public class Sword implements Listener
             entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
         }
         catch(Throwable e){}
+        if (event instanceof EntityDamageByEntityEvent)
+        {
+            EntityDamageByEntityEvent event1=(EntityDamageByEntityEvent)event;
+            if (event1.getDamager() instanceof Damageable)
+            {
+                ((Damageable)event1.getDamager()).damage(1D,entity);
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

@@ -1,17 +1,17 @@
 package me.lanzhi.bluestargame.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
-import me.lanzhi.bluestarapi.Api.Bluestar;
 import org.bukkit.*;
-import org.bukkit.block.data.type.NoteBlock;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import me.lanzhi.bluestargame.Type.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,36 +35,74 @@ public class bluestaritem implements CommandExecutor, TabExecutor
         Player player=(Player) sender;
         if ("watersponge".equals(args[0]))
         {
-            if (player.getInventory().getItemInMainHand().getType().isAir())
+            int cnt=1;
+            if (args.length>1)
             {
-                player.sendMessage(messagehead+ChatColor.RED + "请手持任意物品");
-                return false;
+                try
+                {
+                    cnt=Integer.parseInt(args[1]);
+                }
+                catch (NumberFormatException e)
+                {}
             }
-            if (!player.getInventory().getItemInMainHand().getType().isBlock())
-            {
-                player.sendMessage(messagehead+ChatColor.RED + "检测到您手持的物品不是方块,可能无法放置使得超级海绵生效");
-            }
-            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
-            item.addCompound("BluestarGame").setBoolean("waterSponge",true);
-            player.getInventory().setItemInMainHand(item.getItem());
-            player.sendMessage(messagehead+ChatColor.GREEN+"已为您手持的物品添加\"超级海绵\"属性");
+            ItemStack itemStack=superSponge.getWaterSponge().getItem().clone();
+            itemStack.setAmount(cnt);
+            player.getInventory().addItem(itemStack);
+            player.sendMessage(messagehead+ChatColor.GREEN+"已为给予您 \"超级海绵\" ×"+cnt);
             return true;
         }
         if ("lavasponge".equals(args[0]))
         {
-            if (player.getInventory().getItemInMainHand().getType().isAir())
+            int cnt=1;
+            if (args.length>1)
             {
-                player.sendMessage(messagehead+ChatColor.RED + "请手持任意物品");
-                return false;
+                try
+                {
+                    cnt=Integer.parseInt(args[1]);
+                }
+                catch (NumberFormatException e)
+                {}
             }
-            if (!player.getInventory().getItemInMainHand().getType().isBlock())
+            ItemStack itemStack=superSponge.getlavaSponge().getItem().clone();
+            itemStack.setAmount(cnt);
+            player.getInventory().addItem(itemStack);
+            player.sendMessage(messagehead+ChatColor.GREEN+"已为给予您 \"岩浆海绵\" ×"+cnt);
+            return true;
+        }
+        if ("usedwatersponge".equals(args[0]))
+        {
+            int cnt=1;
+            if (args.length>1)
             {
-                player.sendMessage(messagehead+ChatColor.RED + "检测到您手持的物品不是方块,可能无法放置使得超级海绵生效");
+                try
+                {
+                    cnt=Integer.parseInt(args[1]);
+                }
+                catch (NumberFormatException e)
+                {}
             }
-            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
-            item.addCompound("BluestarGame").setBoolean("lavaSponge",true);
-            player.getInventory().setItemInMainHand(item.getItem());
-            player.sendMessage(messagehead+ChatColor.GREEN+"已为您手持的物品添加\"岩浆海绵\"属性");
+            ItemStack itemStack=superSponge.getUsedWaterSponge().getItem().clone();
+            itemStack.setAmount(cnt);
+            player.getInventory().addItem(itemStack);
+            player.sendMessage(messagehead+ChatColor.GREEN+"已为给予您 \"湿超级海绵\" ×"+cnt);
+            return true;
+        }
+        if ("usedlavasponge".equals(args[0]))
+        {
+            int cnt=1;
+            if (args.length>1)
+            {
+                try
+                {
+                    cnt=Integer.parseInt(args[1]);
+                }
+                catch (NumberFormatException e)
+                {}
+            }
+            ItemStack itemStack=superSponge.getUsedLavaSponge().getItem().clone();
+            itemStack.setAmount(cnt);
+            player.getInventory().addItem(itemStack);
+            player.sendMessage(messagehead+ChatColor.GREEN+"已为给予您 \"湿岩浆海绵\" ×"+cnt);
             return true;
         }
         if ("sword".equals(args[0]))
@@ -88,9 +126,11 @@ public class bluestaritem implements CommandExecutor, TabExecutor
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
     {
-        List<String>tablist =new ArrayList<>();
+        List<String>tablist=new ArrayList<>();
         tablist.add("watersponge");
         tablist.add("lavasponge");
+        tablist.add("usedwatersponge");
+        tablist.add("usedlavasponge");
         tablist.add("sword");
         return tablist;
     }

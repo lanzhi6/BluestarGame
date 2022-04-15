@@ -3,12 +3,10 @@ package me.lanzhi.bluestargame.Type;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import me.lanzhi.bluestargame.BluestarGame;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -48,7 +46,7 @@ public final class superSponge implements ConfigurationSerializable
         this.iswater = iswater;
     }
 
-    public static NBTItem getSuperSponge()
+    public static NBTItem getWaterSponge()
     {
         if (waterSponge == null)
         {
@@ -88,7 +86,7 @@ public final class superSponge implements ConfigurationSerializable
         }
         return lavaSponge;
     }
-    public static NBTItem getUsedSuperSponge()
+    public static NBTItem getUsedWaterSponge()
     {
         if (usedWaterSponge == null)
         {

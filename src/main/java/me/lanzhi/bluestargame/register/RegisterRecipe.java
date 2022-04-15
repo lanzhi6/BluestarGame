@@ -15,12 +15,12 @@ public class RegisterRecipe
     public static void registerRecipes()
     {
         /* 9海绵->超级海绵 */
-        ShapelessRecipe bluestarsponge = new ShapelessRecipe(new NamespacedKey(BluestarGame.plugin, "supersponge"), superSponge.getSuperSponge().getItem());
+        ShapelessRecipe bluestarsponge = new ShapelessRecipe(new NamespacedKey(BluestarGame.plugin, "supersponge"), superSponge.getWaterSponge().getItem());
         bluestarsponge = bluestarsponge.addIngredient(9, Material.SPONGE);
         Bukkit.addRecipe(bluestarsponge);
 
         /* 岩浆海绵->水海绵 */
-        ShapedRecipe supersponge = new ShapedRecipe(new NamespacedKey(BluestarGame.plugin, "watersponge"), superSponge.getSuperSponge().getItem());
+        ShapedRecipe supersponge = new ShapedRecipe(new NamespacedKey(BluestarGame.plugin, "watersponge"), superSponge.getWaterSponge().getItem());
         supersponge = supersponge.shape("a");
         supersponge = supersponge.setIngredient('a', new RecipeChoice.ExactChoice(superSponge.getlavaSponge().getItem()));
         Bukkit.addRecipe(supersponge);
@@ -28,14 +28,14 @@ public class RegisterRecipe
         /* 水海绵->岩浆海绵 */
         ShapedRecipe lavasponge = new ShapedRecipe(new NamespacedKey(BluestarGame.plugin, "lavasponge"), superSponge.getlavaSponge().getItem());
         lavasponge = lavasponge.shape("a");
-        lavasponge = lavasponge.setIngredient('a', new RecipeChoice.ExactChoice(superSponge.getSuperSponge().getItem()));
+        lavasponge = lavasponge.setIngredient('a', new RecipeChoice.ExactChoice(superSponge.getWaterSponge().getItem()));
         Bukkit.addRecipe(lavasponge);
 
         /* 使用过的水海绵烧制 */
         FurnaceRecipe usedWatersponge=new FurnaceRecipe(
                 new NamespacedKey(BluestarGame.plugin,"usedwatersponge"),
-                superSponge.getSuperSponge().getItem(),
-                new RecipeChoice.ExactChoice(superSponge.getUsedSuperSponge().getItem()),
+                superSponge.getWaterSponge().getItem(),
+                new RecipeChoice.ExactChoice(superSponge.getUsedWaterSponge().getItem()),
                 5,
                 200);
         Bukkit.addRecipe(usedWatersponge);

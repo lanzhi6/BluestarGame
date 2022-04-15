@@ -2,6 +2,7 @@ package me.lanzhi.bluestargame.commands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import me.lanzhi.bluestargame.BluestarGame;
@@ -341,7 +342,7 @@ public class maincommand implements CommandExecutor, TabExecutor
     {
         if (args.length == 1)
         {
-            List<String> tablist = new ArrayList();
+            List<String> tablist = new ArrayList<>();
             tablist.add("randdamage");
             tablist.add("randchat");
             tablist.add("randsheep");
@@ -368,15 +369,11 @@ public class maincommand implements CommandExecutor, TabExecutor
         }
         if(("spongeR".equals(args[0])||"newsponge".equals(args[0]))&&args.length==2)
         {
-            List<String> tablist = new ArrayList();
-            tablist.add("超级海绵吸水范围");
-            return tablist;
+            return Collections.singletonList("超级海绵吸水范围");
         }
         if (args.length==2&&"boom".equals(args[0]))
         {
-            List<String> tablist = new ArrayList();
-            tablist.add("爆炸威力");
-            return tablist;
+            return Collections.singletonList("爆炸威力");
         }
         if (args.length==2&&"maxhealth".equals(args[0]))
         {
@@ -384,17 +381,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         }
         if (args.length==3&&"maxhealth".equals(args[0]))
         {
-            return Arrays.asList("血量");
+            return Collections.singletonList("血量");
         }
         if ((args.length == 2))
         {
-            List<String> tablist = new ArrayList();
-            tablist.add("true");
-            tablist.add("false");
-            return tablist;
+            return Arrays.asList("true","false");
         }
-        List<String> tablist = new ArrayList();
-        return tablist;
+        return new ArrayList<>();
     }
 }
 

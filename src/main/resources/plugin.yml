@@ -10,11 +10,13 @@ commands:
       - bsgame
     permission: bluestargame.use
     description: 玩法控制
+    usage: /bluestargame 项目 <其他>
   bluestargamelist:
     aliases:
       - bsgamelist
       - bsglist
     description: 查看当前启用的玩法
+    usage: /bluestargamelist
   muted:
     description: 禁言
     permission: bluestargame.use
@@ -22,6 +24,7 @@ commands:
   chat:
     description: 让别的玩家发送消息
     permission: bluestargame.use
+    usage: /chat 玩家 内容
   bluestaritem:
     aliases:
       - bsitem
@@ -31,6 +34,9 @@ commands:
     permission: bluestargame.use
   elevator:
     permission: bluestargame.elevator
+  xiaomobank:
+    aliases:
+      - xmbank
 permissions:
   bluestargame.*:
     description: 所有权限

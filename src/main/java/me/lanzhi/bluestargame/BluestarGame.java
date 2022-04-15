@@ -1,6 +1,5 @@
 package me.lanzhi.bluestargame;
 
-
 import me.lanzhi.bluestargame.Ctrls.CTRL;
 import me.lanzhi.bluestargame.Ctrls.CtrlSponge;
 import me.lanzhi.bluestargame.Type.Public;
@@ -11,11 +10,12 @@ import me.lanzhi.bluestargame.commands.*;
 import me.lanzhi.bluestargame.register.RegisterListeners;
 import me.lanzhi.bluestargame.register.RegisterRecipe;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import me.lanzhi.bluestarapi.Api.YamlFile;
+import net.milkbowl.vault.economy.Economy;
 
 import java.io.File;
 import java.util.List;
@@ -27,7 +27,10 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
     public static File PlayerData;
     public static YamlFile PlayerMap;
     public static YamlFile Data;
-    BukkitTask task;
+    public static Economy econ=null;
+    public static String messageHead=ChatColor.GOLD+"["+ChatColor.DARK_AQUA+"BluestarGame"+ChatColor.GOLD+"]";
+
+    private BukkitTask task;
 
     @Override
     public void onEnable()
@@ -58,6 +61,7 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         getCommand("chat").setExecutor(new chat());
         getCommand("bluestaritem").setExecutor(new bluestaritem());
         getCommand("elevator").setExecutor(new elevatorCommand());
+        getCommand("xiaomobank").setExecutor(new XiaoMoBank());
 
         if (config.getBoolean("auto"))
         {
@@ -66,6 +70,7 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
 
         CtrlSponge.set((List<superSponge>) Data.getList("superSponges"));
         this.task = CtrlSponge.ctrlsponge.runTaskTimer(plugin, 0L, 2L);
+        econ=getServer().getServicesManager().getRegistration(Economy.class).getProvider();
 
         System.out.println("BluestarGame已加载");
     }

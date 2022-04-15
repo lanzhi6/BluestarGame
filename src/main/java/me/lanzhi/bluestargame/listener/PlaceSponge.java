@@ -47,7 +47,7 @@ public class PlaceSponge implements Listener
         }
         else
         {
-            event.getPlayer().getInventory().addItem(superSponge.getUsedSuperSponge().getItem());
+            event.getPlayer().getInventory().addItem(superSponge.getUsedWaterSponge().getItem());
         }
     }
 }
