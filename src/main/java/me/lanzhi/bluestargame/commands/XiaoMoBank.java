@@ -1,5 +1,13 @@
 package me.lanzhi.bluestargame.commands;
 
+import me.lanzhi.bluestarapi.Api.Bluestar;
+import me.lanzhi.bluestarapi.BluestarAPI;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
+import net.md_5.bungee.chat.BaseComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,19 +25,76 @@ import static me.lanzhi.bluestargame.BluestarGame.*;
 
 public class XiaoMoBank implements CommandExecutor, TabExecutor
 {
+    private static BaseComponent borrowGui;
+    private static BaseComponent saveGui;
+    private static BaseComponent borrow;
+    private static BaseComponent back;
+    private static BaseComponent save;
+    static
+    {
+        BaseComponent cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"存款相关业务"+ChatColor.DARK_GRAY+"]");
+        cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("点击进入存款业务")));
+        cmp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/xmbank savegui"));
+        saveGui=new TextComponent(messageHead+"    ");
+        saveGui.addExtra(cmp);
+
+        cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.RED+"贷款相关业务"+ChatColor.DARK_GRAY+"]");
+        cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("点击进入贷款业务")));
+        cmp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/xmbank borrowgui"));
+        borrowGui=new TextComponent(messageHead+"    ");
+        borrowGui.addExtra(cmp);
+
+        cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.RED+"返回"+ChatColor.DARK_GRAY+"]");
+        cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("点击返回上一页")));
+        cmp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/xmbank"));
+        back=new TextComponent(messageHead);
+        back.addExtra(cmp);
+
+        cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.RED+"贷款"+ChatColor.DARK_GRAY+"]");
+        cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("点击进行贷款")));
+        cmp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/xmbank borrow "));
+        borrow=new TextComponent(messageHead+"      ");
+        borrow.addExtra(cmp);
+
+        cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"存款"+ChatColor.DARK_GRAY+"]");
+        cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("点击进行存款")));
+        cmp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/xmbank save "));
+        save=new TextComponent(messageHead+"      ");
+        save.addExtra(cmp);
+    }
     @Override
     public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,@NotNull String[] args)
     {
-        if (args.length<1)
-        {
-            return false;
-        }
         if (!(sender instanceof Player))
         {
             sender.sendMessage("此指令仅允许玩家输入");
             return true;
         }
         Player player=(Player)sender;
+        if (args.length<1)
+        {
+            sender.sendMessage(" ");
+            sender.sendMessage(" ");
+            sender.sendMessage(" ");
+            sender.sendMessage(" ");
+            sender.sendMessage(" ");
+            sender.sendMessage(" ");
+            sender.sendMessage(" ");
+            sender.sendMessage(" ");
+            sender.sendMessage(messageHead+ChatColor.RED+"       [小末银行]");
+            sender.sendMessage(messageHead+"---------------------");
+            sender.sendMessage(messageHead);
+            sender.sendMessage(messageHead);
+            sender.sendMessage(messageHead+"你拥有的钱: "+econ.getBalance(player));
+            sender.sendMessage(messageHead+"小末银行的业务:");
+            sender.sendMessage(messageHead);
+            sender.spigot().sendMessage(saveGui);
+            sender.spigot().sendMessage(borrowGui);
+            sender.sendMessage(messageHead);
+            sender.sendMessage(messageHead);
+            sender.sendMessage(messageHead+"---------------------");
+            return false;
+        }
         switch (args[0])
         {
             case "borrow":
@@ -56,11 +121,16 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                             "的贷款还未偿还,请向偿还再尝试贷款");
                     return true;
                 }
+                if (money>1000000)
+                {
+                    sender.sendMessage(messageHead+ChatColor.RED+"贷款金额禁止大于100万哦");
+                    return true;
+                }
                 econ.depositPlayer(player,money);
                 Data.set("bank.borrow."+player.getUniqueId()+".money",money);
                 Calendar calendar = Calendar.getInstance();
                 Data.set("bank.borrow."+player.getUniqueId()+".time",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
-                sender.sendMessage(messageHead+ChatColor.GREEN+"您已成功贷款"+money);
+                player.chat("/xmbank borrowgui");
                 break;
             }
             case "repay":
@@ -128,7 +198,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                 Data.set("bank.save."+player.getUniqueId()+".money",money);
                 Calendar calendar = Calendar.getInstance();
                 Data.set("bank.save."+player.getUniqueId()+".time",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
-                sender.sendMessage(messageHead+ChatColor.GREEN+"您已成功存款"+money);
+                player.chat("/xmbank savegui");
                 break;
             }
             case "get":
@@ -157,6 +227,145 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                 Data.set("bank.save."+player.getUniqueId()+".money",0);
                 sender.sendMessage(messageHead+ChatColor.GREEN+"你成功取出存款"+getMoney);
                 break;
+            }
+            case "borrowgui":
+            {
+                if (Data.getLong("bank.borrow."+player.getUniqueId()+".money")!=0)
+                {
+                    long money=Data.getLong("bank.borrow."+player.getUniqueId()+".money");
+                    Date borrowTime;
+                    try
+                    {
+                        borrowTime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(Data.getString("bank.borrow."+player.getUniqueId()+".time"));
+                    }
+                    catch (ParseException e)
+                    {
+                        sender.sendMessage(messageHead+ChatColor.RED+"出现错误,请重试或联系腐竹");
+                        return true;
+                    }
+                    double borrowTimeMs=borrowTime.getTime();
+                    double nowTimeMs=Calendar.getInstance().getTime().getTime();
+                    double days=Math.ceil((nowTimeMs-borrowTimeMs)/86400000);
+                    double repayMoney=money+0.01*days*money;
+                    BaseComponent cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.RED+"还款"+ChatColor.DARK_GRAY+"]");
+                    cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("您需要还款"+repayMoney)));
+                    cmp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/xmbank repay"));
+                    BaseComponent repay=new TextComponent(messageHead+"      ");
+                    repay.addExtra(cmp);
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(messageHead+ChatColor.RED+"       [小末银行]");
+                    sender.sendMessage(messageHead+"---------------------");
+                    sender.spigot().sendMessage(back);
+                    sender.sendMessage(messageHead+"你拥有的钱: "+econ.getBalance(player));
+                    sender.sendMessage(messageHead);
+                    sender.sendMessage(messageHead+"你在银行的贷款: "+money);
+                    sender.sendMessage(messageHead);
+                    sender.spigot().sendMessage(repay);
+                    sender.sendMessage(messageHead);
+                    sender.sendMessage(messageHead+ChatColor.BLUE+"还款后才可再次贷款");
+                    sender.sendMessage(messageHead);
+                    sender.sendMessage(messageHead+"---------------------");
+                }
+                else
+                {
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(messageHead+ChatColor.RED+"       [小末银行]");
+                    sender.sendMessage(messageHead+"---------------------");
+                    sender.spigot().sendMessage(back);
+                    sender.sendMessage(messageHead+"你拥有的钱: "+econ.getBalance(player));
+                    sender.sendMessage(messageHead);
+                    sender.sendMessage(messageHead+"你目前没有贷款(人生赢家)");
+                    sender.sendMessage(messageHead);
+                    sender.spigot().sendMessage(borrow);
+                    sender.sendMessage(messageHead);
+                    sender.sendMessage(messageHead+ChatColor.BLUE+"贷款后,利息为每天%1(现实天)");
+                    sender.sendMessage(messageHead);
+                    sender.sendMessage(messageHead+"---------------------");
+                }
+                break;
+            }
+            case "savegui":
+            {
+                if (Data.getLong("bank.save."+player.getUniqueId()+".money")!=0)
+                {
+                    Date saveTime;
+                    try
+                    {
+                        saveTime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(Data.getString("bank.save."+player.getUniqueId()+".time"));
+                    }
+                    catch (ParseException e)
+                    {
+                        sender.sendMessage(messageHead+ChatColor.RED+"出现错误,请重试或联系腐竹");
+                        return true;
+                    }
+                    double money=Data.getLong("bank.save."+player.getUniqueId()+".money");
+                    double saveTimeMs=saveTime.getTime();
+                    double nowTimeMs=Calendar.getInstance().getTime().getTime();
+                    double days=Math.floor((nowTimeMs-saveTimeMs)/86400000);
+                    double getMoney=money+0.01*days*money;
+                    BaseComponent cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"取款"+ChatColor.DARK_GRAY+"]");
+                    cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("您将会取出"+getMoney)));
+                    cmp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/xmbank get"));
+                    BaseComponent get=new TextComponent(messageHead+"      ");
+                    get.addExtra(cmp);
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(messageHead+ChatColor.RED+"       [小末银行]");
+                    sender.sendMessage(messageHead+"---------------------");
+                    sender.spigot().sendMessage(back);
+                    sender.sendMessage(messageHead+"你拥有的钱: "+econ.getBalance(player));
+                    sender.sendMessage(messageHead);
+                    sender.sendMessage(messageHead+"你在银行的存款: "+money);
+                    sender.sendMessage(messageHead);
+                    sender.spigot().sendMessage(get);
+                    sender.sendMessage(messageHead);
+                    sender.sendMessage(messageHead+ChatColor.BLUE+"取出后才可以再存款");
+                    sender.sendMessage(messageHead);
+                    sender.sendMessage(messageHead+"---------------------");
+                }
+                else
+                {
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(" ");
+                    sender.sendMessage(messageHead+ChatColor.RED+"       [小末银行]");
+                    sender.sendMessage(messageHead+"---------------------");
+                    sender.spigot().sendMessage(back);
+                    sender.sendMessage(messageHead+"你拥有的钱: "+econ.getBalance(player));
+                    sender.sendMessage(messageHead);
+                    sender.sendMessage(messageHead+"你目前没有存款(好穷qwq)");
+                    sender.sendMessage(messageHead);
+                    sender.spigot().sendMessage(save);
+                    sender.sendMessage(messageHead);
+                    sender.sendMessage(messageHead+ChatColor.BLUE+"存款后,利息为每天%0.5(现实天)");
+                    sender.sendMessage(messageHead);
+                    sender.sendMessage(messageHead+"---------------------");
+                }
             }
             default:
             { }

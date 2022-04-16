@@ -7,6 +7,7 @@ import me.lanzhi.bluestargame.Type.elevator;
 import me.lanzhi.bluestargame.Type.superSponge;
 import me.lanzhi.bluestargame.Type.muted;
 import me.lanzhi.bluestargame.commands.*;
+import me.lanzhi.bluestargame.papi.BluestarGamePapi;
 import me.lanzhi.bluestargame.register.RegisterListeners;
 import me.lanzhi.bluestargame.register.RegisterRecipe;
 import org.bukkit.Bukkit;
@@ -71,6 +72,7 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         CtrlSponge.set((List<superSponge>) Data.getList("superSponges"));
         this.task = CtrlSponge.ctrlsponge.runTaskTimer(plugin, 0L, 2L);
         econ=getServer().getServicesManager().getRegistration(Economy.class).getProvider();
+        new BluestarGamePapi();
 
         System.out.println("BluestarGame已加载");
     }
@@ -81,7 +83,7 @@ public final class BluestarGame extends org.bukkit.plugin.java.JavaPlugin
         this.task.cancel();
         CTRL.theend();
         CTRL.all(false);
-        Bukkit.clearRecipes();
+        RegisterRecipe.cancellationRecipes();
         Data.set("superSponges",CtrlSponge.get());
         Data.save();
         PlayerMap.save();

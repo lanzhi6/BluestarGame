@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.lanzhi.bluestargame.BluestarGame.*;
+
 public class chat implements CommandExecutor, TabExecutor
 {
     @Override
@@ -19,13 +21,13 @@ public class chat implements CommandExecutor, TabExecutor
     {
         if (args.length < 2)
         {
-            sender.sendMessage(ChatColor.RED+"错误!");
+            sender.sendMessage(messageHead+ChatColor.RED+"错误!");
             return false;
         }
         Player player= Bukkit.getPlayer(args[0]);
         if (player == null)
         {
-            sender.sendMessage(ChatColor.RED+"玩家不存在");
+            sender.sendMessage(messageHead+ChatColor.RED+"玩家不存在");
         }
         StringBuilder builder = new StringBuilder();
         for (int i=1;i<args.length;i++)
@@ -33,7 +35,7 @@ public class chat implements CommandExecutor, TabExecutor
             builder.append(args[i]+" ");
         }
         player.chat(PlaceholderAPI.setPlaceholders(player, builder.toString()));
-        return false;
+        return true;
     }
 
     @Override

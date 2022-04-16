@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitTask;
 
+import static me.lanzhi.bluestargame.BluestarGame.*;
+
 public class CTRL
 {
     public static BukkitTask task = null;
@@ -17,11 +19,11 @@ public class CTRL
             BluestarGame.config.set("auto", b);
             if (!b)
             {
-                Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]随机事件自动切换已关闭!");
+                Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"随机事件自动切换已关闭!");
             }
             else
             {
-                Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]随机事件自动切换已启用!");
+                Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"随机事件自动切换已启用!");
             }
         }
         if ((b) && (task == null))
@@ -78,11 +80,11 @@ public class CTRL
         BluestarGame.Data.set("randdamage", b);
         if (b)
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]随机伤害已启用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"随机伤害已启用!");
         }
         else
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]随机伤害已禁用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"随机伤害已禁用!");
         }
     }
 
@@ -100,11 +102,11 @@ public class CTRL
         BluestarGame.Data.set("randchat", b);
         if (b)
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]随机聊天颜色已启用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"随机聊天颜色已启用!");
         }
         else
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]随机聊天颜色已禁用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"随机聊天颜色已禁用!");
         }
     }
 
@@ -122,12 +124,12 @@ public class CTRL
         BluestarGame.Data.set("randsheep", b);
         if (b)
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]随机羊毛颜色已启用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"随机羊毛颜色已启用!");
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "对羊染色以及羊毛掉落物的颜色都会随机!");
         }
         else
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]随机羊毛颜色已禁用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"随机羊毛颜色已禁用!");
         }
     }
 
@@ -147,7 +149,7 @@ public class CTRL
         BluestarGame.Data.set("the24", b);
         if (b)
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]24点开始!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"24点开始!");
             Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "4个数字为:");
             StringBuilder nums=new StringBuilder();
             nums.append(ChatColor.GREEN);
@@ -168,7 +170,7 @@ public class CTRL
         }
         else
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]24点已结束!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"24点已结束!");
         }
     }
 
@@ -186,12 +188,12 @@ public class CTRL
         BluestarGame.Data.set("morediamond", b);
         if (b)
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多钻石已启用!");
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]挖钻石会多掉一个哦!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多钻石已启用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"挖钻石会多掉一个哦!");
         }
         else
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多钻石已禁用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多钻石已禁用!");
         }
     }
 
@@ -209,12 +211,12 @@ public class CTRL
         BluestarGame.Data.set("morecoal", b);
         if (b)
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多煤炭已启用!");
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]挖煤炭会多掉一个哦!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多煤炭已启用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"挖煤炭会多掉一个哦!");
         }
         else
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多煤炭已禁用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多煤炭已禁用!");
         }
     }
 
@@ -232,12 +234,12 @@ public class CTRL
         BluestarGame.Data.set("moreredstone", b);
         if (b)
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多红石已启用!");
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]挖红石会多掉一个哦!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多红石已启用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"挖红石会多掉一个哦!");
         }
         else
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多红石已禁用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多红石已禁用!");
         }
     }
 
@@ -255,12 +257,12 @@ public class CTRL
         BluestarGame.Data.set("morecopper", b);
         if (b)
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多粗铜已启用!");
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]挖粗铜会多掉一个哦!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多粗铜已启用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"挖粗铜会多掉一个哦!");
         }
         else
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多粗铜已禁用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多粗铜已禁用!");
         }
     }
 
@@ -278,12 +280,12 @@ public class CTRL
         BluestarGame.Data.set("moreiron", b);
         if (b)
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多粗铁已启用!");
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]挖粗铁会多掉一个哦!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多粗铁已启用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"挖粗铁会多掉一个哦!");
         }
         else
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多粗铁已禁用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多粗铁已禁用!");
         }
     }
 
@@ -301,12 +303,12 @@ public class CTRL
         BluestarGame.Data.set("moregold", b);
         if (b)
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多粗金已启用!");
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]挖粗金会多掉一个哦!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多粗金已启用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"挖粗金会多掉一个哦!");
         }
         else
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多粗金已禁用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多粗金已禁用!");
         }
     }
 
@@ -324,12 +326,12 @@ public class CTRL
         BluestarGame.Data.set("moreemerald", b);
         if (b)
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多绿宝石已启用!");
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]挖绿宝石会多掉一个哦!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多绿宝石已启用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"挖绿宝石会多掉一个哦!");
         }
         else
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多绿宝石已禁用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多绿宝石已禁用!");
         }
     }
 
@@ -347,12 +349,12 @@ public class CTRL
         BluestarGame.Data.set("morelapis", b);
         if (b)
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多青金石已启用!");
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]挖青金石会多掉一个哦!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多青金石已启用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"挖青金石会多掉一个哦!");
         }
         else
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]更多青金石已禁用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"更多青金石已禁用!");
         }
     }
 
@@ -369,12 +371,12 @@ public class CTRL
         BluestarGame.Data.set("respawn", b);
         if (b)
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]复活已启用!");
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]生物死亡会直接复活哦!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"复活已启用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"生物死亡会直接复活哦!");
         }
         else
         {
-            Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[BluestarGame]复活已禁用!");
+            Bukkit.getServer().broadcastMessage(messageHead+ChatColor.GOLD+"复活已禁用!");
         }
     }
 }

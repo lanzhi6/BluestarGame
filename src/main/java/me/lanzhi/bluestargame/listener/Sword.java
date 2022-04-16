@@ -65,7 +65,7 @@ public class Sword implements Listener
             EntityDamageByEntityEvent event1=(EntityDamageByEntityEvent)event;
             if (event1.getDamager() instanceof Damageable)
             {
-                ((Damageable)event1.getDamager()).damage(1D,entity);
+                ((Damageable)event1.getDamager()).damage(Integer.MAX_VALUE,entity);
             }
         }
     }

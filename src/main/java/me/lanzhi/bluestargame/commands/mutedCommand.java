@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Set;
 
+import static me.lanzhi.bluestargame.BluestarGame.*;
+
 public class mutedCommand implements CommandExecutor, TabExecutor
 {
     @Override
@@ -22,7 +24,7 @@ public class mutedCommand implements CommandExecutor, TabExecutor
     {
         if("list".equals(args[0])&&args.length==1)
         {
-            sender.sendMessage(ChatColor.GOLD + "禁言列表:");
+            sender.sendMessage(messageHead+ChatColor.GOLD + "禁言列表:");
             muted mute = (muted) BluestarGame.Data.get("muted");
             if(mute==null)
             {
@@ -42,12 +44,12 @@ public class mutedCommand implements CommandExecutor, TabExecutor
         }
         if(args.length!=3||!"set".equals(args[0]))
         {
-            sender.sendMessage(ChatColor.RED + "格式错误!");
+            sender.sendMessage(messageHead+ChatColor.RED + "格式错误!");
             return false;
         }
         muted mute = (muted) BluestarGame.Data.get("muted");
         mute.set(args[1],Boolean.parseBoolean(args[2]));
-        sender.sendMessage(ChatColor.GREEN+"设置成功");
+        sender.sendMessage(messageHead+ChatColor.GREEN+"设置成功");
         BluestarGame.Data.set("muted",mute);
         BluestarGame.Data.save();
         return false;
@@ -76,6 +78,6 @@ public class mutedCommand implements CommandExecutor, TabExecutor
             tablist.add("false");
             return tablist;
         }
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 }

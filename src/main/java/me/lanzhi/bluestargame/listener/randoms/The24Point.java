@@ -13,6 +13,8 @@ import me.dreamvoid.miraimc.api.MiraiMC;
 
 import java.util.UUID;
 
+import static me.lanzhi.bluestargame.BluestarGame.*;
+
 public class The24Point implements Listener
 {
     @EventHandler
@@ -25,8 +27,8 @@ public class The24Point implements Listener
             {
                 if (decide(event.getMessage()))
                 {
-                    org.bukkit.Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "[BluestarGame]" + event.getPlayer().getName() + "答案正确!");
-                    org.bukkit.Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "[BluestarGame]获得1000!");
+                    org.bukkit.Bukkit.getServer().broadcastMessage(messageHead+ChatColor.YELLOW + event.getPlayer().getName() + "答案正确!");
+                    org.bukkit.Bukkit.getServer().broadcastMessage(messageHead+ChatColor.YELLOW + "获得1000!");
                     me.lanzhi.bluestarapi.Api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(), "eco give "+event.getPlayer().getName()+" 1000", BluestarGame.plugin);
                     CTRL.the24(false);
                 }
@@ -48,12 +50,12 @@ public class The24Point implements Listener
                     if (uuid==null||"".equals(uuid))
                     {
                         event.getGroup().sendMessageMirai("[mirai:at:"+event.getSenderId()+"] 您可能在参与24点,且答案正确,但您还未绑定Minecraft账号,请绑定");
-                        org.bukkit.Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "[BluestarGame]" + event.getSenderName() + "答案正确!");
+                        org.bukkit.Bukkit.getServer().broadcastMessage(messageHead+ChatColor.YELLOW + event.getSenderName() + "答案正确!");
                     }
                     else
                     {
-                        org.bukkit.Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "[BluestarGame]" + Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName() + "答案正确!");
-                        org.bukkit.Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "[BluestarGame]获得1000!");
+                        org.bukkit.Bukkit.getServer().broadcastMessage(messageHead+ChatColor.YELLOW + Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName() + "答案正确!");
+                        org.bukkit.Bukkit.getServer().broadcastMessage(messageHead+ChatColor.YELLOW + "获得1000!");
                         me.lanzhi.bluestarapi.Api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(), "eco give "+Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName()+" 1000", BluestarGame.plugin);
                     }
                     CTRL.the24(false);

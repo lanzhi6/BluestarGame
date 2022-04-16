@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-import static me.lanzhi.bluestargame.BluestarGame.Data;
+import static me.lanzhi.bluestargame.BluestarGame.*;
 
 public class elevatorCommand implements CommandExecutor, TabExecutor
 {
@@ -23,15 +23,15 @@ public class elevatorCommand implements CommandExecutor, TabExecutor
     {
         if (!(sender instanceof Player))
         {
-            sender.sendMessage(ChatColor.RED+"此命令仅允许玩家输入!");
+            sender.sendMessage(messageHead+ChatColor.RED+"此命令仅允许玩家输入!");
             return false;
         }
-        if (args.length==0){sender.sendMessage(ChatColor.RED+"格式错误");return false;}
+        if (args.length==0){sender.sendMessage(messageHead+ChatColor.RED+"格式错误");return false;}
         if (args[0].equals("add"))
         {
             if (args.length!=8)
             {
-                sender.sendMessage(ChatColor.RED+"格式错误!");
+                sender.sendMessage(messageHead+ChatColor.RED+"格式错误!");
                 return false;
             }
             Map<String,Object> ele=new HashMap<>();
@@ -46,7 +46,7 @@ public class elevatorCommand implements CommandExecutor, TabExecutor
             }
             catch (NumberFormatException e)
             {
-                sender.sendMessage(ChatColor.RED+"错误!X,Z,Y应均为整数");
+                sender.sendMessage(messageHead+ChatColor.RED+"错误!X,Z,Y应均为整数");
                 return false;
             }
             Public test=(Public) Data.get("elevators");
@@ -59,9 +59,9 @@ public class elevatorCommand implements CommandExecutor, TabExecutor
         if (args[0].equals("list"))
         {
             Public test=(Public) Data.get("elevators");
-            if (test==null){sender.sendMessage(ChatColor.RED+"没有电梯");return false;}
+            if (test==null){sender.sendMessage(messageHead+ChatColor.RED+"没有电梯");return false;}
             Set<String>elevators=test.map.keySet();
-            sender.sendMessage(ChatColor.GOLD+"电梯列表:");
+            sender.sendMessage(messageHead+ChatColor.GOLD+"电梯列表:");
             for (String s:elevators)
             {
                 Object object=test.map.get(s);
@@ -77,17 +77,17 @@ public class elevatorCommand implements CommandExecutor, TabExecutor
         {
             if(args.length<2)
             {
-                sender.sendMessage(ChatColor.RED+"格式错误");return false;
+                sender.sendMessage(messageHead+ChatColor.RED+"格式错误");return false;
             }
             Public test=(Public) Data.get("elevators");
             if (test==null)test=new Public(null);
             test.map.remove(args[1]);
             Data.set("elevators",test);
-            sender.sendMessage(ChatColor.RED+"已删除");
+            sender.sendMessage(messageHead+ChatColor.RED+"已删除");
             return true;
         }
 
-        sender.sendMessage(ChatColor.RED+"格式错误");return false;
+        sender.sendMessage(messageHead+ChatColor.RED+"格式错误");return false;
     }
 
     @Nullable
