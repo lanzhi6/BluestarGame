@@ -9,7 +9,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 public class Respawn implements Listener
 {
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority=EventPriority.MONITOR)
     public void onEntiyDie(EntityDeathEvent event)
     {
         if (event.getEntity() instanceof Player)

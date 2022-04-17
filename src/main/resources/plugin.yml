@@ -37,6 +37,9 @@ commands:
   xiaomobank:
     aliases:
       - xmbank
+  cmdbag:
+    aliases:
+      - commandbag
 permissions:
   bluestargame.*:
     description: 所有权限

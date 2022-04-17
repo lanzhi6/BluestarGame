@@ -1,12 +1,11 @@
 package me.lanzhi.bluestargame.papi;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.lanzhi.bluestartpscontrol.BluestarTpsControlApi;
 import net.minecraft.server.MinecraftServer;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import me.lanzhi.bluestartpscontrol.BluestarTpsControlApi;
 
 public class BluestarGamePapi extends PlaceholderExpansion
 {

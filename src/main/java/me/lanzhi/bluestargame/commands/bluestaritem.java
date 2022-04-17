@@ -1,35 +1,35 @@
 package me.lanzhi.bluestargame.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
-import org.bukkit.*;
-import org.bukkit.entity.Player;
+import me.lanzhi.bluestargame.Type.superSponge;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import me.lanzhi.bluestargame.Type.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static me.lanzhi.bluestargame.BluestarGame.*;
+import static me.lanzhi.bluestargame.BluestarGame.messageHead;
 
 public class bluestaritem implements CommandExecutor, TabExecutor
 {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
+    public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,@NotNull String[] args)
     {
         if (!(sender instanceof Player))
         {
-            sender.sendMessage(ChatColor.RED + "此命令仅允许玩家输入!");
+            sender.sendMessage(ChatColor.RED+"此命令仅允许玩家输入!");
             return false;
         }
         if (args.length<1)
         {
-            sender.sendMessage(ChatColor.RED + "格式错误!");
+            sender.sendMessage(ChatColor.RED+"格式错误!");
             return false;
         }
         Player player=(Player) sender;
@@ -43,7 +43,8 @@ public class bluestaritem implements CommandExecutor, TabExecutor
                     cnt=Integer.parseInt(args[1]);
                 }
                 catch (NumberFormatException e)
-                {}
+                {
+                }
             }
             ItemStack itemStack=superSponge.getWaterSponge().getItem().clone();
             itemStack.setAmount(cnt);
@@ -61,7 +62,8 @@ public class bluestaritem implements CommandExecutor, TabExecutor
                     cnt=Integer.parseInt(args[1]);
                 }
                 catch (NumberFormatException e)
-                {}
+                {
+                }
             }
             ItemStack itemStack=superSponge.getlavaSponge().getItem().clone();
             itemStack.setAmount(cnt);
@@ -79,7 +81,8 @@ public class bluestaritem implements CommandExecutor, TabExecutor
                     cnt=Integer.parseInt(args[1]);
                 }
                 catch (NumberFormatException e)
-                {}
+                {
+                }
             }
             ItemStack itemStack=superSponge.getUsedWaterSponge().getItem().clone();
             itemStack.setAmount(cnt);
@@ -97,7 +100,8 @@ public class bluestaritem implements CommandExecutor, TabExecutor
                     cnt=Integer.parseInt(args[1]);
                 }
                 catch (NumberFormatException e)
-                {}
+                {
+                }
             }
             ItemStack itemStack=superSponge.getUsedLavaSponge().getItem().clone();
             itemStack.setAmount(cnt);
@@ -109,24 +113,24 @@ public class bluestaritem implements CommandExecutor, TabExecutor
         {
             if (player.getInventory().getItemInMainHand().getType().isAir())
             {
-                player.sendMessage(messageHead+ChatColor.RED + "请手持任意物品");
+                player.sendMessage(messageHead+ChatColor.RED+"请手持任意物品");
                 return false;
             }
-            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
+            NBTItem item=new NBTItem(player.getInventory().getItemInMainHand());
             item.addCompound("BluestarGame").setBoolean("sword",true);
             player.getInventory().setItemInMainHand(item.getItem());
             player.sendMessage(messageHead+ChatColor.GREEN+"已为您手持的物品添加\"op剑\"属性");
             return true;
         }
-        sender.sendMessage(ChatColor.RED +"格式错误!");
+        sender.sendMessage(ChatColor.RED+"格式错误!");
         return false;
     }
 
     @Nullable
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
+    public List<String> onTabComplete(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,@NotNull String[] args)
     {
-        List<String>tablist=new ArrayList<>();
+        List<String> tablist=new ArrayList<>();
         tablist.add("watersponge");
         tablist.add("lavasponge");
         tablist.add("usedwatersponge");

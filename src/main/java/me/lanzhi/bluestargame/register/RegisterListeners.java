@@ -11,9 +11,10 @@ import static me.lanzhi.bluestargame.BluestarGame.plugin;
 public class RegisterListeners
 {
     private static PluginManager pluginManager;
+
     public static void registerListeners()
     {
-        pluginManager = Bukkit.getPluginManager();
+        pluginManager=Bukkit.getPluginManager();
         registerlistener(new DoMute());
         registerlistener(new HealthFix());
         registerlistener(new PlaceSponge());
@@ -25,8 +26,9 @@ public class RegisterListeners
         registerlistener(new RandSheepColor());
         registerlistener(new Respawn());
         registerlistener(new The24Point());
-        registerlistener(new Elevator());
+        registerlistener(new ElevatorListener());
     }
+
     private static void registerlistener(Listener listener)
     {
         pluginManager.registerEvents(listener,plugin);

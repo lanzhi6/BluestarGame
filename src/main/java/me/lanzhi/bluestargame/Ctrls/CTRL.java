@@ -1,12 +1,13 @@
 package me.lanzhi.bluestargame.Ctrls;
 
-import java.util.Arrays;
 import me.lanzhi.bluestargame.BluestarGame;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitTask;
 
-import static me.lanzhi.bluestargame.BluestarGame.*;
+import java.util.Arrays;
+
+import static me.lanzhi.bluestargame.BluestarGame.messageHead;
 
 public class CTRL
 {

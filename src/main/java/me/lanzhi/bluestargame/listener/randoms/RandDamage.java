@@ -15,25 +15,25 @@ import org.bukkit.event.entity.EntityDamageEvent;
 public class RandDamage implements Listener
 {
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority=EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageEvent event)
     {
-        if(!CTRL.randdamage()||event.isCancelled())
+        if (!CTRL.randdamage()||event.isCancelled())
         {
             return;
         }
-        Entity entity = event.getEntity();
-        double hurt = (Math.random() - 0.3D) * event.getDamage() * 5.0D;
-        entity.sendMessage(ChatColor.GREEN + "[BluestarGame]随机伤害");
-        entity.sendMessage(ChatColor.YELLOW + "原伤害:" + event.getDamage() + ",随机伤害:" + hurt);
-        if (hurt > 0.0D)
+        Entity entity=event.getEntity();
+        double hurt=(Math.random()-0.3D)*event.getDamage()*5.0D;
+        entity.sendMessage(ChatColor.GREEN+"[BluestarGame]随机伤害");
+        entity.sendMessage(ChatColor.YELLOW+"原伤害:"+event.getDamage()+",随机伤害:"+hurt);
+        if (hurt>0.0D)
         {
             event.setDamage(hurt);
         }
         else if (entity instanceof Damageable)
         {
             event.setCancelled(true);
-            ((Damageable) entity).setHealth(Double.min(((Damageable) entity).getHealth() - hurt,((Attributable)entity).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()));
+            ((Damageable) entity).setHealth(Double.min(((Damageable) entity).getHealth()-hurt,((Attributable) entity).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()));
         }
         else
         {

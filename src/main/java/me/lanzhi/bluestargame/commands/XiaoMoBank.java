@@ -1,14 +1,13 @@
 package me.lanzhi.bluestargame.commands;
 
-import me.lanzhi.bluestarapi.Api.Bluestar;
-import me.lanzhi.bluestarapi.BluestarAPI;
+import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
-import net.md_5.bungee.chat.BaseComponentSerializer;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,18 +17,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.ParseException;
-import java.util.*;
 import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static me.lanzhi.bluestargame.BluestarGame.*;
 
 public class XiaoMoBank implements CommandExecutor, TabExecutor
 {
-    private static BaseComponent borrowGui;
-    private static BaseComponent saveGui;
-    private static BaseComponent borrow;
-    private static BaseComponent back;
-    private static BaseComponent save;
+    private static final BaseComponent borrowGui;
+    private static final BaseComponent saveGui;
+    private static final BaseComponent borrow;
+    private static final BaseComponent back;
+    private static final BaseComponent save;
+
     static
     {
         BaseComponent cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"存款相关业务"+ChatColor.DARK_GRAY+"]");
@@ -62,6 +62,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
         save=new TextComponent(messageHead+"      ");
         save.addExtra(cmp);
     }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,@NotNull String[] args)
     {
@@ -70,7 +71,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
             sender.sendMessage("此指令仅允许玩家输入");
             return true;
         }
-        Player player=(Player)sender;
+        Player player=(Player) sender;
         if (args.length<1)
         {
             sender.sendMessage(" ");
@@ -107,7 +108,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                 long money;
                 try
                 {
-                    money = Long.parseLong(args[1]);
+                    money=Long.parseLong(args[1]);
                 }
                 catch (NumberFormatException e)
                 {
@@ -116,9 +117,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                 }
                 if (Data.getLong("bank.borrow."+player.getUniqueId()+".money")!=0)
                 {
-                    sender.sendMessage(messageHead+ChatColor.RED+"您似乎有一笔金额为"+
-                            Data.getLong("bank.borrow."+player.getUniqueId()+".money")+
-                            "的贷款还未偿还,请向偿还再尝试贷款");
+                    sender.sendMessage(messageHead+ChatColor.RED+"您似乎有一笔金额为"+Data.getLong("bank.borrow."+player.getUniqueId()+".money")+"的贷款还未偿还,请向偿还再尝试贷款");
                     return true;
                 }
                 if (money>1000000)
@@ -128,7 +127,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                 }
                 econ.depositPlayer(player,money);
                 Data.set("bank.borrow."+player.getUniqueId()+".money",money);
-                Calendar calendar = Calendar.getInstance();
+                Calendar calendar=Calendar.getInstance();
                 Data.set("bank.borrow."+player.getUniqueId()+".time",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
                 player.chat("/xmbank borrowgui");
                 break;
@@ -161,8 +160,9 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                     return true;
                 }
                 econ.withdrawPlayer(player,repayMoney);
-                Data.set("bank.borrow."+player.getUniqueId()+".money",0);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"你成功还款"+repayMoney);
+                Data.set("bank.borrow."+player.getUniqueId(),null);
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"你成功还款: "+repayMoney));
+                player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
                 break;
             }
             case "save":
@@ -175,7 +175,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                 long money;
                 try
                 {
-                    money = Long.parseLong(args[1]);
+                    money=Long.parseLong(args[1]);
                 }
                 catch (NumberFormatException e)
                 {
@@ -184,9 +184,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                 }
                 if (Data.getLong("bank.save."+player.getUniqueId()+".money")!=0)
                 {
-                    sender.sendMessage(messageHead+ChatColor.RED+"您似乎有一笔金额为"+
-                            Data.getLong("bank.save."+player.getUniqueId()+".money")+
-                            "的存款还未取出,请向取出再尝试存款");
+                    sender.sendMessage(messageHead+ChatColor.RED+"您似乎有一笔金额为"+Data.getLong("bank.save."+player.getUniqueId()+".money")+"的存款还未取出,请向取出再尝试存款");
                     return true;
                 }
                 if (!econ.has(player,money))
@@ -196,7 +194,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                 }
                 econ.withdrawPlayer(player,money);
                 Data.set("bank.save."+player.getUniqueId()+".money",money);
-                Calendar calendar = Calendar.getInstance();
+                Calendar calendar=Calendar.getInstance();
                 Data.set("bank.save."+player.getUniqueId()+".time",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
                 player.chat("/xmbank savegui");
                 break;
@@ -224,8 +222,9 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                 double days=Math.floor((nowTimeMs-saveTimeMs)/86400000);
                 double getMoney=money+0.01*days*money;
                 econ.depositPlayer(player,getMoney);
-                Data.set("bank.save."+player.getUniqueId()+".money",0);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"你成功取出存款"+getMoney);
+                Data.set("bank.save."+player.getUniqueId(),null);
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"你成功取出存款: "+getMoney));
+                player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
                 break;
             }
             case "borrowgui":
@@ -249,7 +248,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                     double repayMoney=money+0.01*days*money;
                     BaseComponent cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.RED+"还款"+ChatColor.DARK_GRAY+"]");
                     cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("您需要还款"+repayMoney)));
-                    cmp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/xmbank repay"));
+                    cmp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/cmdbag repay&gui"));
                     BaseComponent repay=new TextComponent(messageHead+"      ");
                     repay.addExtra(cmp);
                     sender.sendMessage(" ");
@@ -319,7 +318,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                     double getMoney=money+0.01*days*money;
                     BaseComponent cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"取款"+ChatColor.DARK_GRAY+"]");
                     cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("您将会取出"+getMoney)));
-                    cmp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/xmbank get"));
+                    cmp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/cmdbag get&gui"));
                     BaseComponent get=new TextComponent(messageHead+"      ");
                     get.addExtra(cmp);
                     sender.sendMessage(" ");
@@ -368,7 +367,8 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                 }
             }
             default:
-            { }
+            {
+            }
         }
         return false;
     }

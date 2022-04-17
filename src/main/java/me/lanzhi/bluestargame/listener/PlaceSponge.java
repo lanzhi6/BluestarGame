@@ -13,15 +13,15 @@ import org.bukkit.inventory.ItemStack;
 
 public class PlaceSponge implements Listener
 {
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerPlaceBlock(BlockPlaceEvent event)
     {
         if (event.isCancelled())
         {
             return;
         }
-        ItemStack item = event.getItemInHand();
-        NBTCompound bluestar = new NBTItem(item).getCompound("BluestarGame");
+        ItemStack item=event.getItemInHand();
+        NBTCompound bluestar=new NBTItem(item).getCompound("BluestarGame");
         if (bluestar==null)
         {
             return;
@@ -35,12 +35,7 @@ public class PlaceSponge implements Listener
         {
             return;
         }
-        CtrlSponge.add(new superSponge(
-                BluestarGame.config.getInt("spongeR"),
-                event.getBlock().getLocation(), event.getPlayer().getName(),
-                bluestar.getInteger("lavaSponge")==1,
-                bluestar.getInteger("waterSponge")==1
-        ));
+        CtrlSponge.add(new superSponge(BluestarGame.config.getInt("spongeR"),event.getBlock().getLocation(),event.getPlayer().getName(),bluestar.getInteger("lavaSponge")==1,bluestar.getInteger("waterSponge")==1));
         if (bluestar.getInteger("lavaSponge")==1)
         {
             event.getPlayer().getInventory().addItem(superSponge.getUsedLavaSponge().getItem());
