@@ -4,14 +4,14 @@ import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import me.lanzhi.bluestargame.BluestarGame;
 import me.lanzhi.bluestargame.Ctrls.CtrlSponge;
-import me.lanzhi.bluestargame.Type.superSponge;
+import me.lanzhi.bluestargame.Type.SuperSponge;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class PlaceSponge implements Listener
+public class superSpongeListener implements Listener
 {
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerPlaceBlock(BlockPlaceEvent event)
@@ -35,14 +35,14 @@ public class PlaceSponge implements Listener
         {
             return;
         }
-        CtrlSponge.add(new superSponge(BluestarGame.config.getInt("spongeR"),event.getBlock().getLocation(),event.getPlayer().getName(),bluestar.getInteger("lavaSponge")==1,bluestar.getInteger("waterSponge")==1));
+        CtrlSponge.add(new SuperSponge(BluestarGame.config.getInt("spongeR"),event.getBlock().getLocation(),event.getPlayer().getName(),bluestar.getInteger("lavaSponge")==1,bluestar.getInteger("waterSponge")==1));
         if (bluestar.getInteger("lavaSponge")==1)
         {
-            event.getPlayer().getInventory().addItem(superSponge.getUsedLavaSponge().getItem());
+            event.getPlayer().getInventory().addItem(SuperSponge.getUsedLavaSponge().getItem());
         }
         else
         {
-            event.getPlayer().getInventory().addItem(superSponge.getUsedWaterSponge().getItem());
+            event.getPlayer().getInventory().addItem(SuperSponge.getUsedWaterSponge().getItem());
         }
     }
 }

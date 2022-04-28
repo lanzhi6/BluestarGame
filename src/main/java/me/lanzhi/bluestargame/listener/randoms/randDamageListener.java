@@ -12,19 +12,27 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class RandDamage implements Listener
-{
+import static me.lanzhi.bluestargame.BluestarGame.*;
 
+public class randDamageListener implements Listener
+{
+    EntityDamageEvent lastEvent=null;
     @EventHandler(priority=EventPriority.HIGHEST)
-    public void onEntityDamage(EntityDamageEvent event)
+    synchronized public void onEntityDamage(EntityDamageEvent event)
     {
-        if (!CTRL.randdamage()||event.isCancelled())
+        if (event.equals(lastEvent))
+        {
+            System.out.println("yes");
+            return;
+        }
+        lastEvent=event;
+        if (!CTRL.randdamage())
         {
             return;
         }
         Entity entity=event.getEntity();
         double hurt=(Math.random()-0.3D)*event.getDamage()*5.0D;
-        entity.sendMessage(ChatColor.GREEN+"[BluestarGame]随机伤害");
+        entity.sendMessage(messageHead+"随机伤害");
         entity.sendMessage(ChatColor.YELLOW+"原伤害:"+event.getDamage()+",随机伤害:"+hurt);
         if (hurt>0.0D)
         {

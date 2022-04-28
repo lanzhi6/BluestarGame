@@ -12,7 +12,7 @@ import java.util.Date;
 import static me.lanzhi.bluestargame.BluestarGame.BluestarDataFormat;
 import static me.lanzhi.bluestargame.BluestarGame.messageHead;
 
-public class DoMute implements Listener
+public class muteListener implements Listener
 {
     @EventHandler
     public void onChatForMuted(AsyncPlayerChatEvent event)

@@ -12,7 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-public class ElevatorListener implements Listener
+public class elevatorListener implements Listener
 {
     @EventHandler(priority=EventPriority.MONITOR)
     public void onPlayerMove(PlayerMoveEvent event)

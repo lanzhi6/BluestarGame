@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class MoreMineral implements Listener
+public class moreMineralListener implements Listener
 {
     @EventHandler(priority=EventPriority.MONITOR)
     public void onBlockDropItem(BlockDropItemEvent event)

@@ -1,7 +1,7 @@
 package me.lanzhi.bluestargame.Ctrls;
 
 import me.lanzhi.bluestarapi.Api.Bluestar;
-import me.lanzhi.bluestargame.Type.superSponge;
+import me.lanzhi.bluestargame.Type.SuperSponge;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -10,8 +10,8 @@ import java.util.List;
 
 public class CtrlSponge
 {
-    private static List<superSponge> nextSponges = new ArrayList<>();
-    private static List<superSponge> sponges = new ArrayList<>();
+    private static List<SuperSponge> nextSponges = new ArrayList<>();
+    private static List<SuperSponge> sponges = new ArrayList<>();
     public static org.bukkit.scheduler.BukkitRunnable ctrlsponge = new org.bukkit.scheduler.BukkitRunnable()
     {
         @Override
@@ -22,7 +22,7 @@ public class CtrlSponge
                 return;
             }
             nextSponges = new ArrayList();
-            for (superSponge sponge : sponges)
+            for (SuperSponge sponge : sponges)
             {
                 Location loc = sponge.getLocation();
                 int age = sponge.getAge();
@@ -43,7 +43,7 @@ public class CtrlSponge
         }
     };
 
-    public static void add(superSponge sponge)
+    public static void add(SuperSponge sponge)
     {
         if (sponges==null)
         {
@@ -51,20 +51,20 @@ public class CtrlSponge
         }
         sponges.add(sponge);
     }
-    public static void set(List<superSponge> spongess){sponges=spongess;}
-    public static List<superSponge> get(){return sponges;}
+    public static void set(List<SuperSponge> spongess){sponges=spongess;}
+    public static List<SuperSponge> get(){return sponges;}
 
     private static void decide(Location loc, int age, String player,boolean iswater,boolean islava)
     {
         if (loc.getBlock().getType()==Material.WATER&&iswater)
         {
             Bluestar.setBlock(loc, Material.END_STONE, player);
-            nextSponges.add(new superSponge(age-1,loc,player,islava,true));
+            nextSponges.add(new SuperSponge(age-1,loc,player,islava,true));
         }
         if(loc.getBlock().getType()==Material.LAVA&&islava)
         {
             Bluestar.setBlock(loc, Material.OBSIDIAN, player);
-            nextSponges.add(new superSponge(age-1,loc,player,true,iswater));
+            nextSponges.add(new SuperSponge(age-1,loc,player,true,iswater));
         }
     }
 }

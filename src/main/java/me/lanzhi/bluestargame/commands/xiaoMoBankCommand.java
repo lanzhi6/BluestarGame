@@ -1,5 +1,6 @@
 package me.lanzhi.bluestargame.commands;
 
+import me.dreamvoid.miraimc.api.MiraiMC;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -21,8 +22,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static me.lanzhi.bluestargame.BluestarGame.*;
+import static me.lanzhi.bluestargame.api.xiaoMoBank.*;
 
-public class XiaoMoBank implements CommandExecutor, TabExecutor
+public class xiaoMoBankCommand implements CommandExecutor, TabExecutor
 {
     private static final BaseComponent borrowGui;
     private static final BaseComponent saveGui;
@@ -86,7 +88,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
             sender.sendMessage(messageHead+"---------------------");
             sender.sendMessage(messageHead);
             sender.sendMessage(messageHead);
-            sender.sendMessage(messageHead+"你拥有的钱: "+econ.getBalance(player));
+            sender.sendMessage(messageHead+"你拥有的钱: "+BluestarNF.format(econ.getBalance(player)));
             sender.sendMessage(messageHead+"小末银行的业务:");
             sender.sendMessage(messageHead);
             sender.spigot().sendMessage(saveGui);
@@ -115,6 +117,12 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                     sender.sendMessage(messageHead+ChatColor.RED+"请输入正确的贷款金额");
                     return true;
                 }
+                if (MiraiMC.getBinding(player.getUniqueId().toString())==0)
+                {
+                    player.sendMessage(errorMessageHead+"贷款必须绑定qq");
+                    player.sendMessage(errorMessageHead+"使用/bindqq绑定qq");
+                    return true;
+                }
                 if (Data.getLong("bank.borrow."+player.getUniqueId()+".money")!=0)
                 {
                     sender.sendMessage(messageHead+ChatColor.RED+"您似乎有一笔金额为"+Data.getLong("bank.borrow."+player.getUniqueId()+".money")+"的贷款还未偿还,请向偿还再尝试贷款");
@@ -134,26 +142,12 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
             }
             case "repay":
             {
-                long money=Data.getLong("bank.borrow."+player.getUniqueId()+".money");
-                if (money==0)
+                if (getBorrow(player)==0)
                 {
                     sender.sendMessage(messageHead+ChatColor.RED+"你没有需要偿还的贷款");
                     return true;
                 }
-                Date borrowTime;
-                try
-                {
-                    borrowTime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(Data.getString("bank.borrow."+player.getUniqueId()+".time"));
-                }
-                catch (ParseException e)
-                {
-                    sender.sendMessage(messageHead+ChatColor.RED+"出现错误,请重试或联系腐竹");
-                    return true;
-                }
-                double borrowTimeMs=borrowTime.getTime();
-                double nowTimeMs=Calendar.getInstance().getTime().getTime();
-                double days=Math.ceil((nowTimeMs-borrowTimeMs)/86400000);
-                double repayMoney=money+0.01*days*money;
+                double repayMoney=getShoutRepay(player);
                 if (!econ.has(player,repayMoney))
                 {
                     sender.sendMessage(messageHead+ChatColor.RED+"您没有钱偿还贷款,快去赚钱吧");
@@ -161,7 +155,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                 }
                 econ.withdrawPlayer(player,repayMoney);
                 Data.set("bank.borrow."+player.getUniqueId(),null);
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"你成功还款: "+repayMoney));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"你成功还款: "+BluestarNF.format(repayMoney)));
                 player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
                 break;
             }
@@ -201,53 +195,26 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
             }
             case "get":
             {
-                if (Data.getLong("bank.save."+player.getUniqueId()+".money")==0)
+                if (getSave(player)==0)
                 {
                     sender.sendMessage(messageHead+ChatColor.RED+"您还没有存款哦,去努力赚钱吧");
                     return true;
                 }
-                Date saveTime;
-                try
-                {
-                    saveTime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(Data.getString("bank.save."+player.getUniqueId()+".time"));
-                }
-                catch (ParseException e)
-                {
-                    sender.sendMessage(messageHead+ChatColor.RED+"出现错误,请重试或联系腐竹");
-                    return true;
-                }
-                double money=Data.getLong("bank.save."+player.getUniqueId()+".money");
-                double saveTimeMs=saveTime.getTime();
-                double nowTimeMs=Calendar.getInstance().getTime().getTime();
-                double days=Math.floor((nowTimeMs-saveTimeMs)/86400000);
-                double getMoney=money+0.01*days*money;
+                double getMoney=getShoutGet(player);
                 econ.depositPlayer(player,getMoney);
                 Data.set("bank.save."+player.getUniqueId(),null);
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"你成功取出存款: "+getMoney));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"你成功取出存款: "+BluestarNF.format(getMoney)));
                 player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
                 break;
             }
             case "borrowgui":
             {
-                if (Data.getLong("bank.borrow."+player.getUniqueId()+".money")!=0)
+                if (getBorrow(player)!=0)
                 {
-                    long money=Data.getLong("bank.borrow."+player.getUniqueId()+".money");
-                    Date borrowTime;
-                    try
-                    {
-                        borrowTime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(Data.getString("bank.borrow."+player.getUniqueId()+".time"));
-                    }
-                    catch (ParseException e)
-                    {
-                        sender.sendMessage(messageHead+ChatColor.RED+"出现错误,请重试或联系腐竹");
-                        return true;
-                    }
-                    double borrowTimeMs=borrowTime.getTime();
-                    double nowTimeMs=Calendar.getInstance().getTime().getTime();
-                    double days=Math.ceil((nowTimeMs-borrowTimeMs)/86400000);
-                    double repayMoney=money+0.01*days*money;
+                    long money=getBorrow(player);
+                    double repayMoney=getShoutRepay(player);
                     BaseComponent cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.RED+"还款"+ChatColor.DARK_GRAY+"]");
-                    cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("您需要还款"+repayMoney)));
+                    cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("您需要还款"+BluestarNF.format(repayMoney))));
                     cmp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/cmdbag repay&gui"));
                     BaseComponent repay=new TextComponent(messageHead+"      ");
                     repay.addExtra(cmp);
@@ -262,7 +229,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                     sender.sendMessage(messageHead+ChatColor.RED+"       [小末银行]");
                     sender.sendMessage(messageHead+"---------------------");
                     sender.spigot().sendMessage(back);
-                    sender.sendMessage(messageHead+"你拥有的钱: "+econ.getBalance(player));
+                    sender.sendMessage(messageHead+"你拥有的钱: "+BluestarNF.format(econ.getBalance(player)));
                     sender.sendMessage(messageHead);
                     sender.sendMessage(messageHead+"你在银行的贷款: "+money);
                     sender.sendMessage(messageHead);
@@ -285,7 +252,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                     sender.sendMessage(messageHead+ChatColor.RED+"       [小末银行]");
                     sender.sendMessage(messageHead+"---------------------");
                     sender.spigot().sendMessage(back);
-                    sender.sendMessage(messageHead+"你拥有的钱: "+econ.getBalance(player));
+                    sender.sendMessage(messageHead+"你拥有的钱: "+BluestarNF.format(econ.getBalance(player)));
                     sender.sendMessage(messageHead);
                     sender.sendMessage(messageHead+"你目前没有贷款(人生赢家)");
                     sender.sendMessage(messageHead);
@@ -299,25 +266,12 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
             }
             case "savegui":
             {
-                if (Data.getLong("bank.save."+player.getUniqueId()+".money")!=0)
+                if (getSave(player)!=0)
                 {
-                    Date saveTime;
-                    try
-                    {
-                        saveTime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(Data.getString("bank.save."+player.getUniqueId()+".time"));
-                    }
-                    catch (ParseException e)
-                    {
-                        sender.sendMessage(messageHead+ChatColor.RED+"出现错误,请重试或联系腐竹");
-                        return true;
-                    }
-                    double money=Data.getLong("bank.save."+player.getUniqueId()+".money");
-                    double saveTimeMs=saveTime.getTime();
-                    double nowTimeMs=Calendar.getInstance().getTime().getTime();
-                    double days=Math.floor((nowTimeMs-saveTimeMs)/86400000);
-                    double getMoney=money+0.01*days*money;
+                    long money=getSave(player);
+                    double getMoney=getShoutGet(player);
                     BaseComponent cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"取款"+ChatColor.DARK_GRAY+"]");
-                    cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("您将会取出"+getMoney)));
+                    cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("您将会取出"+BluestarNF.format(getMoney))));
                     cmp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/cmdbag get&gui"));
                     BaseComponent get=new TextComponent(messageHead+"      ");
                     get.addExtra(cmp);
@@ -332,7 +286,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                     sender.sendMessage(messageHead+ChatColor.RED+"       [小末银行]");
                     sender.sendMessage(messageHead+"---------------------");
                     sender.spigot().sendMessage(back);
-                    sender.sendMessage(messageHead+"你拥有的钱: "+econ.getBalance(player));
+                    sender.sendMessage(messageHead+"你拥有的钱: "+BluestarNF.format(econ.getBalance(player)));
                     sender.sendMessage(messageHead);
                     sender.sendMessage(messageHead+"你在银行的存款: "+money);
                     sender.sendMessage(messageHead);
@@ -355,7 +309,7 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
                     sender.sendMessage(messageHead+ChatColor.RED+"       [小末银行]");
                     sender.sendMessage(messageHead+"---------------------");
                     sender.spigot().sendMessage(back);
-                    sender.sendMessage(messageHead+"你拥有的钱: "+econ.getBalance(player));
+                    sender.sendMessage(messageHead+"你拥有的钱: "+BluestarNF.format(econ.getBalance(player)));
                     sender.sendMessage(messageHead);
                     sender.sendMessage(messageHead+"你目前没有存款(好穷qwq)");
                     sender.sendMessage(messageHead);
@@ -372,7 +326,6 @@ public class XiaoMoBank implements CommandExecutor, TabExecutor
         }
         return false;
     }
-
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,@NotNull String[] args)

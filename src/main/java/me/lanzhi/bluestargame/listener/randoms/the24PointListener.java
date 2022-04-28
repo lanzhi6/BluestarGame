@@ -15,7 +15,7 @@ import java.util.UUID;
 
 import static me.lanzhi.bluestargame.BluestarGame.messageHead;
 
-public class The24Point implements Listener
+public class the24PointListener implements Listener
 {
     @EventHandler
     public void onChatFor24(AsyncPlayerChatEvent event)

@@ -3,7 +3,7 @@ package me.lanzhi.bluestargame.commands;
 import me.lanzhi.bluestargame.BluestarGame;
 import me.lanzhi.bluestargame.Ctrls.CTRL;
 import me.lanzhi.bluestargame.Ctrls.CtrlSponge;
-import me.lanzhi.bluestargame.Type.superSponge;
+import me.lanzhi.bluestargame.Type.SuperSponge;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static me.lanzhi.bluestargame.BluestarGame.errorMessageHead;
 import static me.lanzhi.bluestargame.BluestarGame.messageHead;
 
 public class maincommand implements CommandExecutor, TabExecutor
@@ -53,6 +54,34 @@ public class maincommand implements CommandExecutor, TabExecutor
                 return false;
             }
             sender.sendMessage("设置成功");
+            return true;
+        }
+        if ("break".equals(args[0]))
+        {
+            if (!(sender instanceof Player))
+            {
+                sender.sendMessage(errorMessageHead+"此指令仅允许玩家输入");
+                return true;
+            }
+            if (args.length!=4)
+            {
+                sender.sendMessage(errorMessageHead+"格式错误");
+                return true;
+            }
+            long x,y,z;
+            try
+            {
+                x=Long.parseLong(args[1]);
+                y=Long.parseLong(args[2]);
+                z=Long.parseLong(args[3]);
+            }
+            catch (NumberFormatException e)
+            {
+                sender.sendMessage(errorMessageHead+"坐标无效");
+                return true;
+            }
+            Location location=new Location(((Player)sender).getLocation().getWorld(),x,y,z);
+            ((Player) sender).breakBlock(location.getBlock());
             return true;
         }
         if (args.length!=2)
@@ -288,7 +317,7 @@ public class maincommand implements CommandExecutor, TabExecutor
             r=Integer.parseInt(args[1]);
             Location locc=((Player) (sender)).getLocation();
             Location loc=new Location(locc.getWorld(),locc.getBlockX(),locc.getBlockY(),locc.getBlockZ());
-            CtrlSponge.add(new superSponge(r,loc,sender.getName(),true,true));
+            CtrlSponge.add(new SuperSponge(r,loc,sender.getName(),true,true));
             return true;
         }
         if ("makeboom".equals(args[0]))
@@ -369,6 +398,7 @@ public class maincommand implements CommandExecutor, TabExecutor
                 tablist.add("newsponge");
                 tablist.add("maxhealth");
                 tablist.add("reload");
+                tablist.add("break");
             }
             return tablist;
         }

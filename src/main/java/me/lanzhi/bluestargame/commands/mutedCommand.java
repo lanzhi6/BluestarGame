@@ -17,16 +17,6 @@ public class mutedCommand implements CommandExecutor, TabExecutor
 {
     public static ConfigurationSection muted;
 
-    static
-    {
-        muted=Data.getConfigurationSection("muted");
-        if (muted==null)
-        {
-            Data.set("muted",new HashMap<>());
-            muted=Data.getConfigurationSection("muted");
-        }
-    }
-
     @Override
     public boolean onCommand(CommandSender sender,Command command,String label,String[] args)
     {

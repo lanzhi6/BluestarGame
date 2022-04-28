@@ -10,19 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static me.lanzhi.bluestargame.BluestarGame.Data;
-
 public class Elevator implements ConfigurationSerializable
 {
-    public static ConfigurationSection elevators=Data.getConfigurationSection("elevators");
-    static
-    {
-        if (elevators==null)
-        {
-            Data.set("elevators",new HashMap<>());
-            elevators=Data.getConfigurationSection("elevators");
-        }
-    }
+    public static ConfigurationSection elevators;
     private final long minX, maxX, minZ, maxZ, maxY, minY;
 
     public Elevator(long minX,long maxX,long minZ,long maxZ,long minY,long maxY)

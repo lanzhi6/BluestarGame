@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class superSponge implements ConfigurationSerializable
+public final class SuperSponge implements ConfigurationSerializable
 {
     private static NBTItem lavaSponge=null;
     private static NBTItem usedLavaSponge=null;
@@ -28,7 +28,7 @@ public final class superSponge implements ConfigurationSerializable
     private boolean islava=false;
     private boolean iswater=false;
 
-    public superSponge(Map<String, Object> map)
+    public SuperSponge(Map<String, Object> map)
     {
         this.age=(int) map.get("age");
         this.location=((Location) map.get("location"));
@@ -37,7 +37,7 @@ public final class superSponge implements ConfigurationSerializable
         this.iswater=(boolean) map.get("iswater");
     }
 
-    public superSponge(int age,Location loc,String player,boolean islava,boolean iswater)
+    public SuperSponge(int age,Location loc,String player,boolean islava,boolean iswater)
     {
         this.age=age;
         this.location=loc;

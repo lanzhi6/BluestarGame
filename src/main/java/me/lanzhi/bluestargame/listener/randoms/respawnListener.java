@@ -7,7 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-public class Respawn implements Listener
+public class respawnListener implements Listener
 {
     @EventHandler(priority=EventPriority.MONITOR)
     public void onEntiyDie(EntityDeathEvent event)

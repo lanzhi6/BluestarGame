@@ -11,7 +11,7 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.SheepDyeWoolEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class RandSheepColor implements Listener
+public class randSheepColorListener implements Listener
 {
     @EventHandler(priority=EventPriority.HIGH)
     public void onSheepDyeWool(SheepDyeWoolEvent event)

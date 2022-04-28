@@ -7,7 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class RandChatColor implements Listener
+public class randChatColorListener implements Listener
 {
 
     @EventHandler(priority=EventPriority.LOW)

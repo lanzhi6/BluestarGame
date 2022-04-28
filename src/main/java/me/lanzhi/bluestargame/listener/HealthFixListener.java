@@ -16,7 +16,7 @@ import java.io.File;
 import static me.lanzhi.bluestargame.BluestarGame.PlayerMap;
 import static me.lanzhi.bluestargame.BluestarGame.plugin;
 
-public class HealthFix implements Listener
+public class HealthFixListener implements Listener
 {
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerLoginEvent event)

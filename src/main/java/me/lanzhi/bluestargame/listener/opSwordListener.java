@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Sword implements Listener
+public class opSwordListener implements Listener
 {
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerDamage(EntityDamageEvent event)

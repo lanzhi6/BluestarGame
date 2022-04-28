@@ -57,6 +57,6 @@ depend:
   - BluestarAPI
   - NBTAPI
   - PlaceholderAPI
-softdepend:
   - BluestarQQ
   - MiraiMC
+  - Vault
