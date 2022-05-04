@@ -1,9 +1,8 @@
 package me.lanzhi.bluestargame.commands;
 
-import me.lanzhi.bluestargame.BluestarGame;
-import me.lanzhi.bluestargame.Ctrls.CTRL;
-import me.lanzhi.bluestargame.Ctrls.CtrlSponge;
+import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.Type.SuperSponge;
+import me.lanzhi.bluestargame.managers.RandomEventManger;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -22,15 +21,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static me.lanzhi.bluestargame.BluestarGame.errorMessageHead;
-import static me.lanzhi.bluestargame.BluestarGame.messageHead;
-
-public class maincommand implements CommandExecutor, TabExecutor
+public class BluestarGameCommand implements CommandExecutor, TabExecutor
 {
+    private final BluestarGamePlugin plugin;
+    private final RandomEventManger randomEventManger;
+
+    public BluestarGameCommand(BluestarGamePlugin plugin)
+    {
+        this.plugin=plugin;
+        randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
+    }
+
     @Override
     public boolean onCommand(CommandSender sender,Command command,String label,String[] args)
     {
+        if ("reload".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi"))
+        {
+            return true;
+        }
         if ("maxhealth".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi"))
         {
             if (args.length==3)
@@ -38,7 +46,7 @@ public class maincommand implements CommandExecutor, TabExecutor
                 Player player=Bukkit.getPlayer(args[1]);
                 if (player==null)
                 {
-                    sender.sendMessage(messageHead+ChatColor.RED+"未找到玩家");
+                    sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"未找到玩家");
                     return false;
                 }
                 player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(Double.parseDouble(args[2]));
@@ -50,7 +58,7 @@ public class maincommand implements CommandExecutor, TabExecutor
             }
             else
             {
-                sender.sendMessage(messageHead+ChatColor.RED+"格式错误!");
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"格式错误!");
                 return false;
             }
             sender.sendMessage("设置成功");
@@ -60,15 +68,15 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (!(sender instanceof Player))
             {
-                sender.sendMessage(errorMessageHead+"此指令仅允许玩家输入");
+                sender.sendMessage(plugin.getErrorMessageHead()+"此指令仅允许玩家输入");
                 return true;
             }
             if (args.length!=4)
             {
-                sender.sendMessage(errorMessageHead+"格式错误");
+                sender.sendMessage(plugin.getErrorMessageHead()+"格式错误");
                 return true;
             }
-            long x,y,z;
+            long x, y, z;
             try
             {
                 x=Long.parseLong(args[1]);
@@ -77,29 +85,29 @@ public class maincommand implements CommandExecutor, TabExecutor
             }
             catch (NumberFormatException e)
             {
-                sender.sendMessage(errorMessageHead+"坐标无效");
+                sender.sendMessage(plugin.getErrorMessageHead()+"坐标无效");
                 return true;
             }
-            Location location=new Location(((Player)sender).getLocation().getWorld(),x,y,z);
+            Location location=new Location(((Player) sender).getLocation().getWorld(),x,y,z);
             ((Player) sender).breakBlock(location.getBlock());
             return true;
         }
         if (args.length!=2)
         {
-            sender.sendMessage(messageHead+ChatColor.RED+"格式错误!");
+            sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"格式错误!");
             return false;
         }
         if (args[0].equals("randdamage"))
         {
             if (args[1].equals("true"))
             {
-                CTRL.randdamage(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为true");
+                randomEventManger.randdamage(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
             }
             else
             {
-                CTRL.randdamage(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为false");
+                randomEventManger.randdamage(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
             }
             return true;
         }
@@ -107,13 +115,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (args[1].equals("true"))
             {
-                CTRL.randchat(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为true");
+                randomEventManger.randchat(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
             }
             else
             {
-                CTRL.randchat(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为false");
+                randomEventManger.randchat(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
             }
             return true;
         }
@@ -121,13 +129,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (args[1].equals("true"))
             {
-                CTRL.randsheep(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为true");
+                randomEventManger.randsheep(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
             }
             else
             {
-                CTRL.randsheep(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为false");
+                randomEventManger.randsheep(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
             }
             return true;
         }
@@ -135,13 +143,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (args[1].equals("true"))
             {
-                CTRL.the24(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为true");
+                randomEventManger.the24(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
             }
             else
             {
-                CTRL.the24(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为false");
+                randomEventManger.the24(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
             }
             return true;
         }
@@ -149,13 +157,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (args[1].equals("true"))
             {
-                CTRL.morediamond(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为true");
+                randomEventManger.morediamond(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
             }
             else
             {
-                CTRL.morediamond(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为false");
+                randomEventManger.morediamond(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
             }
             return true;
         }
@@ -163,13 +171,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (args[1].equals("true"))
             {
-                CTRL.morecoal(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为true");
+                randomEventManger.morecoal(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
             }
             else
             {
-                CTRL.morecoal(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为false");
+                randomEventManger.morecoal(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
             }
             return true;
         }
@@ -177,13 +185,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (args[1].equals("true"))
             {
-                CTRL.morecopper(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为true");
+                randomEventManger.morecopper(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
             }
             else
             {
-                CTRL.morecopper(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为false");
+                randomEventManger.morecopper(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
             }
             return true;
         }
@@ -191,13 +199,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (args[1].equals("true"))
             {
-                CTRL.moreiron(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为true");
+                randomEventManger.moreiron(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
             }
             else
             {
-                CTRL.moreiron(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为false");
+                randomEventManger.moreiron(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
             }
             return true;
         }
@@ -205,13 +213,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (args[1].equals("true"))
             {
-                CTRL.moregold(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为true");
+                randomEventManger.moregold(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
             }
             else
             {
-                CTRL.moregold(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为false");
+                randomEventManger.moregold(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
             }
             return true;
         }
@@ -219,13 +227,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (args[1].equals("true"))
             {
-                CTRL.moreemerald(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为true");
+                randomEventManger.moreemerald(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
             }
             else
             {
-                CTRL.moreemerald(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为false");
+                randomEventManger.moreemerald(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
             }
             return true;
         }
@@ -233,13 +241,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (args[1].equals("true"))
             {
-                CTRL.morelapis(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为true");
+                randomEventManger.morelapis(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
             }
             else
             {
-                CTRL.morelapis(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为false");
+                randomEventManger.morelapis(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
             }
             return true;
         }
@@ -247,13 +255,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (args[1].equals("true"))
             {
-                CTRL.respawn(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为true");
+                randomEventManger.respawn(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
             }
             else
             {
-                CTRL.respawn(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为false");
+                randomEventManger.respawn(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
             }
             return true;
         }
@@ -261,13 +269,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (args[1].equals("true"))
             {
-                CTRL.all(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为true");
+                randomEventManger.all(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
             }
             else
             {
-                CTRL.all(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"已设置为false");
+                randomEventManger.all(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
             }
             return true;
         }
@@ -275,13 +283,13 @@ public class maincommand implements CommandExecutor, TabExecutor
         {
             if (args[1].equals("true"))
             {
-                CTRL.runAuto(true);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"自动切换启动");
+                randomEventManger.runAuto(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"自动切换启动");
             }
             else
             {
-                CTRL.runAuto(false);
-                sender.sendMessage(messageHead+ChatColor.GREEN+"自动切换关闭");
+                randomEventManger.runAuto(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"自动切换关闭");
             }
             return true;
         }
@@ -294,17 +302,17 @@ public class maincommand implements CommandExecutor, TabExecutor
             }
             catch (NumberFormatException e)
             {
-                sender.sendMessage(messageHead+ChatColor.RED+"错误!");
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"错误!");
                 return false;
             }
             if ((r>32)||(r<1))
             {
-                sender.sendMessage(messageHead+ChatColor.RED+"错误,范围应在1-32之间!");
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"错误,范围应在1-32之间!");
                 return false;
             }
-            BluestarGame.config.set("spongeR",r);
-            BluestarGame.config.save();
-            sender.sendMessage(messageHead+ChatColor.GREEN+"设置成功");
+            plugin.getConfig().set("spongeR",r);
+            plugin.getConfig().save();
+            sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"设置成功");
             return true;
         }
         if (args[0].equals("newsponge")&&sender.hasPermission("bluestargame.lanzhi"))
@@ -317,7 +325,7 @@ public class maincommand implements CommandExecutor, TabExecutor
             r=Integer.parseInt(args[1]);
             Location locc=((Player) (sender)).getLocation();
             Location loc=new Location(locc.getWorld(),locc.getBlockX(),locc.getBlockY(),locc.getBlockZ());
-            CtrlSponge.add(new SuperSponge(r,loc,sender.getName(),true,true));
+            plugin.getBluestarGameManager().getSuperSpongeManager().add(new SuperSponge(r,loc,sender.getName(),true,true));
             return true;
         }
         if ("makeboom".equals(args[0]))
@@ -348,12 +356,12 @@ public class maincommand implements CommandExecutor, TabExecutor
             }
             catch (NumberFormatException e)
             {
-                sender.sendMessage(messageHead+ChatColor.RED+"错误!");
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"错误!");
                 return false;
             }
             if (r>50||r<0)
             {
-                sender.sendMessage(messageHead+ChatColor.RED+"错误,范围应在0-50之间");
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"错误,范围应在0-50之间");
             }
             TextComponent component=new TextComponent("[点击爆炸]");
             component.setColor(net.md_5.bungee.api.ChatColor.RED);
@@ -366,7 +374,7 @@ public class maincommand implements CommandExecutor, TabExecutor
             sender.sendMessage(ChatColor.GOLD+"--------------");
             return true;
         }
-        sender.sendMessage(messageHead+ChatColor.RED+"格式错误!");
+        sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"格式错误!");
         return false;
     }
 

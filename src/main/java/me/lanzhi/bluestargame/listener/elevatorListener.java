@@ -1,5 +1,6 @@
 package me.lanzhi.bluestargame.listener;
 
+import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.Type.Elevator;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -14,6 +15,11 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 public class elevatorListener implements Listener
 {
+    private final BluestarGamePlugin plugin;
+    public elevatorListener(BluestarGamePlugin plugin)
+    {
+        this.plugin=plugin;
+    }
     @EventHandler(priority=EventPriority.MONITOR)
     public void onPlayerMove(PlayerMoveEvent event)
     {
@@ -22,7 +28,7 @@ public class elevatorListener implements Listener
             return;
         }
         Location loc=event.getPlayer().getLocation();
-        Elevator ele=Elevator.getElevator(loc);
+        Elevator ele=plugin.getBluestarGameManager().getElevator(loc);
         if (ele!=null)
         {
             for (long y=loc.getBlockY()+1;y<=ele.getMaxY();y++)
@@ -50,7 +56,7 @@ public class elevatorListener implements Listener
             return;
         }
         Location loc=event.getPlayer().getLocation();
-        Elevator ele=Elevator.getElevator(loc);
+        Elevator ele=plugin.getBluestarGameManager().getElevator(loc);
         if (ele!=null)
         {
             for (long y=loc.getBlockY()-1;y>=ele.getMinY();y--)

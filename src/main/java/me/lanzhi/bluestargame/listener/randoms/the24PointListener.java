@@ -1,8 +1,8 @@
 package me.lanzhi.bluestargame.listener.randoms;
 
 import me.dreamvoid.miraimc.api.MiraiMC;
-import me.lanzhi.bluestargame.BluestarGame;
-import me.lanzhi.bluestargame.Ctrls.CTRL;
+import me.lanzhi.bluestargame.BluestarGamePlugin;
+import me.lanzhi.bluestargame.managers.RandomEventManger;
 import me.lanzhi.bluestarqq.events.QQChatEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,10 +13,16 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
-import static me.lanzhi.bluestargame.BluestarGame.messageHead;
-
 public class the24PointListener implements Listener
 {
+    private final BluestarGamePlugin plugin;
+    private final RandomEventManger randomEventManger;
+
+    public the24PointListener(BluestarGamePlugin plugin)
+    {
+        this.plugin=plugin;
+        randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
+    }
     @EventHandler
     public void onChatFor24(AsyncPlayerChatEvent event)
     {
@@ -27,13 +33,13 @@ public class the24PointListener implements Listener
             {
                 if (decide(event.getMessage()))
                 {
-                    org.bukkit.Bukkit.getServer().broadcastMessage(messageHead+ChatColor.YELLOW+event.getPlayer().getName()+"答案正确!");
-                    org.bukkit.Bukkit.getServer().broadcastMessage(messageHead+ChatColor.YELLOW+"获得1000!");
-                    me.lanzhi.bluestarapi.Api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),"eco give "+event.getPlayer().getName()+" 1000",BluestarGame.plugin);
-                    CTRL.the24(false);
+                    org.bukkit.Bukkit.getServer().broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+event.getPlayer().getName()+"答案正确!");
+                    org.bukkit.Bukkit.getServer().broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
+                    me.lanzhi.bluestarapi.Api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),"eco give "+event.getPlayer().getName()+" 1000",plugin);
+                    randomEventManger.the24(false);
                 }
             }
-        }.runTaskAsynchronously(BluestarGame.plugin);
+        }.runTaskAsynchronously(plugin);
     }
 
     @EventHandler
@@ -50,27 +56,27 @@ public class the24PointListener implements Listener
                     if (uuid==null||"".equals(uuid))
                     {
                         event.getGroup().sendMessageMirai("[mirai:at:"+event.getSenderId()+"] 您可能在参与24点,且答案正确,但您还未绑定Minecraft账号,请绑定");
-                        org.bukkit.Bukkit.getServer().broadcastMessage(messageHead+ChatColor.YELLOW+event.getSenderName()+"答案正确!");
+                        org.bukkit.Bukkit.getServer().broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+event.getSenderName()+"答案正确!");
                     }
                     else
                     {
-                        org.bukkit.Bukkit.getServer().broadcastMessage(messageHead+ChatColor.YELLOW+Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName()+"答案正确!");
-                        org.bukkit.Bukkit.getServer().broadcastMessage(messageHead+ChatColor.YELLOW+"获得1000!");
-                        me.lanzhi.bluestarapi.Api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),"eco give "+Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName()+" 1000",BluestarGame.plugin);
+                        org.bukkit.Bukkit.getServer().broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName()+"答案正确!");
+                        org.bukkit.Bukkit.getServer().broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
+                        me.lanzhi.bluestarapi.Api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),"eco give "+Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName()+" 1000",plugin);
                     }
-                    CTRL.the24(false);
+                    randomEventManger.the24(false);
                 }
             }
-        }.runTaskAsynchronously(BluestarGame.plugin);
+        }.runTaskAsynchronously(plugin);
     }
 
     private boolean decide(String message)
     {
-        if (!CTRL.the24())
+        if (!randomEventManger.the24())
         {
             return false;
         }
-        String[] ans=me.lanzhi.bluestargame.Ctrls.math.yunsuan(message);
+        String[] ans=RandomEventManger.mathFor24Points.yunsuan(message);
         if (ans==null)
         {
             return false;
@@ -86,7 +92,7 @@ public class the24PointListener implements Listener
         {
             return false;
         }
-        int[] a=CTRL.fourNum;
+        int[] a=randomEventManger.fourNum;
         boolean fflag=true;
         for (int i=1;i<=4;i++)
         {

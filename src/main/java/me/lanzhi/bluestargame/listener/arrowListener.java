@@ -1,12 +1,10 @@
 package me.lanzhi.bluestargame.listener;
 
 import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.util.Vector;
@@ -16,7 +14,6 @@ public class arrowListener implements Listener
     @EventHandler
     public void entityArrow(EntityShootBowEvent event)
     {
-        System.out.println(new NBTEntity(event.getProjectile()).getUUID("archer"));
         if (event.getBow()==null)
         {
             return;
@@ -39,19 +36,21 @@ public class arrowListener implements Listener
         {
             return;
         }
-        Entity entity=event.getEntity().getWorld().spawnEntity(event.getProjectile().getLocation(),type,true);
+        if (EntityType.ARROW!=type)
+        {
+            Entity entity=event.getEntity().getWorld().spawnEntity(event.getProjectile().getLocation(),type,true);
+            event.setProjectile(entity);
+        }
         Vector vector=event.getProjectile().getVelocity().clone();
-        vector.setX(vector.getX()*v).setY(vector.getY()*v).setZ(vector.getZ()*v);
-        entity.setVelocity(vector);
-        event.setProjectile(entity);
+        double vv=Math.min(v,decide(vector.getX(),vector.getY(),vector.getZ()));
+        vector.setX(vector.getX()*vv).setY(vector.getY()*vv).setZ(vector.getZ()*vv);
+        event.getProjectile().setVelocity(vector);
     }
-
-    @EventHandler(priority=EventPriority.MONITOR)
-    public void setArcher(EntityShootBowEvent event)
+    public static double decide(double x,double y,double z)
     {
-        System.out.println(event.getProjectile().getUniqueId());
-        NBTEntity entity=new NBTEntity(event.getProjectile());
-        entity.setUUID("archer",event.getEntity().getUniqueId());
-        System.out.println(event.getProjectile().getUniqueId());
+        x=Math.abs(x);
+        y=Math.abs(y);
+        z=Math.abs(z);
+        return Math.min(10D/x,Math.min(10D/y,10D/z));
     }
 }

@@ -1,6 +1,6 @@
 name: BluestarGame
 version: '${project.version}'
-main: me.lanzhi.bluestargame.BluestarGame
+main: me.lanzhi.bluestargame.BluestarGamePlugin
 api-version: 1.18
 website: https://github.com/lanzhi6/BluestarGame
 author: lanzhi
@@ -60,3 +60,4 @@ depend:
   - BluestarQQ
   - MiraiMC
   - Vault
+  - BluestarGameAPI

@@ -1,6 +1,7 @@
 package me.lanzhi.bluestargame.listener.randoms;
 
-import me.lanzhi.bluestargame.Ctrls.CTRL;
+import me.lanzhi.bluestargame.BluestarGamePlugin;
+import me.lanzhi.bluestargame.managers.RandomEventManger;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
@@ -13,10 +14,15 @@ import java.util.List;
 
 public class moreMineralListener implements Listener
 {
+    private final RandomEventManger randomEventManger;
+    public moreMineralListener(BluestarGamePlugin plugin)
+    {
+        this.randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
+    }
     @EventHandler(priority=EventPriority.MONITOR)
     public void onBlockDropItem(BlockDropItemEvent event)
     {
-        if (CTRL.morediamond())
+        if (randomEventManger.morediamond())
         {
             if ((event.getBlockState().getType()!=Material.DIAMOND_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_DIAMOND_ORE))
             {
@@ -38,7 +44,7 @@ public class moreMineralListener implements Listener
             }
             event.getBlock().getWorld().dropItem(event.getBlock().getLocation(),new ItemStack(Material.DIAMOND));
         }
-        if (CTRL.morecoal())
+        if (randomEventManger.morecoal())
         {
             if ((event.getBlockState().getType()!=Material.COAL_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_COAL_ORE))
             {
@@ -60,7 +66,7 @@ public class moreMineralListener implements Listener
             }
             event.getBlock().getWorld().dropItem(event.getBlock().getLocation(),new ItemStack(Material.COAL));
         }
-        if (CTRL.moreredstone())
+        if (randomEventManger.moreredstone())
         {
             if ((event.getBlockState().getType()!=Material.REDSTONE_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_REDSTONE_ORE))
             {
@@ -82,7 +88,7 @@ public class moreMineralListener implements Listener
             }
             event.getBlock().getWorld().dropItem(event.getBlock().getLocation(),new ItemStack(Material.REDSTONE));
         }
-        if (CTRL.morecopper())
+        if (randomEventManger.morecopper())
         {
             if ((event.getBlockState().getType()!=Material.COPPER_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_COPPER_ORE))
             {
@@ -104,7 +110,7 @@ public class moreMineralListener implements Listener
             }
             event.getBlock().getWorld().dropItem(event.getBlock().getLocation(),new ItemStack(Material.RAW_COPPER));
         }
-        if (CTRL.moregold())
+        if (randomEventManger.moregold())
         {
             if ((event.getBlockState().getType()!=Material.GOLD_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_GOLD_ORE))
             {
@@ -126,7 +132,7 @@ public class moreMineralListener implements Listener
             }
             event.getBlock().getWorld().dropItem(event.getBlock().getLocation(),new ItemStack(Material.RAW_GOLD));
         }
-        if (CTRL.moreemerald())
+        if (randomEventManger.moreemerald())
         {
             if ((event.getBlockState().getType()!=Material.EMERALD_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_EMERALD_ORE))
             {
@@ -148,7 +154,7 @@ public class moreMineralListener implements Listener
             }
             event.getBlock().getWorld().dropItem(event.getBlock().getLocation(),new ItemStack(Material.EMERALD));
         }
-        if (CTRL.morelapis())
+        if (randomEventManger.morelapis())
         {
             if ((event.getBlockState().getType()!=Material.LAPIS_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_LAPIS_ORE))
             {
@@ -170,7 +176,7 @@ public class moreMineralListener implements Listener
             }
             event.getBlock().getWorld().dropItem(event.getBlock().getLocation(),new ItemStack(Material.LAPIS_LAZULI));
         }
-        if (CTRL.moreiron())
+        if (randomEventManger.moreiron())
         {
             if ((event.getBlockState().getType()!=Material.IRON_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_IRON_ORE))
             {

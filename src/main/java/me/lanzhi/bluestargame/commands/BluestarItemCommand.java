@@ -2,7 +2,7 @@ package me.lanzhi.bluestargame.commands;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
-import me.lanzhi.bluestargame.Type.SuperSponge;
+import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -21,11 +21,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static me.lanzhi.bluestargame.BluestarGame.errorMessageHead;
-import static me.lanzhi.bluestargame.BluestarGame.messageHead;
-
-public class bluestaritem implements CommandExecutor, TabExecutor
+public class BluestarItemCommand implements CommandExecutor, TabExecutor
 {
+    private final BluestarGamePlugin plugin;
+    public BluestarItemCommand(BluestarGamePlugin plugin)
+    {
+        this.plugin=plugin;
+    }
     private static List<String>entityType=new ArrayList<>();
     static
     {
@@ -71,10 +73,10 @@ public class bluestaritem implements CommandExecutor, TabExecutor
                 {
                 }
             }
-            ItemStack itemStack=SuperSponge.getWaterSponge().getItem().clone();
+            ItemStack itemStack=plugin.getBluestarGameManager().getSuperSpongeManager().getWaterSponge().getItem().clone();
             itemStack.setAmount(cnt);
             player.getInventory().addItem(itemStack);
-            player.sendMessage(messageHead+ChatColor.GREEN+"已为给予您 \"超级海绵\" ×"+cnt);
+            player.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已为给予您 \"超级海绵\" ×"+cnt);
             return true;
         }
         if ("lavasponge".equals(args[0]))
@@ -90,10 +92,10 @@ public class bluestaritem implements CommandExecutor, TabExecutor
                 {
                 }
             }
-            ItemStack itemStack=SuperSponge.getlavaSponge().getItem().clone();
+            ItemStack itemStack=plugin.getBluestarGameManager().getSuperSpongeManager().getlavaSponge().getItem().clone();
             itemStack.setAmount(cnt);
             player.getInventory().addItem(itemStack);
-            player.sendMessage(messageHead+ChatColor.GREEN+"已为给予您 \"岩浆海绵\" ×"+cnt);
+            player.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已为给予您 \"岩浆海绵\" ×"+cnt);
             return true;
         }
         if ("usedwatersponge".equals(args[0]))
@@ -109,10 +111,10 @@ public class bluestaritem implements CommandExecutor, TabExecutor
                 {
                 }
             }
-            ItemStack itemStack=SuperSponge.getUsedWaterSponge().getItem().clone();
+            ItemStack itemStack=plugin.getBluestarGameManager().getSuperSpongeManager().getUsedWaterSponge().getItem().clone();
             itemStack.setAmount(cnt);
             player.getInventory().addItem(itemStack);
-            player.sendMessage(messageHead+ChatColor.GREEN+"已为给予您 \"湿超级海绵\" ×"+cnt);
+            player.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已为给予您 \"湿超级海绵\" ×"+cnt);
             return true;
         }
         if ("usedlavasponge".equals(args[0]))
@@ -128,30 +130,30 @@ public class bluestaritem implements CommandExecutor, TabExecutor
                 {
                 }
             }
-            ItemStack itemStack=SuperSponge.getUsedLavaSponge().getItem().clone();
+            ItemStack itemStack=plugin.getBluestarGameManager().getSuperSpongeManager().getUsedLavaSponge().getItem().clone();
             itemStack.setAmount(cnt);
             player.getInventory().addItem(itemStack);
-            player.sendMessage(messageHead+ChatColor.GREEN+"已为给予您 \"湿岩浆海绵\" ×"+cnt);
+            player.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已为给予您 \"湿岩浆海绵\" ×"+cnt);
             return true;
         }
         if ("sword".equals(args[0]))
         {
             if (player.getInventory().getItemInMainHand().getType().isAir())
             {
-                player.sendMessage(messageHead+ChatColor.RED+"请手持任意物品");
+                player.sendMessage(plugin.getMessageHead()+ChatColor.RED+"请手持任意物品");
                 return false;
             }
             NBTItem item=new NBTItem(player.getInventory().getItemInMainHand());
             item.addCompound("BluestarGame").setBoolean("sword",true);
             player.getInventory().setItemInMainHand(item.getItem());
-            player.sendMessage(messageHead+ChatColor.GREEN+"已为您手持的物品添加\"op剑\"属性");
+            player.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已为您手持的物品添加\"op剑\"属性");
             return true;
         }
         if ("bow".equals(args[0]))
         {
             if (args.length<2)
             {
-                sender.sendMessage(messageHead+ChatColor.RED+"请输入生物类型");
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"请输入生物类型");
             }
             int cnt=1;
             double v=1;
@@ -163,12 +165,12 @@ public class bluestaritem implements CommandExecutor, TabExecutor
                 }
                 catch (NumberFormatException e)
                 {
-                    sender.sendMessage(errorMessageHead+"错误,力量不合法");
+                    sender.sendMessage(plugin.getErrorMessageHead()+"错误,力量不合法");
                     return true;
                 }
-                if (v<=0)
+                if (v<=0D)
                 {
-                    sender.sendMessage(errorMessageHead+"错误,力量不合法");
+                    sender.sendMessage(plugin.getErrorMessageHead()+"错误,力量不合法");
                     return true;
                 }
                 if (args.length>=4)
@@ -179,19 +181,19 @@ public class bluestaritem implements CommandExecutor, TabExecutor
                     }
                     catch (NumberFormatException e)
                     {
-                        sender.sendMessage(errorMessageHead+"错误,数量不合法");
+                        sender.sendMessage(plugin.getErrorMessageHead()+"错误,数量不合法");
                         return true;
                     }
                     if (cnt<=0)
                     {
-                        sender.sendMessage(errorMessageHead+"错误,数量不合法");
+                        sender.sendMessage(plugin.getErrorMessageHead()+"错误,数量不合法");
                         return true;
                     }
                 }
             }
             ItemStack boww=new ItemStack(Material.BOW,cnt);
             ItemMeta itemMeta=boww.getItemMeta();
-            itemMeta.setLore(Arrays.asList(ChatColor.AQUA+"箭: "+args[1],ChatColor.LIGHT_PURPLE+"力量: "+args[2]));
+            itemMeta.setLore(Arrays.asList(ChatColor.AQUA+"箭: "+args[1],ChatColor.LIGHT_PURPLE+"力量: "+plugin.getNumberFormat().format(v)));
             boww.setItemMeta(itemMeta);
             NBTItem bow=new NBTItem(boww);
             NBTCompound bluestarGame=bow.addCompound("BluestarGame");

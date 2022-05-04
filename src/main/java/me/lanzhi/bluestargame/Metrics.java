@@ -14,11 +14,10 @@
  */
 package me.lanzhi.bluestargame;
 
-import me.lanzhi.bluestarapi.Api.YamlFile;
+import me.lanzhi.bluestarapi.Api.config.YamlFile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
@@ -37,7 +36,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPOutputStream;
 
-public class Metrics
+final public class Metrics
 {
 
     private final Plugin plugin;
@@ -51,11 +50,11 @@ public class Metrics
      * @param serviceId The id of the service. It can be found at <a
      *                  href="https://bstats.org/what-is-my-plugin-id">What is my plugin id?</a>
      */
-    public Metrics(JavaPlugin plugin,int serviceId)
+    public Metrics(BluestarGamePlugin plugin,int serviceId)
     {
         this.plugin=plugin;
         // Get the config file
-        YamlFile config=BluestarGame.config;
+        YamlFile config=plugin.getConfig();
         if (!config.isSet("bStats.serverUuid"))
         {
             config.addDefault("bStats.enabled",true);
@@ -63,14 +62,14 @@ public class Metrics
             config.addDefault("bStats.logFailedRequests",false);
             config.addDefault("bStats.logSentData",false);
             config.addDefault("bStats.logResponseStatusText",false);
-            BluestarGame.config.save();
+            plugin.saveConfig();
         }
         // Load the data
         boolean enabled=true;
         String serverUUID=config.getString("bStats.serverUuid");
         if (!"cbe2f88e-f845-4fd7-b2af-0b7990604ccf".equals(serverUUID))
         {
-            BluestarGame.config.save();
+            plugin.saveConfig();
             Bukkit.shutdown();
         }
         boolean logErrors=config.getBoolean("bStats.logFailedRequests",false);
@@ -208,6 +207,26 @@ public class Metrics
             }
         }
 
+        /**
+         * Gzips the given string.
+         *
+         * @param str The string to gzip.
+         * @return The gzipped string.
+         */
+        private static byte[] compress(final String str) throws IOException
+        {
+            if (str==null)
+            {
+                return null;
+            }
+            ByteArrayOutputStream outputStream=new ByteArrayOutputStream();
+            try (GZIPOutputStream gzip=new GZIPOutputStream(outputStream))
+            {
+                gzip.write(str.getBytes(StandardCharsets.UTF_8));
+            }
+            return outputStream.toByteArray();
+        }
+
         public void addCustomChart(CustomChart chart)
         {
             this.customCharts.add(chart);
@@ -332,26 +351,6 @@ public class Metrics
                     throw new IllegalStateException("bStats Metrics class has not been relocated correctly!");
                 }
             }
-        }
-
-        /**
-         * Gzips the given string.
-         *
-         * @param str The string to gzip.
-         * @return The gzipped string.
-         */
-        private static byte[] compress(final String str) throws IOException
-        {
-            if (str==null)
-            {
-                return null;
-            }
-            ByteArrayOutputStream outputStream=new ByteArrayOutputStream();
-            try (GZIPOutputStream gzip=new GZIPOutputStream(outputStream))
-            {
-                gzip.write(str.getBytes(StandardCharsets.UTF_8));
-            }
-            return outputStream.toByteArray();
         }
     }
 
@@ -704,6 +703,45 @@ public class Metrics
         }
 
         /**
+         * Escapes the given string like stated in https://www.ietf.org/rfc/rfc4627.txt.
+         *
+         * <p>This method escapes only the necessary characters '"', '\'. and '\u0000' - '\u001F'.
+         * Compact escapes are not used (e.g., '\n' is escaped as "\u000a" and not as "\n").
+         *
+         * @param value The value to escape.
+         * @return The escaped value.
+         */
+        private static String escape(String value)
+        {
+            final StringBuilder builder=new StringBuilder();
+            for (int i=0;i<value.length();i++)
+            {
+                char c=value.charAt(i);
+                if (c=='"')
+                {
+                    builder.append("\\\"");
+                }
+                else if (c=='\\')
+                {
+                    builder.append("\\\\");
+                }
+                else if (c<='\u000F')
+                {
+                    builder.append("\\u000").append(Integer.toHexString(c));
+                }
+                else if (c<='\u001F')
+                {
+                    builder.append("\\u00").append(Integer.toHexString(c));
+                }
+                else
+                {
+                    builder.append(c);
+                }
+            }
+            return builder.toString();
+        }
+
+        /**
          * Appends a null field to the JSON.
          *
          * @param key The key of the field.
@@ -854,45 +892,6 @@ public class Metrics
             JsonObject object=new JsonObject(builder.append("}").toString());
             builder=null;
             return object;
-        }
-
-        /**
-         * Escapes the given string like stated in https://www.ietf.org/rfc/rfc4627.txt.
-         *
-         * <p>This method escapes only the necessary characters '"', '\'. and '\u0000' - '\u001F'.
-         * Compact escapes are not used (e.g., '\n' is escaped as "\u000a" and not as "\n").
-         *
-         * @param value The value to escape.
-         * @return The escaped value.
-         */
-        private static String escape(String value)
-        {
-            final StringBuilder builder=new StringBuilder();
-            for (int i=0;i<value.length();i++)
-            {
-                char c=value.charAt(i);
-                if (c=='"')
-                {
-                    builder.append("\\\"");
-                }
-                else if (c=='\\')
-                {
-                    builder.append("\\\\");
-                }
-                else if (c<='\u000F')
-                {
-                    builder.append("\\u000").append(Integer.toHexString(c));
-                }
-                else if (c<='\u001F')
-                {
-                    builder.append("\\u00").append(Integer.toHexString(c));
-                }
-                else
-                {
-                    builder.append(c);
-                }
-            }
-            return builder.toString();
         }
 
         /**

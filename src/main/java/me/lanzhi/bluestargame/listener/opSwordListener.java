@@ -1,13 +1,13 @@
 package me.lanzhi.bluestargame.listener;
 
 import de.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTItem;
-import me.lanzhi.bluestargame.BluestarGame;
+import me.lanzhi.bluestargame.BluestarGamePlugin;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -19,6 +19,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class opSwordListener implements Listener
 {
+    private final BluestarGamePlugin plugin;
+    public opSwordListener(BluestarGamePlugin plugin)
+    {
+        this.plugin=plugin;
+    }
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerDamage(EntityDamageEvent event)
     {
@@ -68,7 +73,14 @@ public class opSwordListener implements Listener
             if (event1.getDamager() instanceof Damageable)
             {
                 ((Damageable) event1.getDamager()).damage(Integer.MAX_VALUE,entity);
+                return;
             }
+            if (event1.getDamager() instanceof Arrow)
+            {
+                ((Damageable)Bukkit.getEntity(new NBTEntity(event1.getDamager()).getUUID("Owner"))).damage(Integer.MAX_VALUE,entity);
+                return;
+            }
+            System.out.println(event1.getDamager().getType().toString());
         }
     }
 
@@ -132,6 +144,6 @@ public class opSwordListener implements Listener
                     entity1.setHealth(0);
                 }
             }
-        }.runTaskLater(BluestarGame.plugin,1);
+        }.runTaskLater(plugin,1);
     }
 }

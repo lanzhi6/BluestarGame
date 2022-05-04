@@ -1,5 +1,6 @@
 package me.lanzhi.bluestargame.commands;
 
+import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.Type.Elevator;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -10,63 +11,62 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import static me.lanzhi.bluestargame.BluestarGame.messageHead;
-import static me.lanzhi.bluestargame.Type.Elevator.elevators;
-
-public class elevatorCommand implements CommandExecutor, TabExecutor
+public class ElevatorCommand implements CommandExecutor, TabExecutor
 {
+    private final BluestarGamePlugin plugin;
+
+    public ElevatorCommand(BluestarGamePlugin plugin)
+    {
+        this.plugin=plugin;
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,@NotNull String[] args)
     {
         if (!(sender instanceof Player))
         {
-            sender.sendMessage(messageHead+ChatColor.RED+"此命令仅允许玩家输入!");
+            sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"此命令仅允许玩家输入!");
             return false;
         }
         if (args.length==0)
         {
-            sender.sendMessage(messageHead+ChatColor.RED+"格式错误");
+            sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"格式错误");
             return false;
         }
         if (args[0].equals("add"))
         {
             if (args.length!=8)
             {
-                sender.sendMessage(messageHead+ChatColor.RED+"格式错误!");
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"格式错误!");
                 return false;
             }
             Elevator elevator;
             try
             {
-                elevator=new Elevator(
-                Integer.parseInt(args[2]),
-                Integer.parseInt(args[3]),
-                Integer.parseInt(args[4]),
-                Integer.parseInt(args[5]),
-                Integer.parseInt(args[6]),
-                Integer.parseInt(args[7]));
+                elevator=new Elevator(((Player) sender).getLocation().getWorld(),Integer.parseInt(args[2]),Integer.parseInt(args[3]),Integer.parseInt(args[4]),Integer.parseInt(args[5]),Integer.parseInt(args[6]),Integer.parseInt(args[7]));
             }
             catch (NumberFormatException e)
             {
-                sender.sendMessage(messageHead+ChatColor.RED+"错误!X,Z,Y应均为整数");
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"错误!X,Z,Y应均为整数");
                 return true;
             }
-            elevators.set(args[1],elevator);
-            sender.sendMessage(ChatColor.RED+"添加成功");
+            plugin.getBluestarGameManager().getElevators().set(args[1],elevator);
+            sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"添加成功");
             return true;
         }
         if (args[0].equals("list"))
         {
-            sender.sendMessage(messageHead+ChatColor.GOLD+"电梯列表:");
-            for (String s:elevators.getKeys(false))
+            sender.sendMessage(plugin.getMessageHead()+ChatColor.GOLD+"电梯列表:");
+            for (String s: plugin.getBluestarGameManager().getElevators().getKeys(false))
             {
-                Elevator elevator=elevators.getObject(s,Elevator.class);
+                Elevator elevator=plugin.getBluestarGameManager().getElevators().getObject(s,Elevator.class);
                 if (elevator==null)
                 {
+                    System.out.println(((Elevator) plugin.getBluestarGameManager().getElevators().get(s)).getMaxX());
                     continue;
                 }
                 sender.sendMessage(ChatColor.WHITE+s+" -- X:("+elevator.getMinX()+"~"+elevator.getMaxX()+"),Z:("+elevator.getMinZ()+"~"+elevator.getMaxZ()+"),Y:("+elevator.getMinY()+"~"+elevator.getMaxY()+")");
@@ -77,15 +77,15 @@ public class elevatorCommand implements CommandExecutor, TabExecutor
         {
             if (args.length<2)
             {
-                sender.sendMessage(messageHead+ChatColor.RED+"格式错误");
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"格式错误");
                 return false;
             }
-            elevators.set(args[1],null);
-            sender.sendMessage(messageHead+ChatColor.RED+"已删除");
+            plugin.getBluestarGameManager().getElevators().set(args[1],null);
+            sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"已删除");
             return true;
         }
 
-        sender.sendMessage(messageHead+ChatColor.RED+"格式错误");
+        sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"格式错误");
         return false;
     }
 
@@ -132,7 +132,7 @@ public class elevatorCommand implements CommandExecutor, TabExecutor
         {
             if (args.length==2)
             {
-                return Collections.singletonList("电梯名称");
+                return new ArrayList<>(plugin.getBluestarGameManager().getElevators().getKeys(false));
             }
         }
         return null;

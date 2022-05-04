@@ -1,6 +1,7 @@
 package me.lanzhi.bluestargame.commands;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -12,22 +13,25 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-import static me.lanzhi.bluestargame.BluestarGame.messageHead;
-
-public class chat implements CommandExecutor, TabExecutor
+public class ChatCommand implements CommandExecutor, TabExecutor
 {
+    private final BluestarGamePlugin plugin;
+    public ChatCommand(BluestarGamePlugin plugin)
+    {
+        this.plugin=plugin;
+    }
     @Override
     public boolean onCommand(CommandSender sender,Command command,String label,String[] args)
     {
         if (args.length<2)
         {
-            sender.sendMessage(messageHead+ChatColor.RED+"错误!");
+            sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"错误!");
             return false;
         }
         Player player=Bukkit.getPlayer(args[0]);
         if (player==null)
         {
-            sender.sendMessage(messageHead+ChatColor.RED+"玩家不存在");
+            sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"玩家不存在");
         }
         StringBuilder builder=new StringBuilder();
         for (int i=1;i<args.length;i++)

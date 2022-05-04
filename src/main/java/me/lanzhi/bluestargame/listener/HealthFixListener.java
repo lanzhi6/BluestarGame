@@ -1,7 +1,8 @@
 package me.lanzhi.bluestargame.listener;
 
-import me.lanzhi.bluestarapi.Api.YamlFile;
-import me.lanzhi.bluestargame.BluestarGame;
+import me.lanzhi.bluestarapi.Api.config.YamlFile;
+import me.lanzhi.bluestargame.BluestarGamePlugin;
+import me.lanzhi.bluestargame.managers.RandomEventManger;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,17 +14,22 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 
-import static me.lanzhi.bluestargame.BluestarGame.PlayerMap;
-import static me.lanzhi.bluestargame.BluestarGame.plugin;
-
 public class HealthFixListener implements Listener
 {
+    private final BluestarGamePlugin plugin;
+    private final RandomEventManger randomEventManger;
+
+    public HealthFixListener(BluestarGamePlugin plugin)
+    {
+        this.plugin=plugin;
+        randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
+    }
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerLoginEvent event)
     {
         Player player=event.getPlayer();
         player.setHealthScaled(false);
-        YamlFile playerdata=new YamlFile(new File(BluestarGame.PlayerData,player.getUniqueId()+".yml"));
+        YamlFile playerdata=new YamlFile(new File(plugin.getPlayerData(),player.getUniqueId()+".yml"));
         if (playerdata.getDouble("maxhealth")!=0)
         {
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(playerdata.getDouble("maxhealth"));
@@ -39,7 +45,7 @@ public class HealthFixListener implements Listener
             {
                 Player player=event.getPlayer();
                 player.setHealthScaled(false);
-                YamlFile playerdata=new YamlFile(new File(BluestarGame.PlayerData,player.getUniqueId()+".yml"));
+                YamlFile playerdata=new YamlFile(new File(plugin.getPlayerData(),player.getUniqueId()+".yml"));
                 if (playerdata.getDouble("maxhealth")!=0)
                 {
                     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(playerdata.getDouble("maxhealth"));
@@ -55,10 +61,11 @@ public class HealthFixListener implements Listener
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event)
     {
-        YamlFile playerData=new YamlFile(new File(BluestarGame.PlayerData,event.getPlayer().getUniqueId()+".yml"));
-        playerData.set("health",event.getPlayer().getHealth());
-        playerData.set("maxhealth",event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        YamlFile playerData=new YamlFile(new File(plugin.getPlayerData(),event.getPlayer().getUniqueId()+".yml"));
+        double maxhealth=event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        playerData.set("health",Math.min(event.getPlayer().getHealth(),maxhealth));
+        playerData.set("maxhealth",maxhealth);
         playerData.save();
-        PlayerMap.set(event.getPlayer().getName(),event.getPlayer().getUniqueId()+"");
+        plugin.getPlayerMap().set(event.getPlayer().getName(),event.getPlayer().getUniqueId()+"");
     }
 }

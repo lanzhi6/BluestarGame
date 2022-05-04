@@ -1,5 +1,6 @@
 package me.lanzhi.bluestargame.commands;
 
+import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,18 +12,22 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-import static me.lanzhi.bluestargame.BluestarGame.*;
-
-public class mutedCommand implements CommandExecutor, TabExecutor
+public class MutedCommand implements CommandExecutor, TabExecutor
 {
-    public static ConfigurationSection muted;
+    private final ConfigurationSection muted;
+    private final BluestarGamePlugin plugin;
+    public MutedCommand(BluestarGamePlugin plugin)
+    {
+        this.plugin=plugin;
+        muted=plugin.getConfig().getConfigurationSection("muted");
+    }
 
     @Override
     public boolean onCommand(CommandSender sender,Command command,String label,String[] args)
     {
         if (args.length<1)
         {
-            sender.sendMessage(messageHead+ChatColor.RED+"格式错误");
+            sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"格式错误");
             return false;
         }
         switch (args[0])
@@ -31,10 +36,10 @@ public class mutedCommand implements CommandExecutor, TabExecutor
             {
                 if (muted==null)
                 {
-                    sender.sendMessage(messageHead+"没人被禁言");
+                    sender.sendMessage(plugin.getMessageHead()+"没人被禁言");
                     return true;
                 }
-                sender.sendMessage(messageHead+"禁言列表:");
+                sender.sendMessage(plugin.getMessageHead()+"禁言列表:");
                 Set<String> mutedPlayers=muted.getKeys(false);
                 Date date=Calendar.getInstance().getTime();
                 for (String i: mutedPlayers)
@@ -45,7 +50,7 @@ public class mutedCommand implements CommandExecutor, TabExecutor
                     {
                         try
                         {
-                            mutedtime=BluestarDataFormat.parse(time);
+                            mutedtime=plugin.getDateFormat().parse(time);
                         }
                         catch (Throwable e)
                         {
@@ -66,24 +71,24 @@ public class mutedCommand implements CommandExecutor, TabExecutor
             {
                 if (args.length<2)
                 {
-                    sender.sendMessage(messageHead+ChatColor.RED+"请输入玩家名");
+                    sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"请输入玩家名");
                     return true;
                 }
                 if (args.length<3)
                 {
-                    sender.sendMessage(messageHead+ChatColor.RED+"请输入设置为 禁言或取消");
+                    sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"请输入设置为 禁言或取消");
                     return true;
                 }
                 Player player=Bukkit.getPlayer(args[1]);
                 if (player==null)
                 {
-                    sender.sendMessage(messageHead+ChatColor.RED+"未找到玩家,请确认玩家已上线");
+                    sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"未找到玩家,请确认玩家已上线");
                     return true;
                 }
                 if (!Boolean.parseBoolean(args[2]))
                 {
                     muted.set(player.getUniqueId().toString(),null);
-                    sender.sendMessage(messageHead+ChatColor.GREEN+"取消禁言成功!");
+                    sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"取消禁言成功!");
                     return true;
                 }
                 Date mutedTo=Calendar.getInstance().getTime();
@@ -91,7 +96,7 @@ public class mutedCommand implements CommandExecutor, TabExecutor
                 {
                     if (args[3].length()<2)
                     {
-                        sender.sendMessage(messageHead+"时间格式错误");
+                        sender.sendMessage(plugin.getMessageHead()+"时间格式错误");
                         return true;
                     }
                     args[3]=args[3].toLowerCase();
@@ -104,7 +109,7 @@ public class mutedCommand implements CommandExecutor, TabExecutor
                     }
                     catch (NumberFormatException e)
                     {
-                        sender.sendMessage(messageHead+"时间格式错误");
+                        sender.sendMessage(plugin.getMessageHead()+"时间格式错误");
                         return true;
                     }
                     switch (end)
@@ -131,17 +136,17 @@ public class mutedCommand implements CommandExecutor, TabExecutor
                         }
                         default:
                         {
-                            sender.sendMessage(messageHead+ChatColor.RED+"时间单位错误");
+                            sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"时间单位错误");
                             return true;
                         }
                     }
-                    muted.set(player.getUniqueId().toString(),BluestarDataFormat.format(mutedTo));
+                    muted.set(player.getUniqueId().toString(),plugin.getDateFormat().format(mutedTo));
                 }
                 else
                 {
                     muted.set(player.getUniqueId().toString(),"---");
                 }
-                sender.sendMessage(messageHead+ChatColor.GREEN+"设置禁言成功!");
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"设置禁言成功!");
                 return true;
             }
             default:

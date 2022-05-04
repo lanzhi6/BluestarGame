@@ -1,28 +1,53 @@
 package me.lanzhi.bluestargame.Type;
 
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import me.lanzhi.bluestarapi.Api.config.AutoSerializeInterface;
+import me.lanzhi.bluestarapi.Api.config.SerializeAs;
+import me.lanzhi.bluestarapi.Api.config.SpecialSerialize;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-public class Elevator implements ConfigurationSerializable
+@SerializeAs("BluestarGame.Elevator")
+final public class Elevator implements AutoSerializeInterface
 {
-    public static ConfigurationSection elevators;
-    private final long minX, maxX, minZ, maxZ, maxY, minY;
+    final long minX;
+    final long maxX;
+    final long minZ;
+    final long maxZ;
+    final long maxY;
+    final long minY;
+    @SpecialSerialize(serialize="serializeWorld", deserialize="deserializeWorld")
+    final World world;
 
-    public Elevator(long minX,long maxX,long minZ,long maxZ,long minY,long maxY)
+    public Elevator()
     {
-        this.minX=minX;
-        this.maxX=maxX;
-        this.minZ=minZ;
-        this.maxZ=maxZ;
-        this.minY=minY;
-        this.maxY=maxY;
+        minX=minZ=minY=maxX=maxZ=maxY=0;
+        world=null;
+    }
+
+    public Elevator(World world,long minX,long maxX,long minZ,long maxZ,long minY,long maxY)
+    {
+        this.world=world;
+        this.minX=Math.min(minX,maxX);
+        this.maxX=Math.max(minX,maxX);
+        this.minZ=Math.min(minZ,maxZ);
+        this.maxZ=Math.max(minZ,maxZ);
+        this.minY=Math.min(minY,maxY);
+        this.maxY=Math.max(minY,maxY);
+    }
+
+    public static String serializeWorld(World world)
+    {
+        return world.getName();
+    }
+
+    public static World deserializeWorld(String world)
+    {
+        return Bukkit.getWorld(world);
+    }
+
+    public World getWorld()
+    {
+        return world;
     }
 
     public long getMinX()
@@ -53,48 +78,5 @@ public class Elevator implements ConfigurationSerializable
     public long getMinY()
     {
         return minY;
-    }
-
-    public Elevator(Map<String, Object> map)
-    {
-        this.minX=(int) map.get("minX");
-        this.maxX=(int) map.get("maxX");
-        this.minZ=(int) map.get("minZ");
-        this.maxZ=(int) map.get("maxZ");
-        this.minY=(int) map.get("minY");
-        this.maxY=(int) map.get("maxY");
-    }
-
-    @NotNull
-    @Override
-    public Map<String, Object> serialize()
-    {
-        Map<String, Object> map=new HashMap<>();
-        map.put("minY",getMinY());
-        map.put("maxY",getMaxY());
-        map.put("minX",getMinX());
-        map.put("maxX",getMaxX());
-        map.put("minZ",getMinZ());
-        map.put("maxZ",getMaxZ());
-        return map;
-    }
-
-    @Nullable
-    public static Elevator getElevator(Location loc)
-    {
-        Set<String> keys=elevators.getKeys(false);
-        for (String s: keys)
-        {
-            Elevator elevator=elevators.getObject(s,Elevator.class);
-            if (elevator==null)
-            {
-                continue;
-            }
-            if (elevator.getMaxX()>=loc.getBlockX()&&elevator.getMinX()<=loc.getBlockX()&&elevator.getMaxZ()>=loc.getBlockZ()&&elevator.getMinZ()<=loc.getBlockZ()&&elevator.getMaxY()>=loc.getBlockY()&&elevator.getMinY()<=loc.getBlockY())
-            {
-                return elevator;
-            }
-        }
-        return null;
     }
 }

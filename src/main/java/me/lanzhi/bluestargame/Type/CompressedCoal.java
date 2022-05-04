@@ -2,6 +2,7 @@ package me.lanzhi.bluestargame.Type;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -15,8 +16,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static me.lanzhi.bluestargame.BluestarGame.plugin;
 
 public enum CompressedCoal implements ConfigurationSerializable
 {
@@ -45,7 +44,7 @@ public enum CompressedCoal implements ConfigurationSerializable
             case 1:
             {
                 meta.setDisplayName(ChatColor.GOLD+"烧制煤炭");
-                allowRecipe=Collections.singletonList(new NamespacedKey(plugin,"compressed_coal"));
+                allowRecipe=Collections.singletonList(new NamespacedKey(Bukkit.getPluginManager().getPlugin("BluestarGame"),"compressed_coal"));
                 itemm.setItemMeta(meta);
                 item=new NBTItem(itemm);
                 item.addCompound("BluestarGame").setInteger("coal",id);
@@ -55,7 +54,7 @@ public enum CompressedCoal implements ConfigurationSerializable
             case 2:
             {
                 meta.setDisplayName(ChatColor.GOLD+"压缩煤炭");
-                allowRecipe=Collections.singletonList(new NamespacedKey(plugin,"fired_compressed_coal"));
+                allowRecipe=Collections.singletonList(new NamespacedKey(Bukkit.getPluginManager().getPlugin("BluestarGame"),"fired_compressed_coal"));
                 itemm.setItemMeta(meta);
                 item=new NBTItem(itemm);
                 item.addCompound("BluestarGame").setInteger("coal",id);
@@ -65,7 +64,7 @@ public enum CompressedCoal implements ConfigurationSerializable
             case 3:
             {
                 meta.setDisplayName(ChatColor.GOLD+"烧制压缩煤炭");
-                allowRecipe=Collections.singletonList(new NamespacedKey(plugin,"coal_diamond"));
+                allowRecipe=Collections.singletonList(new NamespacedKey(Bukkit.getPluginManager().getPlugin("BluestarGame"),"coal_diamond"));
                 itemm.setItemMeta(meta);
                 item=new NBTItem(itemm);
                 item.addCompound("BluestarGame").setInteger("coal",id);

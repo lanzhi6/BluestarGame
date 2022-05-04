@@ -6,7 +6,7 @@
 
     <groupId>me.lanzhi</groupId>
     <artifactId>BluestarGame</artifactId>
-    <version>2.8.0</version>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
 
     <name>BluestarGame</name>
@@ -92,13 +92,19 @@
         <dependency>
             <groupId>com.github.lanzhi6</groupId>
             <artifactId>BluestarAPI</artifactId>
-            <version>1.8</version>
+            <version>2.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.lanzhi6</groupId>
             <artifactId>BluestarQQ</artifactId>
             <version>1.0.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.lanzhi6</groupId>
+            <artifactId>BluestarGameAPI</artifactId>
+            <version>1.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -133,13 +139,6 @@
             <version>1.5</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/BluestarTpsControl-spigotPlugin-1.5.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>org.spigot</groupId>
-            <artifactId>Citizens2</artifactId>
-            <version>2.0.29</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Citizens-2.0.29-b2493.jar</systemPath>
         </dependency>
         <!--
         <dependency>

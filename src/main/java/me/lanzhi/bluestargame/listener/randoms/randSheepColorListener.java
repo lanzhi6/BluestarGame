@@ -1,6 +1,7 @@
 package me.lanzhi.bluestargame.listener.randoms;
 
-import me.lanzhi.bluestargame.Ctrls.CTRL;
+import me.lanzhi.bluestargame.BluestarGamePlugin;
+import me.lanzhi.bluestargame.managers.RandomEventManger;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -13,10 +14,18 @@ import org.bukkit.inventory.ItemStack;
 
 public class randSheepColorListener implements Listener
 {
+    private final BluestarGamePlugin plugin;
+    private final RandomEventManger randomEventManger;
+
+    public randSheepColorListener(BluestarGamePlugin plugin)
+    {
+        this.plugin=plugin;
+        randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
+    }
     @EventHandler(priority=EventPriority.HIGH)
     public void onSheepDyeWool(SheepDyeWoolEvent event)
     {
-        if ((!CTRL.randsheep())||(event.isCancelled()))
+        if ((!randomEventManger.randsheep())||(event.isCancelled()))
         {
             return;
         }
@@ -33,7 +42,7 @@ public class randSheepColorListener implements Listener
     @EventHandler(priority=EventPriority.HIGH)
     public void onItemSpawn(ItemSpawnEvent event)
     {
-        if ((!CTRL.randsheep())||(event.isCancelled()))
+        if ((!randomEventManger.randsheep())||(event.isCancelled()))
         {
             return;
         }
