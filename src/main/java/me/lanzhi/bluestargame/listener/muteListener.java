@@ -10,7 +10,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import java.util.Calendar;
 import java.util.Date;
 
-public class muteListener implements Listener
+public final class muteListener implements Listener
 {
     private final BluestarGamePlugin plugin;
     private final RandomEventManger randomEventManger;

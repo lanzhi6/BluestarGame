@@ -6,15 +6,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public final class RandomEventsChange extends BukkitRunnable
 {
-    private int on;
     private final BluestarGamePlugin plugin;
     private final RandomEventManger randomEventManger;
+    private int on;
+
     public RandomEventsChange(BluestarGamePlugin plugin,int on)
     {
         this.plugin=plugin;
         this.on=on;
         this.randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
+
     @Override
     public void run()
     {
@@ -48,6 +50,7 @@ public final class RandomEventsChange extends BukkitRunnable
             randomEventManger.task=randomEventManger.randomEvents.runTaskLaterAsynchronously(plugin,24000);
         }
     }
+
     public void stop()
     {
         if (on!=0)
@@ -55,6 +58,7 @@ public final class RandomEventsChange extends BukkitRunnable
             change(false);
         }
     }
+
     public synchronized void change(boolean b)
     {
         if (on==1)

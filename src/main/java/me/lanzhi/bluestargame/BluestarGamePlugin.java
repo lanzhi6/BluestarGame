@@ -31,17 +31,18 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
     private final File PlayerData;
     private final YamlFile PlayerMap;
     private final YamlFile Data;
-    private final Economy econ;
+    private Economy econ;
     private final String messageHead=ChatColor.GOLD+"["+ChatColor.DARK_AQUA+"BluestarGame"+ChatColor.GOLD+"]";
     private final String errorMessageHead=messageHead+ChatColor.RED;
     private final SimpleDateFormat BluestarDateFormat;
     private final NumberFormat BluestarNF;
-    private final BluestarGameManager bluestarGameManager;
-    private final CommandRegister commandRegister;
-    private final ListenersRegister listenersRegister;
-    private final RecipeRegister recipeRegister;
+    private BluestarGameManager bluestarGameManager;
+    private CommandRegister commandRegister;
+    private ListenersRegister listenersRegister;
+    private RecipeRegister recipeRegister;
     private BukkitTask spongeTask;
     private BukkitTask bedrockTask;
+    private boolean isEnable=false;
 
     public BluestarGamePlugin()
     {
@@ -53,14 +54,9 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
         Data=new YamlFile(new File(this.getDataFolder(),"data.yml"));
         PlayerData=new File(this.getDataFolder(),"PlayerData");
         PlayerData.mkdirs();
-        econ=getServer().getServicesManager().load(Economy.class);
         BluestarDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         BluestarNF=NumberFormat.getInstance();
         BluestarNF.setGroupingUsed(false);
-        bluestarGameManager=new BluestarGameManager(this);
-        commandRegister=new CommandRegister(this);
-        listenersRegister=new ListenersRegister(this);
-        recipeRegister=new RecipeRegister(this);
     }
 
     @Override
@@ -69,6 +65,11 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
         config.reload();
         PlayerMap.reload();
         Data.reload();
+        bluestarGameManager=new BluestarGameManager(this);
+        commandRegister=new CommandRegister(this);
+        listenersRegister=new ListenersRegister(this);
+        recipeRegister=new RecipeRegister(this);
+        econ=getServer().getServicesManager().load(Economy.class);
 
         new Metrics(this,14294);
 
@@ -87,6 +88,7 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
 
         Bukkit.getServicesManager().register(BluestarGamePluginInterface.class,this,this,ServicePriority.Normal);
 
+        isEnable=true;
         System.out.println("BluestarGame已加载");
     }
 
@@ -98,11 +100,12 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
         getBluestarGameManager().getRandomEventManger().end();
         getBluestarGameManager().getRandomEventManger().all(false);
         recipeRegister.cancellationRecipes();
-        Data.set("superSponges",getBluestarGameManager().getSuperSpongeManager());
+        Data.set("superSponges",getBluestarGameManager().getSuperSpongeManager().getSponges());
         Data.save();
         PlayerMap.save();
         config.save();
         Bukkit.getServicesManager().unregisterAll(this);
+        isEnable=false;
         System.out.println("BluestarGame已卸载");
     }
 
@@ -192,6 +195,11 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
     public BluestarGamePlugin getPlugin()
     {
         return this;
+    }
+
+    public boolean isEnable()
+    {
+        return this.isEnable;
     }
 }
 

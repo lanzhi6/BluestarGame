@@ -8,7 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-public class respawnListener implements Listener
+public final class respawnListener implements Listener
 {
     private final BluestarGamePlugin plugin;
     private final RandomEventManger randomEventManger;
@@ -18,6 +18,7 @@ public class respawnListener implements Listener
         this.plugin=plugin;
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
+
     @EventHandler(priority=EventPriority.MONITOR)
     public void onEntiyDie(EntityDeathEvent event)
     {

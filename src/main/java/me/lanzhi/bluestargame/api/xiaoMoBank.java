@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
-public class xiaoMoBank implements XiaoMoBankInterface
+public final class xiaoMoBank implements XiaoMoBankInterface
 {
     private final BluestarGamePlugin plugin;
 

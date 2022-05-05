@@ -22,10 +22,10 @@ public final class BluestarGameManager implements BluestarGameManagerInterface
     public BluestarGameManager(BluestarGamePlugin plugin)
     {
         this.plugin=plugin;
-        ConfigurationSection s=plugin.getConfig().getConfigurationSection("muted");
-        muted=s==null?plugin.getConfig().createSection("muted"):s;
-        s=plugin.getConfig().getConfigurationSection("elevators");
-        elevators=s==null?plugin.getConfig().createSection("elevators"):s;
+        ConfigurationSection s=plugin.getData().getConfigurationSection("muted");
+        muted=s==null?plugin.getData().createSection("muted"):s;
+        s=plugin.getData().getConfigurationSection("elevators");
+        elevators=s==null?plugin.getData().createSection("elevators"):s;
         this.api=new BluestarGameApi(plugin);
         this.randomEventManger=new RandomEventManger(plugin);
         this.superSpongeManager=new SuperSpongeManager(plugin);
@@ -48,6 +48,7 @@ public final class BluestarGameManager implements BluestarGameManagerInterface
     {
         return elevators;
     }
+
     @Nullable
     public Elevator getElevator(Location loc)
     {

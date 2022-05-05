@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
-public class the24PointListener implements Listener
+public final class the24PointListener implements Listener
 {
     private final BluestarGamePlugin plugin;
     private final RandomEventManger randomEventManger;
@@ -23,6 +23,7 @@ public class the24PointListener implements Listener
         this.plugin=plugin;
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
+
     @EventHandler
     public void onChatFor24(AsyncPlayerChatEvent event)
     {

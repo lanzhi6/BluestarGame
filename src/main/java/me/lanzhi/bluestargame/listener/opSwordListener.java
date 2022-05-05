@@ -7,7 +7,10 @@ import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,13 +20,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class opSwordListener implements Listener
+public final class opSwordListener implements Listener
 {
     private final BluestarGamePlugin plugin;
+
     public opSwordListener(BluestarGamePlugin plugin)
     {
         this.plugin=plugin;
     }
+
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerDamage(EntityDamageEvent event)
     {
@@ -77,7 +82,7 @@ public class opSwordListener implements Listener
             }
             if (event1.getDamager() instanceof Arrow)
             {
-                ((Damageable)Bukkit.getEntity(new NBTEntity(event1.getDamager()).getUUID("Owner"))).damage(Integer.MAX_VALUE,entity);
+                ((Damageable) Bukkit.getEntity(new NBTEntity(event1.getDamager()).getUUID("Owner"))).damage(Integer.MAX_VALUE,entity);
                 return;
             }
             System.out.println(event1.getDamager().getType().toString());

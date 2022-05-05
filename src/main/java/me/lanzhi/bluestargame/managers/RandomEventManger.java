@@ -10,10 +10,11 @@ import java.util.Arrays;
 
 public final class RandomEventManger implements RandomEventMangerInterface
 {
-    public int[] fourNum=new int[4];
     private final BluestarGamePlugin plugin;
+    public int[] fourNum=new int[4];
     public BukkitTask task=null;
     public RandomEventsChange randomEvents;
+
     public RandomEventManger(BluestarGamePlugin plugin)
     {
         this.plugin=plugin;

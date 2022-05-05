@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-public class XiaoMoBankCommand implements CommandExecutor, TabExecutor
+public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
 {
     private final BaseComponent borrowGui;
     private final BaseComponent saveGui;
@@ -67,7 +67,7 @@ public class XiaoMoBankCommand implements CommandExecutor, TabExecutor
         cmp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/xmbank save "));
         save=new TextComponent(plugin.getMessageHead()+"      ");
         save.addExtra(cmp);
-        
+
         bank=plugin.getBluestarGameManager().getApi().getXiaoMoBank();
     }
 

@@ -12,7 +12,7 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.SheepDyeWoolEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class randSheepColorListener implements Listener
+public final class randSheepColorListener implements Listener
 {
     private final BluestarGamePlugin plugin;
     private final RandomEventManger randomEventManger;
@@ -22,6 +22,7 @@ public class randSheepColorListener implements Listener
         this.plugin=plugin;
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
+
     @EventHandler(priority=EventPriority.HIGH)
     public void onSheepDyeWool(SheepDyeWoolEvent event)
     {

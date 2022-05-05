@@ -3,7 +3,6 @@ package me.lanzhi.bluestargame.managers;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import me.lanzhi.bluestarapi.Api.Bluestar;
-import me.lanzhi.bluestarapi.Api.config.SpecialSerialize;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.Type.SuperSponge;
 import me.lanzhi.bluestargameapi.managers.SuperSpongeManagerInterface;
@@ -19,13 +18,9 @@ import java.util.List;
 
 public final class SuperSpongeManager implements SuperSpongeManagerInterface
 {
+    private final BluestarGamePlugin plugin;
     private List<SuperSponge> nextSponges=new ArrayList<>();
     private List<SuperSponge> sponges=new ArrayList<>();
-    private final BluestarGamePlugin plugin;
-    public SuperSpongeManager(BluestarGamePlugin plugin)
-    {
-        this.plugin=plugin;
-    }
     public BukkitRunnable ctrlsponge=new BukkitRunnable()
     {
         @Override
@@ -56,6 +51,15 @@ public final class SuperSpongeManager implements SuperSpongeManagerInterface
             sponges=nextSponges;
         }
     };
+    private NBTItem lavaSponge=null;
+    private NBTItem usedLavaSponge=null;
+    private NBTItem waterSponge=null;
+    private NBTItem usedWaterSponge=null;
+
+    public SuperSpongeManager(BluestarGamePlugin plugin)
+    {
+        this.plugin=plugin;
+    }
 
     public void set(List<SuperSponge> spongess)
     {
@@ -89,11 +93,6 @@ public final class SuperSpongeManager implements SuperSpongeManagerInterface
         }
         sponges.add(sponge);
     }
-    
-    private NBTItem lavaSponge=null;
-    private NBTItem usedLavaSponge=null;
-    private NBTItem waterSponge=null;
-    private NBTItem usedWaterSponge=null;
 
     @Override
     public NBTItem getWaterSponge()
@@ -180,7 +179,11 @@ public final class SuperSpongeManager implements SuperSpongeManagerInterface
         }
         return usedLavaSponge;
     }
-    
+
+    public List<SuperSponge> getSponges()
+    {
+        return sponges;
+    }
 }
 
 

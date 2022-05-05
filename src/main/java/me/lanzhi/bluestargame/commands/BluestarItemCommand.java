@@ -21,19 +21,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class BluestarItemCommand implements CommandExecutor, TabExecutor
+public final class BluestarItemCommand implements CommandExecutor, TabExecutor
 {
-    private final BluestarGamePlugin plugin;
-    public BluestarItemCommand(BluestarGamePlugin plugin)
-    {
-        this.plugin=plugin;
-    }
-    private static List<String>entityType=new ArrayList<>();
+    private static List<String> entityType=new ArrayList<>();
+
     static
     {
         try
         {
-            for (EntityType i:EntityType.values())
+            for (EntityType i: EntityType.values())
             {
                 if (i.getName()==null)
                 {
@@ -41,11 +37,20 @@ public class BluestarItemCommand implements CommandExecutor, TabExecutor
                 }
                 entityType.add(i.getName());
             }
-        }catch (Throwable e)
+        }
+        catch (Throwable e)
         {
             System.out.println("错误在初始化");
         }
     }
+
+    private final BluestarGamePlugin plugin;
+
+    public BluestarItemCommand(BluestarGamePlugin plugin)
+    {
+        this.plugin=plugin;
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,@NotNull String[] args)
     {

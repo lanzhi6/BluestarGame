@@ -9,8 +9,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.util.Vector;
 
-public class arrowListener implements Listener
+public final class arrowListener implements Listener
 {
+    public static double decide(double x,double y,double z)
+    {
+        x=Math.abs(x);
+        y=Math.abs(y);
+        z=Math.abs(z);
+        return Math.min(10D/x,Math.min(10D/y,10D/z));
+    }
+
     @EventHandler
     public void entityArrow(EntityShootBowEvent event)
     {
@@ -45,12 +53,5 @@ public class arrowListener implements Listener
         double vv=Math.min(v,decide(vector.getX(),vector.getY(),vector.getZ()));
         vector.setX(vector.getX()*vv).setY(vector.getY()*vv).setZ(vector.getZ()*vv);
         event.getProjectile().setVelocity(vector);
-    }
-    public static double decide(double x,double y,double z)
-    {
-        x=Math.abs(x);
-        y=Math.abs(y);
-        z=Math.abs(z);
-        return Math.min(10D/x,Math.min(10D/y,10D/z));
     }
 }

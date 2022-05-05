@@ -3,13 +3,15 @@ package me.lanzhi.bluestargame.register;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.commands.*;
 
-public class CommandRegister
+public final class CommandRegister
 {
     private final BluestarGamePlugin plugin;
+
     public CommandRegister(BluestarGamePlugin plugin)
     {
         this.plugin=plugin;
     }
+
     public void registerCommands()
     {
         plugin.getCommand("bluestargame").setExecutor(new BluestarGameCommand(plugin));

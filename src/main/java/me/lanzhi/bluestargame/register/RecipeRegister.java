@@ -10,14 +10,16 @@ import org.bukkit.inventory.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeRegister
+public final class RecipeRegister
 {
     private final List<NamespacedKey> recipes=new ArrayList<>();
     private final BluestarGamePlugin plugin;
+
     public RecipeRegister(BluestarGamePlugin plugin)
     {
         this.plugin=plugin;
     }
+
     public void registerRecipes()
     {
         /* 9海绵->超级海绵 */
@@ -72,12 +74,7 @@ public class RecipeRegister
         /*烧制压缩煤炭*/
         NamespacedKey fired_compressed_coal_key=new NamespacedKey(plugin,"fired_compressed_coal");
         recipes.add(fired_compressed_coal_key);
-        BlastingRecipe fired_compressed_coal=new BlastingRecipe(
-                fired_compressed_coal_key,
-                CompressedCoal.FIRED_COMPRESSED_COAL.getItem(),
-                new RecipeChoice.ExactChoice(CompressedCoal.COMPRESSED_COAL.getItem()),
-                2,200
-        );
+        BlastingRecipe fired_compressed_coal=new BlastingRecipe(fired_compressed_coal_key,CompressedCoal.FIRED_COMPRESSED_COAL.getItem(),new RecipeChoice.ExactChoice(CompressedCoal.COMPRESSED_COAL.getItem()),2,200);
         Bukkit.addRecipe(fired_compressed_coal);
 
         /*合成钻石*/

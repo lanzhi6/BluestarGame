@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ElevatorCommand implements CommandExecutor, TabExecutor
+public final class ElevatorCommand implements CommandExecutor, TabExecutor
 {
     private final BluestarGamePlugin plugin;
 

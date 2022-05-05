@@ -10,13 +10,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class superSpongeListener implements Listener
+public final class superSpongeListener implements Listener
 {
     private final BluestarGamePlugin plugin;
+
     public superSpongeListener(BluestarGamePlugin plugin)
     {
         this.plugin=plugin;
     }
+
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerPlaceBlock(BlockPlaceEvent event)
     {

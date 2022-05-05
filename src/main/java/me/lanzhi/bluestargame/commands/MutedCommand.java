@@ -12,10 +12,11 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class MutedCommand implements CommandExecutor, TabExecutor
+public final class MutedCommand implements CommandExecutor, TabExecutor
 {
     private final ConfigurationSection muted;
     private final BluestarGamePlugin plugin;
+
     public MutedCommand(BluestarGamePlugin plugin)
     {
         this.plugin=plugin;

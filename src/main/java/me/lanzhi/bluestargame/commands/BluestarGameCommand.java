@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-public class BluestarGameCommand implements CommandExecutor, TabExecutor
+
+public final class BluestarGameCommand implements CommandExecutor, TabExecutor
 {
     private final BluestarGamePlugin plugin;
     private final RandomEventManger randomEventManger;

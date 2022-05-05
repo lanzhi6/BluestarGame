@@ -6,7 +6,7 @@
 
     <groupId>me.lanzhi</groupId>
     <artifactId>BluestarGame</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <packaging>jar</packaging>
 
     <name>BluestarGame</name>
@@ -133,6 +133,7 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/purpur-1.18.2.jar</systemPath>
         </dependency>
+        <!--
         <dependency>
             <groupId>com.github.lanzhi6</groupId>
             <artifactId>BluestarTpsControl</artifactId>
@@ -140,7 +141,6 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/BluestarTpsControl-spigotPlugin-1.5.jar</systemPath>
         </dependency>
-        <!--
         <dependency>
             <groupId>com.github.lanzhi6</groupId>
             <artifactId>BlggguestaasdrTpsControl</artifactId>

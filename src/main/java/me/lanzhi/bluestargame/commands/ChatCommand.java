@@ -13,13 +13,15 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatCommand implements CommandExecutor, TabExecutor
+public final class ChatCommand implements CommandExecutor, TabExecutor
 {
     private final BluestarGamePlugin plugin;
+
     public ChatCommand(BluestarGamePlugin plugin)
     {
         this.plugin=plugin;
     }
+
     @Override
     public boolean onCommand(CommandSender sender,Command command,String label,String[] args)
     {

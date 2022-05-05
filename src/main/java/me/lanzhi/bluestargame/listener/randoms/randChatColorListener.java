@@ -8,13 +8,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class randChatColorListener implements Listener
+public final class randChatColorListener implements Listener
 {
     private RandomEventManger randomEventManger;
+
     public randChatColorListener(BluestarGamePlugin plugin)
     {
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
+
     @EventHandler(priority=EventPriority.LOW)
     public void onChatForRand(AsyncPlayerChatEvent event)
     {

@@ -7,15 +7,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
-public class ListenersRegister
+public final class ListenersRegister
 {
     private final PluginManager pluginManager;
     private final BluestarGamePlugin plugin;
+
     public ListenersRegister(BluestarGamePlugin plugin)
     {
         this.plugin=plugin;
         this.pluginManager=Bukkit.getPluginManager();
     }
+
     public void registerListeners()
     {
         registerlistener(new muteListener(plugin));

@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 
-public class HealthFixListener implements Listener
+public final class HealthFixListener implements Listener
 {
     private final BluestarGamePlugin plugin;
     private final RandomEventManger randomEventManger;
@@ -24,6 +24,7 @@ public class HealthFixListener implements Listener
         this.plugin=plugin;
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
+
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerLoginEvent event)
     {

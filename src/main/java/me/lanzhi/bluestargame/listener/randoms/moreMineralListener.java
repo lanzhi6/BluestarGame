@@ -12,13 +12,15 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class moreMineralListener implements Listener
+public final class moreMineralListener implements Listener
 {
     private final RandomEventManger randomEventManger;
+
     public moreMineralListener(BluestarGamePlugin plugin)
     {
         this.randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
+
     @EventHandler(priority=EventPriority.MONITOR)
     public void onBlockDropItem(BlockDropItemEvent event)
     {

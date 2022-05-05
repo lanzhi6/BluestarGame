@@ -80,26 +80,6 @@ public enum CompressedCoal implements ConfigurationSerializable
         }
     }
 
-    public NBTItem getNbtItem()
-    {
-        return item;
-    }
-
-    public ItemStack getItem()
-    {
-        return item.getItem();
-    }
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public boolean canUseInRecipe(NamespacedKey key)
-    {
-        return allowRecipe.contains(key);
-    }
-
     public static CompressedCoal getFromId(int id)
     {
         switch (id)
@@ -139,6 +119,31 @@ public enum CompressedCoal implements ConfigurationSerializable
         return compound==null?null:getFromId(compound.getInteger("coal"));
     }
 
+    public static CompressedCoal deserialize(Map<String, Object> map)
+    {
+        return getFromId((int) map.get("id"));
+    }
+
+    public NBTItem getNbtItem()
+    {
+        return item;
+    }
+
+    public ItemStack getItem()
+    {
+        return item.getItem();
+    }
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public boolean canUseInRecipe(NamespacedKey key)
+    {
+        return allowRecipe.contains(key);
+    }
+
     @NotNull
     @Override
     public Map<String, Object> serialize()
@@ -146,10 +151,5 @@ public enum CompressedCoal implements ConfigurationSerializable
         Map<String, Object> map=new HashMap<>();
         map.put("id",getId());
         return map;
-    }
-
-    public static CompressedCoal deserialize(Map<String, Object> map)
-    {
-        return getFromId((int) map.get("id"));
     }
 }

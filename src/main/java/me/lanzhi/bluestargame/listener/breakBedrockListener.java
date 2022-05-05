@@ -15,32 +15,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
-public class breakBedrockListener implements Listener
+public final class breakBedrockListener implements Listener
 {
     private static final ItemStack bedrock=new ItemStack(Material.BEDROCK);
     public static Map<Player, AbstractMap.SimpleEntry<Date, Block>> playerList=new HashMap<>();
     public static Set<Player> playerSet=new HashSet<>();
-
-    @EventHandler
-    public void onPlayerDamageBlock(BlockDamageEvent event)
-    {
-        if (!event.getBlock().getType().equals(Material.BEDROCK))
-        {
-            return;
-        }
-        if (!event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_PICKAXE))
-        {
-            return;
-        }
-        playerList.put(event.getPlayer(),new AbstractMap.SimpleEntry<>(Calendar.getInstance().getTime(),event.getBlock()));
-    }
-
-    @EventHandler
-    public void onPlayerDamageBlock(BlockDamageAbortEvent event)
-    {
-        playerList.remove(event.getPlayer());
-    }
-
     public static BukkitRunnable breakBedrock=new BukkitRunnable()
     {
         @Override
@@ -69,4 +48,24 @@ public class breakBedrockListener implements Listener
             }
         }
     };
+
+    @EventHandler
+    public void onPlayerDamageBlock(BlockDamageEvent event)
+    {
+        if (!event.getBlock().getType().equals(Material.BEDROCK))
+        {
+            return;
+        }
+        if (!event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_PICKAXE))
+        {
+            return;
+        }
+        playerList.put(event.getPlayer(),new AbstractMap.SimpleEntry<>(Calendar.getInstance().getTime(),event.getBlock()));
+    }
+
+    @EventHandler
+    public void onPlayerDamageBlock(BlockDamageAbortEvent event)
+    {
+        playerList.remove(event.getPlayer());
+    }
 }

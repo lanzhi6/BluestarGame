@@ -7,15 +7,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class BluestarGameListCommand implements CommandExecutor
+public final class BluestarGameListCommand implements CommandExecutor
 {
     private final BluestarGamePlugin plugin;
     private final RandomEventManger randomEventManger;
+
     public BluestarGameListCommand(BluestarGamePlugin plugin)
     {
         this.plugin=plugin;
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
+
     @Override
     public boolean onCommand(CommandSender sender,Command command,String label,String[] args)
     {

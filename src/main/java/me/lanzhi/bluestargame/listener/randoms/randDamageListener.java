@@ -13,10 +13,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class randDamageListener implements Listener
+public final class randDamageListener implements Listener
 {
     private final BluestarGamePlugin plugin;
     private final RandomEventManger randomEventManger;
+    EntityDamageEvent lastEvent=null;
 
     public randDamageListener(BluestarGamePlugin plugin)
     {
@@ -24,7 +25,6 @@ public class randDamageListener implements Listener
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
 
-    EntityDamageEvent lastEvent=null;
     @EventHandler(priority=EventPriority.HIGHEST)
     synchronized public void onEntityDamage(EntityDamageEvent event)
     {

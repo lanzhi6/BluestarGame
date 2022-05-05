@@ -13,13 +13,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-public class elevatorListener implements Listener
+public final class elevatorListener implements Listener
 {
     private final BluestarGamePlugin plugin;
+
     public elevatorListener(BluestarGamePlugin plugin)
     {
         this.plugin=plugin;
     }
+
     @EventHandler(priority=EventPriority.MONITOR)
     public void onPlayerMove(PlayerMoveEvent event)
     {
