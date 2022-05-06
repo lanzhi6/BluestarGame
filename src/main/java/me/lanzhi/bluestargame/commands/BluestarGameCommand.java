@@ -98,6 +98,20 @@ public final class BluestarGameCommand implements CommandExecutor, TabExecutor
             sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"格式错误!");
             return false;
         }
+        if (args[0].equals("onehealth"))
+        {
+            if (args[1].equals("true"))
+            {
+                randomEventManger.oneHealth(true);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为true");
+            }
+            else
+            {
+                randomEventManger.oneHealth(false);
+                sender.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已设置为false");
+            }
+            return true;
+        }
         if (args[0].equals("randdamage"))
         {
             if (args[1].equals("true"))
@@ -402,6 +416,7 @@ public final class BluestarGameCommand implements CommandExecutor, TabExecutor
             tablist.add("auto");
             tablist.add("spongeR");
             tablist.add("boom");
+            tablist.add("onehealth");
             if (sender.hasPermission("bluestargame.lanzhi"))
             {
                 tablist.add("newsponge");

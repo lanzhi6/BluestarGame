@@ -31,23 +31,23 @@ public final class RandomEventsChange extends BukkitRunnable
         }
         if (on==0)
         {
-            on=((int) (Math.random()*12)+1);
+            on=((int) (Math.random()*13)+1);
             if (Bukkit.getServer().getOnlinePlayers().size()<=0&&on!=4)
             {
                 randomEventManger.randomEvents=new RandomEventsChange(plugin,on);
-                randomEventManger.task=randomEventManger.randomEvents.runTaskLaterAsynchronously(plugin,12000);
+                randomEventManger.randomEventChangeTask=randomEventManger.randomEvents.runTaskLaterAsynchronously(plugin,12000);
                 return;
             }
             this.change(true);
             randomEventManger.randomEvents=new RandomEventsChange(plugin,on);
-            randomEventManger.task=randomEventManger.randomEvents.runTaskLaterAsynchronously(plugin,12000);
+            randomEventManger.randomEventChangeTask=randomEventManger.randomEvents.runTaskLaterAsynchronously(plugin,12000);
         }
         else
         {
             this.change(false);
             on=0;
             randomEventManger.randomEvents=new RandomEventsChange(plugin,on);
-            randomEventManger.task=randomEventManger.randomEvents.runTaskLaterAsynchronously(plugin,24000);
+            randomEventManger.randomEventChangeTask=randomEventManger.randomEvents.runTaskLaterAsynchronously(plugin,24000);
         }
     }
 
@@ -61,53 +61,76 @@ public final class RandomEventsChange extends BukkitRunnable
 
     public synchronized void change(boolean b)
     {
-        if (on==1)
+        switch (on)
         {
-            randomEventManger.randdamage(b);
-        }
-        else if (on==2)
-        {
-            randomEventManger.randchat(b);
-        }
-        else if (on==3)
-        {
-            randomEventManger.randsheep(b);
-        }
-        else if (on==4)
-        {
-            randomEventManger.the24(b);
-        }
-        else if (on==5)
-        {
-            randomEventManger.morediamond(b);
-        }
-        else if (on==6)
-        {
-            randomEventManger.morecoal(b);
-        }
-        else if (on==7)
-        {
-            randomEventManger.morecopper(b);
-        }
-        else if (on==8)
-        {
-            randomEventManger.moregold(b);
-        }
-        else if (on==9)
-        {
-            randomEventManger.moreemerald(b);
-        }
-        else if (on==10)
-        {
-            randomEventManger.morelapis(b);
-        }
-        else if (on==11)
-        {
-            randomEventManger.moreiron(b);
-        }
-        else if (on==12)
-        {
-            randomEventManger.respawn(b);
+            case 1:
+            {
+                randomEventManger.randdamage(b);
+                return;
+            }
+            case 2:
+            {
+                randomEventManger.randchat(b);
+                return;
+            }
+            case 3:
+            {
+                randomEventManger.randsheep(b);
+                return;
+            }
+            case 4:
+            {
+                randomEventManger.the24(b);
+                return;
+            }
+            case 5:
+            {
+                randomEventManger.morediamond(b);
+                return;
+            }
+            case 6:
+            {
+                randomEventManger.morecoal(b);
+                return;
+            }
+            case 7:
+            {
+                randomEventManger.morecopper(b);
+                return;
+            }
+            case 8:
+            {
+                randomEventManger.moregold(b);
+                return;
+            }
+            case 9:
+            {
+                randomEventManger.moreemerald(b);
+                return;
+            }
+            case 10:
+            {
+                randomEventManger.morelapis(b);
+                return;
+            }
+            case 11:
+            {
+                randomEventManger.moreiron(b);
+                return;
+            }
+            case 12:
+            {
+                randomEventManger.respawn(b);
+                return;
+            }
+            case 13:
+            {
+                randomEventManger.oneHealth(b);
+                return;
+            }
+            default:{
+
+            }
         }
     }
 

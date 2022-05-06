@@ -37,6 +37,8 @@ commands:
   xiaomobank:
     aliases:
       - xmbank
+  shape:
+    permission: bluestargame.use
   cmdbag:
     aliases:
       - commandbag

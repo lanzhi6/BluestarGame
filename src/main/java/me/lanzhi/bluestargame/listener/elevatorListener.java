@@ -7,11 +7,14 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public final class elevatorListener implements Listener
 {
@@ -30,24 +33,28 @@ public final class elevatorListener implements Listener
             return;
         }
         Location loc=event.getPlayer().getLocation();
-        Elevator ele=plugin.getBluestarGameManager().getElevator(loc);
-        if (ele!=null)
+        Player player=event.getPlayer();
+        new BukkitRunnable()
         {
-            for (long y=loc.getBlockY()+1;y<=ele.getMaxY();y++)
+            @Override
+            public void run()
             {
-                Location locc=loc.clone();
-                locc.setY(y);
-                Location loccc=loc.clone();
-                loccc.setY(y-1);
-                if ((!locc.getBlock().getType().isSolid()||locc.getBlock().getType().name().endsWith("SIGN"))&&(loccc.getBlock().getType().isSolid()&&!loccc.getBlock().getType().name().endsWith("SIGN")))
+                Location to=getTeleportLocation(loc,1);
+                if (to!=null)
                 {
-                    event.getPlayer().teleport(locc);
-                    event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"UP UPP UPPP!"));
-                    event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                    return;
+                    new BukkitRunnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            player.teleport(to,PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT);
+                            event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"UP UPP UPPP!"));
+                            event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                        }
+                    }.runTask(plugin);
                 }
             }
-        }
+        }.runTaskAsynchronously(plugin);
     }
 
     @EventHandler(priority=EventPriority.MONITOR)
@@ -58,10 +65,36 @@ public final class elevatorListener implements Listener
             return;
         }
         Location loc=event.getPlayer().getLocation();
+        Player player=event.getPlayer();
+        new BukkitRunnable()
+        {
+            @Override
+            public void run()
+            {
+                Location to=getTeleportLocation(loc,-1);
+                if (to!=null)
+                {
+                    new BukkitRunnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            player.teleport(to,PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT);
+                            event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"DOWN DOWWN DOWWWN!"));
+                            event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                        }
+                    }.runTask(plugin);
+                }
+            }
+        }.runTaskAsynchronously(plugin);
+    }
+
+    private Location getTeleportLocation(Location loc,long cnt)
+    {
         Elevator ele=plugin.getBluestarGameManager().getElevator(loc);
         if (ele!=null)
         {
-            for (long y=loc.getBlockY()-1;y>=ele.getMinY();y--)
+            for (long y=loc.getBlockY()+cnt;y<=ele.getMaxY()&&y>=ele.getMinY();y+=cnt)
             {
                 Location locc=loc.clone();
                 locc.setY(y);
@@ -69,13 +102,10 @@ public final class elevatorListener implements Listener
                 loccc.setY(y-1);
                 if ((!locc.getBlock().getType().isSolid()||locc.getBlock().getType().name().endsWith("SIGN"))&&(loccc.getBlock().getType().isSolid()&&!loccc.getBlock().getType().name().endsWith("SIGN")))
                 {
-                    event.getPlayer().teleport(locc);
-                    event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"DOWN DOWWN DOWWWN!"));
-                    event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                    return;
+                    return locc;
                 }
             }
         }
+        return null;
     }
-
 }

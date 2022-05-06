@@ -5,8 +5,8 @@ import me.lanzhi.bluestarapi.Api.config.YamlFile;
 import me.lanzhi.bluestargame.Type.CompressedCoal;
 import me.lanzhi.bluestargame.Type.Elevator;
 import me.lanzhi.bluestargame.Type.SuperSponge;
-import me.lanzhi.bluestargame.managers.BluestarGameManager;
 import me.lanzhi.bluestargame.listener.breakBedrockListener;
+import me.lanzhi.bluestargame.managers.BluestarGameManager;
 import me.lanzhi.bluestargame.register.CommandRegister;
 import me.lanzhi.bluestargame.register.ListenersRegister;
 import me.lanzhi.bluestargame.register.RecipeRegister;
@@ -31,11 +31,11 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
     private final File PlayerData;
     private final YamlFile PlayerMap;
     private final YamlFile Data;
-    private Economy econ;
     private final String messageHead=ChatColor.GOLD+"["+ChatColor.DARK_AQUA+"BluestarGame"+ChatColor.GOLD+"]";
     private final String errorMessageHead=messageHead+ChatColor.RED;
     private final SimpleDateFormat BluestarDateFormat;
     private final NumberFormat BluestarNF;
+    private Economy econ;
     private BluestarGameManager bluestarGameManager;
     private CommandRegister commandRegister;
     private ListenersRegister listenersRegister;
@@ -150,11 +150,13 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
     {
         return config;
     }
+
     @Override
     public void reloadConfig()
     {
         config.reload();
     }
+
     @Override
     public void saveConfig()
     {

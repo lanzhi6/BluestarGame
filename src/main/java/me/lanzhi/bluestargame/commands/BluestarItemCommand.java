@@ -23,32 +23,21 @@ import java.util.List;
 
 public final class BluestarItemCommand implements CommandExecutor, TabExecutor
 {
-    private static List<String> entityType=new ArrayList<>();
-
-    static
-    {
-        try
-        {
-            for (EntityType i: EntityType.values())
-            {
-                if (i.getName()==null)
-                {
-                    continue;
-                }
-                entityType.add(i.getName());
-            }
-        }
-        catch (Throwable e)
-        {
-            System.out.println("错误在初始化");
-        }
-    }
+    private final List<String> entityType=new ArrayList<>();
 
     private final BluestarGamePlugin plugin;
 
     public BluestarItemCommand(BluestarGamePlugin plugin)
     {
         this.plugin=plugin;
+        for (EntityType i: EntityType.values())
+        {
+            if (i.getName()==null)
+            {
+                continue;
+            }
+            entityType.add(i.getName());
+        }
     }
 
     @Override

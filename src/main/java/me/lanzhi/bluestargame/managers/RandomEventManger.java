@@ -4,15 +4,22 @@ import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargameapi.managers.RandomEventMangerInterface;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class RandomEventManger implements RandomEventMangerInterface
 {
     private final BluestarGamePlugin plugin;
     public int[] fourNum=new int[4];
-    public BukkitTask task=null;
+    public BukkitTask randomEventChangeTask=null;
+    public BukkitTask oneHealthTask=null;
+    public HashMap<Player, Double> oneHealth_playerHealth=new HashMap<>();
     public RandomEventsChange randomEvents;
 
     public RandomEventManger(BluestarGamePlugin plugin)
@@ -35,25 +42,25 @@ public final class RandomEventManger implements RandomEventMangerInterface
                 Bukkit.getServer().broadcastMessage(plugin.getMessageHead()+"随机事件自动切换已启用!");
             }
         }
-        if ((b)&&(task==null))
+        if ((b)&&(randomEventChangeTask==null))
         {
             randomEvents=new RandomEventsChange(plugin,0);
-            task=randomEvents.runTaskAsynchronously(plugin);
+            randomEventChangeTask=randomEvents.runTaskAsynchronously(plugin);
         }
-        else if ((!b)&&(task!=null))
+        else if ((!b)&&(randomEventChangeTask!=null))
         {
-            task.cancel();
+            randomEventChangeTask.cancel();
             randomEvents.stop();
-            task=null;
+            randomEventChangeTask=null;
         }
     }
 
     @Override
     public void end()
     {
-        if (task!=null)
+        if (randomEventChangeTask!=null)
         {
-            task.cancel();
+            randomEventChangeTask.cancel();
         }
     }
 
@@ -73,6 +80,7 @@ public final class RandomEventManger implements RandomEventMangerInterface
         moreemerald(b);
         moreredstone(b);
         respawn(b);
+        oneHealth(b);
     }
 
     @Override
@@ -411,6 +419,53 @@ public final class RandomEventManger implements RandomEventMangerInterface
         else
         {
             Bukkit.getServer().broadcastMessage(plugin.getMessageHead()+"复活已禁用!");
+        }
+    }
+
+    @Override
+    public boolean oneHealth()
+    {
+        return plugin.getData().getBoolean("oneHealth");
+    }
+
+    @Override
+    public void oneHealth(boolean b)
+    {
+        if (b==oneHealth())
+        {
+            return;
+        }
+        plugin.getData().set("oneHealth",b);
+        if (b)
+        {
+            for (Player player:Bukkit.getOnlinePlayers())
+            {
+                oneHealth_playerHealth.put(player,player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+                player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1);
+                player.setHealth(Math.min(player.getHealth(),1D));
+                oneHealthTask=new BukkitRunnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        for (Player player:oneHealth_playerHealth.keySet())
+                        {
+                            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1);
+                        }
+                    }
+                }.runTaskTimer(plugin,0,1);
+            }
+            Bukkit.broadcastMessage(plugin.getMessageHead()+"一滴血生存已启用!");
+        }
+        else
+        {
+            oneHealthTask.cancel();
+            for (Map.Entry<Player,Double> i:oneHealth_playerHealth.entrySet())
+            {
+                i.getKey().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(i.getValue());
+            }
+            oneHealth_playerHealth=new HashMap<>();
+            Bukkit.broadcastMessage(plugin.getMessageHead()+"一滴血生存已禁用!");
         }
     }
 

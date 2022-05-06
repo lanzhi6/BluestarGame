@@ -26,6 +26,7 @@ public final class ListenersRegister
         registerlistener(new opSwordListener(plugin));
         registerlistener(new arrowListener());
         registerlistener(new breakBedrockListener());
+        registerlistener(new oneHealthListener(plugin));
 
         registerlistener(new moreMineralListener(plugin));
         registerlistener(new randChatColorListener(plugin));
