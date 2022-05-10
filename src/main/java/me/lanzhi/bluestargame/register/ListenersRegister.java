@@ -26,7 +26,9 @@ public final class ListenersRegister
         registerlistener(new opSwordListener(plugin));
         registerlistener(new arrowListener());
         registerlistener(new breakBedrockListener());
-        registerlistener(new oneHealthListener(plugin));
+        registerlistener(new elevatorListener(plugin));
+        registerlistener(new effectListener());
+        registerlistener(new ChatColorListener());
 
         registerlistener(new moreMineralListener(plugin));
         registerlistener(new randChatColorListener(plugin));
@@ -34,7 +36,7 @@ public final class ListenersRegister
         registerlistener(new randSheepColorListener(plugin));
         registerlistener(new respawnListener(plugin));
         registerlistener(new the24PointListener(plugin));
-        registerlistener(new elevatorListener(plugin));
+        registerlistener(new oneHealthListener(plugin));
     }
 
     private void registerlistener(Listener listener)

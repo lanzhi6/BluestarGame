@@ -6,13 +6,13 @@
 
     <groupId>me.lanzhi</groupId>
     <artifactId>BluestarGame</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
     <packaging>jar</packaging>
 
     <name>BluestarGame</name>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -92,7 +92,7 @@
         <dependency>
             <groupId>com.github.lanzhi6</groupId>
             <artifactId>BluestarAPI</artifactId>
-            <version>2.0.1</version>
+            <version>2.1.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -104,7 +104,7 @@
         <dependency>
             <groupId>com.github.lanzhi6</groupId>
             <artifactId>BluestarGameAPI</artifactId>
-            <version>3.1</version>
+            <version>3.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

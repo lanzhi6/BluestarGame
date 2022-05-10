@@ -16,7 +16,7 @@ public final class arrowListener implements Listener
         x=Math.abs(x);
         y=Math.abs(y);
         z=Math.abs(z);
-        return Math.min(10D/x,Math.min(10D/y,10D/z));
+        return Math.min(10D/x,Math.min(10D/y,10D/z))-0.01D;
     }
 
     @EventHandler
@@ -34,7 +34,7 @@ public final class arrowListener implements Listener
         }
         String arrow=bluestarGame.getString("arrow");
         double v=bluestarGame.getDouble("arrowSpeed");
-        v=(v!=0)?v:1;
+        v=(v>0)?v:1;
         if (arrow==null)
         {
             return;
@@ -44,12 +44,12 @@ public final class arrowListener implements Listener
         {
             return;
         }
+        Vector vector=event.getProjectile().getVelocity().clone();
         if (EntityType.ARROW!=type)
         {
             Entity entity=event.getEntity().getWorld().spawnEntity(event.getProjectile().getLocation(),type,true);
             event.setProjectile(entity);
         }
-        Vector vector=event.getProjectile().getVelocity().clone();
         double vv=Math.min(v,decide(vector.getX(),vector.getY(),vector.getZ()));
         vector.setX(vector.getX()*vv).setY(vector.getY()*vv).setZ(vector.getZ()*vv);
         event.getProjectile().setVelocity(vector);

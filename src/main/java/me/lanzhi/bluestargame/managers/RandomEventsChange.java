@@ -31,7 +31,7 @@ public final class RandomEventsChange extends BukkitRunnable
         }
         if (on==0)
         {
-            on=((int) (Math.random()*13)+1);
+            on=((int) (Math.random()*12)+1);
             if (Bukkit.getServer().getOnlinePlayers().size()<=0&&on!=4)
             {
                 randomEventManger.randomEvents=new RandomEventsChange(plugin,on);
@@ -121,11 +121,6 @@ public final class RandomEventsChange extends BukkitRunnable
             case 12:
             {
                 randomEventManger.respawn(b);
-                return;
-            }
-            case 13:
-            {
-                randomEventManger.oneHealth(b);
                 return;
             }
             default:{

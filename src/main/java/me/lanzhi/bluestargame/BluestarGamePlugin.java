@@ -31,6 +31,7 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
     private final File PlayerData;
     private final YamlFile PlayerMap;
     private final YamlFile Data;
+    private final YamlFile Lang;
     private final String messageHead=ChatColor.GOLD+"["+ChatColor.DARK_AQUA+"BluestarGame"+ChatColor.GOLD+"]";
     private final String errorMessageHead=messageHead+ChatColor.RED;
     private final SimpleDateFormat BluestarDateFormat;
@@ -52,6 +53,7 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
         config=new YamlFile(new File(this.getDataFolder(),"config.yml"));
         PlayerMap=new YamlFile(new File(this.getDataFolder(),"playerMap.yml"));
         Data=new YamlFile(new File(this.getDataFolder(),"data.yml"));
+        Lang=new YamlFile(new File(this.getDataFolder(),"lang.yml"));
         PlayerData=new File(this.getDataFolder(),"PlayerData");
         PlayerData.mkdirs();
         BluestarDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -65,6 +67,7 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
         config.reload();
         PlayerMap.reload();
         Data.reload();
+        Lang.reload();
         bluestarGameManager=new BluestarGameManager(this);
         commandRegister=new CommandRegister(this);
         listenersRegister=new ListenersRegister(this);
@@ -104,6 +107,7 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
         Data.save();
         PlayerMap.save();
         config.save();
+        Lang.save();
         Bukkit.getServicesManager().unregisterAll(this);
         isEnable=false;
         System.out.println("BluestarGame已卸载");
@@ -176,6 +180,12 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
     }
 
     @Override
+    public YamlFile getLang()
+    {
+        return Lang;
+    }
+
+    @Override
     public BluestarGameManager getBluestarGameManager()
     {
         return bluestarGameManager;
@@ -199,6 +209,7 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
         return this;
     }
 
+    @Override
     public boolean isEnable()
     {
         return this.isEnable;

@@ -7,10 +7,7 @@ import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -80,7 +77,7 @@ public final class opSwordListener implements Listener
                 ((Damageable) event1.getDamager()).damage(Integer.MAX_VALUE,entity);
                 return;
             }
-            if (event1.getDamager() instanceof Arrow)
+            if (event1.getDamager() instanceof Projectile)
             {
                 ((Damageable) Bukkit.getEntity(new NBTEntity(event1.getDamager()).getUUID("Owner"))).damage(Integer.MAX_VALUE,entity);
                 return;

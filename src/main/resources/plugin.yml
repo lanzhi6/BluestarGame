@@ -55,6 +55,9 @@ permissions:
       bluestargame.lanzhi:
         description: 腐竹专属,用于腐竹自己调试插件,默认false
         default: false
+      bluestargame.color:
+        description: 使用颜色代码
+        default: op
 depend:
   - BluestarAPI
   - NBTAPI
