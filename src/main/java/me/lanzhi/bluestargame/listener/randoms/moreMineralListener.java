@@ -21,7 +21,7 @@ public final class moreMineralListener implements Listener
         this.randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
 
-    @EventHandler(priority=EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled=true,priority=EventPriority.MONITOR)
     public void onBlockDropItem(BlockDropItemEvent event)
     {
         if (randomEventManger.morediamond())

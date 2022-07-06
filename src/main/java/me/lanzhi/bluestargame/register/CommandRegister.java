@@ -22,5 +22,6 @@ public final class CommandRegister
         plugin.getCommand("elevator").setExecutor(new ElevatorCommand(plugin));
         plugin.getCommand("xiaomobank").setExecutor(new XiaoMoBankCommand(plugin));
         plugin.getCommand("cmdbag").setExecutor(new CmdBagCommand());
+        plugin.getCommand("setnick").setExecutor(new setNickCommand(plugin));
     }
 }

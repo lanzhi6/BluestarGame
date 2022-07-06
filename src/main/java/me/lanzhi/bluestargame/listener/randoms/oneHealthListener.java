@@ -1,6 +1,6 @@
 package me.lanzhi.bluestargame.listener.randoms;
 
-import me.lanzhi.bluestarapi.Api.config.YamlFile;
+import me.lanzhi.bluestarapi.api.config.YamlFile;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

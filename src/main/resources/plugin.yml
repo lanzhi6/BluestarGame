@@ -5,6 +5,7 @@ api-version: 1.18
 website: https://github.com/lanzhi6/BluestarGame
 author: lanzhi
 commands:
+  test:
   bluestargame:
     aliases:
       - bsgame
@@ -42,6 +43,9 @@ commands:
   cmdbag:
     aliases:
       - commandbag
+  setnick:
+    aliases:
+      - nick
 permissions:
   bluestargame.*:
     description: 所有权限

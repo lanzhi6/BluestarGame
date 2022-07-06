@@ -1,7 +1,7 @@
 package me.lanzhi.bluestargame.Type;
 
-import me.lanzhi.bluestarapi.Api.config.AutoSerializeInterface;
-import me.lanzhi.bluestarapi.Api.config.SerializeAs;
+import me.lanzhi.bluestarapi.api.config.AutoSerializeInterface;
+import me.lanzhi.bluestarapi.api.config.SerializeAs;
 import org.bukkit.Location;
 
 @SerializeAs("BluestarGame.SuperSponge")

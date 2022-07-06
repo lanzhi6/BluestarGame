@@ -24,11 +24,14 @@ public final class ListenersRegister
         registerlistener(new HealthFixListener(plugin));
         registerlistener(new superSpongeListener(plugin));
         registerlistener(new opSwordListener(plugin));
+        registerlistener(new elevatorListener(plugin));
+        registerlistener(new setNickListener(plugin));
         registerlistener(new arrowListener());
         registerlistener(new breakBedrockListener());
-        registerlistener(new elevatorListener(plugin));
         registerlistener(new effectListener());
         registerlistener(new ChatColorListener());
+        registerlistener(new CompostListener());
+        registerlistener(new EasterEggListener());
 
         registerlistener(new moreMineralListener(plugin));
         registerlistener(new randChatColorListener(plugin));

@@ -1,7 +1,7 @@
 package me.lanzhi.bluestargame;
 
-import me.lanzhi.bluestarapi.Api.config.AutoSerialize;
-import me.lanzhi.bluestarapi.Api.config.YamlFile;
+import me.lanzhi.bluestarapi.api.config.AutoSerialize;
+import me.lanzhi.bluestarapi.api.config.YamlFile;
 import me.lanzhi.bluestargame.Type.CompressedCoal;
 import me.lanzhi.bluestargame.Type.Elevator;
 import me.lanzhi.bluestargame.Type.SuperSponge;
@@ -11,6 +11,7 @@ import me.lanzhi.bluestargame.register.CommandRegister;
 import me.lanzhi.bluestargame.register.ListenersRegister;
 import me.lanzhi.bluestargame.register.RecipeRegister;
 import me.lanzhi.bluestargameapi.BluestarGamePluginInterface;
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,6 +38,7 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
     private final SimpleDateFormat BluestarDateFormat;
     private final NumberFormat BluestarNF;
     private Economy econ;
+    private Chat chat;
     private BluestarGameManager bluestarGameManager;
     private CommandRegister commandRegister;
     private ListenersRegister listenersRegister;
@@ -73,6 +75,8 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
         listenersRegister=new ListenersRegister(this);
         recipeRegister=new RecipeRegister(this);
         econ=getServer().getServicesManager().load(Economy.class);
+        System.out.println(econ==null);
+        chat=getServer().getServicesManager().load(Chat.class);
 
         new Metrics(this,14294);
 
@@ -116,6 +120,11 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
     public Economy getEcon()
     {
         return econ;
+    }
+
+    public Chat getChat()
+    {
+        return chat;
     }
 
     @Override

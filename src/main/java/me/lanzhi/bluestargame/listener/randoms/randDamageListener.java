@@ -25,7 +25,7 @@ public final class randDamageListener implements Listener
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
 
-    @EventHandler(priority=EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled=true,priority=EventPriority.HIGHEST)
     synchronized public void onEntityDamage(EntityDamageEvent event)
     {
         if (event.equals(lastEvent))

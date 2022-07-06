@@ -2,7 +2,7 @@ package me.lanzhi.bluestargame.managers;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
-import me.lanzhi.bluestarapi.Api.Bluestar;
+import me.lanzhi.bluestarapi.api.Bluestar;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.Type.SuperSponge;
 import me.lanzhi.bluestargameapi.managers.SuperSpongeManagerInterface;

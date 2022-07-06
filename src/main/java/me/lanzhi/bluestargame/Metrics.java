@@ -14,7 +14,7 @@
  */
 package me.lanzhi.bluestargame;
 
-import me.lanzhi.bluestarapi.Api.config.YamlFile;
+import me.lanzhi.bluestarapi.api.config.YamlFile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;

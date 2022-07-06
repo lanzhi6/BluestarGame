@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public final class BluestarGameManager implements BluestarGameManagerInterface
@@ -29,6 +30,7 @@ public final class BluestarGameManager implements BluestarGameManagerInterface
     private final RandomEventManger randomEventManger;
     private final SuperSpongeManager superSpongeManager;
     private final BukkitTask effectTask;
+    private final ArrayList<Player> settingNick;
 
     public BluestarGameManager(BluestarGamePlugin plugin)
     {
@@ -41,6 +43,11 @@ public final class BluestarGameManager implements BluestarGameManagerInterface
         this.randomEventManger=new RandomEventManger(plugin);
         this.superSpongeManager=new SuperSpongeManager(plugin);
         this.effectTask=new Effect().runTaskTimer(plugin,0,95);
+        this.settingNick=new ArrayList<>();
+    }
+    public ArrayList<Player> getSettingNickPlayer()
+    {
+        return settingNick;
     }
 
     @Override

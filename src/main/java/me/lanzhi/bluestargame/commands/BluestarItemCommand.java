@@ -2,7 +2,7 @@ package me.lanzhi.bluestargame.commands;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
-import me.lanzhi.bluestarapi.Api.RGBChat;
+import me.lanzhi.bluestarapi.api.RGBColor;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,22 +13,21 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static me.lanzhi.bluestargame.listener.effectListener.effectEventType;
-
 import java.util.*;
+
+import static me.lanzhi.bluestargame.listener.effectListener.effectEventType;
 
 public final class BluestarItemCommand implements CommandExecutor, TabExecutor
 {
     private final List<String> entityType=new ArrayList<>();
     private final List<String> potionEffectType=new ArrayList<>();
-    private final Map<String,effectEventType> effectEvents=new HashMap<>();
+    private final Map<String, effectEventType> effectEvents=new HashMap<>();
     private final BluestarGamePlugin plugin;
     private ConfigurationSection effectLang;
     private ConfigurationSection entityLang;
@@ -356,7 +355,8 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                 }
                 else
                 {
-                    NBTCompound nbtCompound=item.addCompound("BluestarGame").addCompound(mod.name()).addCompound(type.getName());
+                    NBTCompound nbtCompound=item.addCompound("BluestarGame").addCompound(mod.name()).addCompound(
+                            type.getName());
                     nbtCompound.setInteger("s",l);
                     nbtCompound.setInteger("time",time*20);
                 }
@@ -383,7 +383,7 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                     builder.append(args[i]);
                 }
                 ItemMeta itemMeta=itemStack.getItemMeta();
-                itemMeta.setDisplayName(RGBChat.setColor(builder.toString().replaceAll("\"\""," ")));
+                itemMeta.setDisplayName(RGBColor.setColor(builder.toString().replaceAll("\"\""," ")));
                 itemStack.setItemMeta(itemMeta);
                 player.getInventory().setItemInMainHand(itemStack);
                 return true;
@@ -402,7 +402,8 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
     {
         if (args.length==1)
         {
-            return Arrays.asList("watersponge","lavasponge","usedwatersponge","usedlavasponge","effect","effectEvent","sword","bow","setname");
+            return Arrays.asList("watersponge","lavasponge","usedwatersponge","usedlavasponge","effect","effectEvent",
+                                 "sword","bow","setname");
         }
         if ("bow".equals(args[0]))
         {
@@ -460,17 +461,18 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
         {
             return itemStack;
         }
-        String c=RGBChat.toColorCode("888888");
+        String c=RGBColor.toColorCode("888888");
         if (bluestarGame.getCompound("effect")!=null)
         {
-            lore.add(c+"<===--- "+RGBChat.toColorCode("abcdef")+"手持或佩戴时效果"+c+" ---===>");
+            lore.add(c+"<===--- "+RGBColor.toColorCode("abcdef")+"手持或佩戴时效果"+c+" ---===>");
             NBTCompound compound=bluestarGame.getCompound("effect");
             for (String i: compound.getKeys())
             {
-                lore.add(ChatColor.GRAY+effectLang.getString(i.toLowerCase(),i.toLowerCase())+" "+compound.getInteger(i));
+                lore.add(ChatColor.GRAY+effectLang.getString(i.toLowerCase(),i.toLowerCase())+" "+compound.getInteger(
+                        i));
             }
         }
-        for (effectEventType i:effectEventType.values())
+        for (effectEventType i: effectEventType.values())
         {
             if (bluestarGame.getCompound(i.name())!=null)
             {
@@ -478,7 +480,9 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                 NBTCompound compound=bluestarGame.getCompound(i.name());
                 for (String j: compound.getKeys())
                 {
-                    lore.add(ChatColor.GRAY+effectLang.getString(j.toLowerCase(),j.toLowerCase())+" "+compound.addCompound(j).getInteger("s")+"  时间: "+(compound.addCompound(j).getInteger("time")/20));
+                    lore.add(ChatColor.GRAY+effectLang.getString(j.toLowerCase(),
+                                                                 j.toLowerCase())+" "+compound.addCompound(
+                            j).getInteger("s")+"  时间: "+(compound.addCompound(j).getInteger("time")/20));
                 }
             }
         }

@@ -1,5 +1,6 @@
 package me.lanzhi.bluestargame.managers;
 
+import me.lanzhi.bluestarapi.api.Bluestar;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -31,7 +32,7 @@ public final class RandomEventsChange extends BukkitRunnable
         }
         if (on==0)
         {
-            on=((int) (Math.random()*12)+1);
+            on=Bluestar.randomInt(12)+1;
             if (Bukkit.getServer().getOnlinePlayers().size()<=0&&on!=4)
             {
                 randomEventManger.randomEvents=new RandomEventsChange(plugin,on);
@@ -63,69 +64,19 @@ public final class RandomEventsChange extends BukkitRunnable
     {
         switch (on)
         {
-            case 1:
-            {
-                randomEventManger.randdamage(b);
-                return;
-            }
-            case 2:
-            {
-                randomEventManger.randchat(b);
-                return;
-            }
-            case 3:
-            {
-                randomEventManger.randsheep(b);
-                return;
-            }
-            case 4:
-            {
-                randomEventManger.the24(b);
-                return;
-            }
-            case 5:
-            {
-                randomEventManger.morediamond(b);
-                return;
-            }
-            case 6:
-            {
-                randomEventManger.morecoal(b);
-                return;
-            }
-            case 7:
-            {
-                randomEventManger.morecopper(b);
-                return;
-            }
-            case 8:
-            {
-                randomEventManger.moregold(b);
-                return;
-            }
-            case 9:
-            {
-                randomEventManger.moreemerald(b);
-                return;
-            }
-            case 10:
-            {
-                randomEventManger.morelapis(b);
-                return;
-            }
-            case 11:
-            {
-                randomEventManger.moreiron(b);
-                return;
-            }
-            case 12:
-            {
-                randomEventManger.respawn(b);
-                return;
-            }
-            default:{
-
-            }
+            case 1 -> randomEventManger.randdamage(b);
+            case 2 -> randomEventManger.randchat(b);
+            case 3 -> randomEventManger.randsheep(b);
+            case 4 -> randomEventManger.the24(b);
+            case 5 -> randomEventManger.morediamond(b);
+            case 6 -> randomEventManger.morecoal(b);
+            case 7 -> randomEventManger.morecopper(b);
+            case 8 -> randomEventManger.moregold(b);
+            case 9 -> randomEventManger.moreemerald(b);
+            case 10 -> randomEventManger.morelapis(b);
+            case 11 -> randomEventManger.moreiron(b);
+            case 12 -> randomEventManger.respawn(b);
+            default -> {}
         }
     }
 

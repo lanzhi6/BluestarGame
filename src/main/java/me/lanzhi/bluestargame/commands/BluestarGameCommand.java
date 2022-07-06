@@ -16,6 +16,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,14 +28,14 @@ public final class BluestarGameCommand implements CommandExecutor, TabExecutor
     private final BluestarGamePlugin plugin;
     private final RandomEventManger randomEventManger;
 
-    public BluestarGameCommand(BluestarGamePlugin plugin)
+    public BluestarGameCommand(@NotNull BluestarGamePlugin plugin)
     {
         this.plugin=plugin;
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
 
     @Override
-    public boolean onCommand(CommandSender sender,Command command,String label,String[] args)
+    public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,@NotNull String[] args)
     {
         if ("reload".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi"))
         {
@@ -340,7 +341,8 @@ public final class BluestarGameCommand implements CommandExecutor, TabExecutor
             r=Integer.parseInt(args[1]);
             Location locc=((Player) (sender)).getLocation();
             Location loc=new Location(locc.getWorld(),locc.getBlockX(),locc.getBlockY(),locc.getBlockZ());
-            plugin.getBluestarGameManager().getSuperSpongeManager().add(new SuperSponge(r,loc,sender.getName(),true,true));
+            plugin.getBluestarGameManager().getSuperSpongeManager().add(
+                    new SuperSponge(r,loc,sender.getName(),true,true));
             return true;
         }
         if ("makeboom".equals(args[0]))
@@ -399,24 +401,11 @@ public final class BluestarGameCommand implements CommandExecutor, TabExecutor
     {
         if (args.length==1)
         {
-            List<String> tablist=new ArrayList<>();
-            tablist.add("randdamage");
-            tablist.add("randchat");
-            tablist.add("randsheep");
-            tablist.add("24");
-            tablist.add("morediamond");
-            tablist.add("morecoal");
-            tablist.add("morecopper");
-            tablist.add("moreiron");
-            tablist.add("moregold");
-            tablist.add("moreemerald");
-            tablist.add("morelapis");
-            tablist.add("respawn");
-            tablist.add("all");
-            tablist.add("auto");
-            tablist.add("spongeR");
-            tablist.add("boom");
-            tablist.add("onehealth");
+            List<String> tablist=new ArrayList<>(
+                    Arrays.asList("randdamage","randchat","randsheep","24","morediamond","morecoal","morecopper",
+                                  "moreiron","moregold","moreemerald","morelapis","respawn","all","auto","spongeR",
+                                  "boom","onehealth"
+                                 ));
             if (sender.hasPermission("bluestargame.lanzhi"))
             {
                 tablist.add("newsponge");

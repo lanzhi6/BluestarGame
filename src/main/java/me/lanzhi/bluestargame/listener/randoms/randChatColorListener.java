@@ -1,10 +1,8 @@
 package me.lanzhi.bluestargame.listener.randoms;
 
-import me.lanzhi.bluestarapi.Api.RGBChat;
+import me.lanzhi.bluestarapi.api.RGBColor;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
-import me.lanzhi.bluestargame.listener.ChatColorListener;
 import me.lanzhi.bluestargame.managers.RandomEventManger;
-import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -30,6 +28,6 @@ public final class randChatColorListener implements Listener
         {
             return;
         }
-        event.setMessage(new RGBChat(Math.abs(ThreadLocalRandom.current().nextInt()%0xffffff))+message);
+        event.setMessage(new RGBColor(Math.abs(ThreadLocalRandom.current().nextInt()%0xffffff))+message);
     }
 }

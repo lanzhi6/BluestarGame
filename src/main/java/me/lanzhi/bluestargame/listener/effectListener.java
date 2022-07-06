@@ -3,9 +3,8 @@ package me.lanzhi.bluestargame.listener;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTItem;
-import me.lanzhi.bluestarapi.Api.RGBChat;
+import me.lanzhi.bluestarapi.api.RGBColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -69,6 +68,7 @@ public final class effectListener implements Listener
         setEffect(event.getDamager(),inventory.getLeggings(),effectEventType.DamageEntityToUs);
         setEffect(event.getDamager(),inventory.getHelmet(),effectEventType.DamageEntityToUs);
     }
+
     @EventHandler(priority=EventPriority.MONITOR)
     public void onPlayerDamage(EntityDamageEvent event)
     {
@@ -98,9 +98,11 @@ public final class effectListener implements Listener
             entity=Bukkit.getEntity(new NBTEntity(entity).getUUID("Owner"));
         }
         NBTCompound effect=new NBTItem(itemStack).addCompound("BluestarGame").addCompound(type.name());
-        for (String i:effect.getKeys())
+        for (String i: effect.getKeys())
         {
-            ((LivingEntity)entity).addPotionEffect(new PotionEffect(PotionEffectType.getByName(i),effect.addCompound(i).getInteger("time"),effect.addCompound(i).getInteger("s")));
+            ((LivingEntity) entity).addPotionEffect(
+                    new PotionEffect(PotionEffectType.getByName(i),effect.addCompound(i).getInteger("time"),
+                                     effect.addCompound(i).getInteger("s")));
         }
     }
 
@@ -126,11 +128,33 @@ public final class effectListener implements Listener
          * 被生物击中给予对方
          */
         DamageByEntityToIt(5);
+        private final static Map<Integer, effectEventType> byId=new HashMap<>();
+        private final static Map<String, effectEventType> byName=new HashMap<>();
+
+        static
+        {
+            for (effectEventType i: values())
+            {
+                byId.put(i.id,i);
+                byName.put(i.name().toLowerCase(),i);
+            }
+        }
+
         private final int id;
 
         effectEventType(int id)
         {
             this.id=id;
+        }
+
+        public static effectEventType getById(int id)
+        {
+            return byId.get(id);
+        }
+
+        public static effectEventType getByName(String name)
+        {
+            return byName.get(name.toLowerCase());
         }
 
         public int getId()
@@ -144,48 +168,28 @@ public final class effectListener implements Listener
             {
                 case 1:
                 {
-                    return RGBChat.toColorCode("123456")+"非生物导致受伤时";
+                    return RGBColor.toColorCode("123456")+"非生物导致受伤时";
                 }
                 case 2:
                 {
-                    return RGBChat.toColorCode("523456")+"被生物击中受伤时";
+                    return RGBColor.toColorCode("523456")+"被生物击中受伤时";
                 }
                 case 3:
                 {
-                    return RGBChat.toColorCode("12f456")+"使生物受到伤害时";
+                    return RGBColor.toColorCode("12f456")+"使生物受到伤害时";
                 }
                 case 4:
                 {
-                    return RGBChat.toColorCode("12f4c6")+"击中生物时给予它";
+                    return RGBColor.toColorCode("12f4c6")+"击中生物时给予它";
                 }
                 case 5:
                 {
-                    return RGBChat.toColorCode("c234f6")+"被击中时给予生物";
+                    return RGBColor.toColorCode("c234f6")+"被击中时给予生物";
                 }
                 default:
                 {
                     return "";
                 }
-            }
-        }
-
-        public static effectEventType getById(int id)
-        {
-            return byId.get(id);
-        }
-        public static effectEventType getByName(String name)
-        {
-            return byName.get(name.toLowerCase());
-        }
-
-        private final static Map<Integer,effectEventType>byId=new HashMap<>();
-        private final static Map<String,effectEventType>byName=new HashMap<>();
-        static
-        {
-            for (effectEventType i:values())
-            {
-                byId.put(i.id,i);
-                byName.put(i.name().toLowerCase(),i);
             }
         }
     }

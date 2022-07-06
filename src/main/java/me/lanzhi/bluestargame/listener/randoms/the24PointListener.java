@@ -7,6 +7,7 @@ import me.lanzhi.bluestarqq.events.QQChatEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -24,7 +25,7 @@ public final class the24PointListener implements Listener
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
     public void onChatFor24(AsyncPlayerChatEvent event)
     {
         new BukkitRunnable()
@@ -34,16 +35,19 @@ public final class the24PointListener implements Listener
             {
                 if (decide(event.getMessage()))
                 {
-                    org.bukkit.Bukkit.getServer().broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+event.getPlayer().getName()+"答案正确!");
+                    org.bukkit.Bukkit.getServer().broadcastMessage(
+                            plugin.getMessageHead()+ChatColor.YELLOW+event.getPlayer().getName()+"答案正确!");
                     org.bukkit.Bukkit.getServer().broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
-                    me.lanzhi.bluestarapi.Api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),"eco give "+event.getPlayer().getName()+" 1000",plugin);
+                    me.lanzhi.bluestarapi.api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
+                                                                  "eco give "+event.getPlayer().getName()+" 1000",
+                                                                  plugin);
                     randomEventManger.the24(false);
                 }
             }
         }.runTaskAsynchronously(plugin);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
     public void onQQChatFor24(QQChatEvent event)
     {
         new BukkitRunnable()
@@ -56,14 +60,22 @@ public final class the24PointListener implements Listener
                     String uuid=MiraiMC.getBinding(event.getSenderId());
                     if (uuid==null||"".equals(uuid))
                     {
-                        event.getGroup().sendMessageMirai("[mirai:at:"+event.getSenderId()+"] 您可能在参与24点,且答案正确,但您还未绑定Minecraft账号,请绑定");
-                        org.bukkit.Bukkit.getServer().broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+event.getSenderName()+"答案正确!");
+                        event.getGroup().sendMessageMirai(
+                                "[mirai:at:"+event.getSenderId()+"] 您可能在参与24点,且答案正确,但您还未绑定Minecraft账号,请绑定");
+                        org.bukkit.Bukkit.getServer().broadcastMessage(
+                                plugin.getMessageHead()+ChatColor.YELLOW+event.getSenderName()+"答案正确!");
                     }
                     else
                     {
-                        org.bukkit.Bukkit.getServer().broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName()+"答案正确!");
-                        org.bukkit.Bukkit.getServer().broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
-                        me.lanzhi.bluestarapi.Api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),"eco give "+Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName()+" 1000",plugin);
+                        org.bukkit.Bukkit.getServer().broadcastMessage(
+                                plugin.getMessageHead()+ChatColor.YELLOW+Bukkit.getOfflinePlayer(
+                                        UUID.fromString(uuid)).getName()+"答案正确!");
+                        org.bukkit.Bukkit.getServer().broadcastMessage(
+                                plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
+                        me.lanzhi.bluestarapi.api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
+                                                                      "eco give "+Bukkit.getOfflinePlayer(
+                                                                              UUID.fromString(uuid)).getName()+" 1000",
+                                                                      plugin);
                     }
                     randomEventManger.the24(false);
                 }

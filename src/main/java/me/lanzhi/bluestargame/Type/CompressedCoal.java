@@ -41,38 +41,34 @@ public enum CompressedCoal implements ConfigurationSerializable
         ItemMeta meta=itemm.getItemMeta();
         switch (id)
         {
-            case 1:
-            {
+            case 1 -> {
                 meta.setDisplayName(ChatColor.GOLD+"烧制煤炭");
-                allowRecipe=Collections.singletonList(new NamespacedKey(Bukkit.getPluginManager().getPlugin("BluestarGame"),"compressed_coal"));
+                allowRecipe=Collections.singletonList(
+                        new NamespacedKey(Bukkit.getPluginManager().getPlugin("BluestarGame"),"compressed_coal"));
                 itemm.setItemMeta(meta);
                 item=new NBTItem(itemm);
                 item.addCompound("BluestarGame").setInteger("coal",id);
                 this.id=id;
-                break;
             }
-            case 2:
-            {
+            case 2 -> {
                 meta.setDisplayName(ChatColor.GOLD+"压缩煤炭");
-                allowRecipe=Collections.singletonList(new NamespacedKey(Bukkit.getPluginManager().getPlugin("BluestarGame"),"fired_compressed_coal"));
+                allowRecipe=Collections.singletonList(
+                        new NamespacedKey(Bukkit.getPluginManager().getPlugin("BluestarGame"),"fired_compressed_coal"));
                 itemm.setItemMeta(meta);
                 item=new NBTItem(itemm);
                 item.addCompound("BluestarGame").setInteger("coal",id);
                 this.id=id;
-                break;
             }
-            case 3:
-            {
+            case 3 -> {
                 meta.setDisplayName(ChatColor.GOLD+"烧制压缩煤炭");
-                allowRecipe=Collections.singletonList(new NamespacedKey(Bukkit.getPluginManager().getPlugin("BluestarGame"),"coal_diamond"));
+                allowRecipe=Collections.singletonList(
+                        new NamespacedKey(Bukkit.getPluginManager().getPlugin("BluestarGame"),"coal_diamond"));
                 itemm.setItemMeta(meta);
                 item=new NBTItem(itemm);
                 item.addCompound("BluestarGame").setInteger("coal",id);
                 this.id=id;
-                break;
             }
-            default:
-            {
+            default -> {
                 this.allowRecipe=null;
                 this.id=0;
                 this.item=null;

@@ -23,10 +23,10 @@ public final class randSheepColorListener implements Listener
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
 
-    @EventHandler(priority=EventPriority.HIGH)
+    @EventHandler(ignoreCancelled=true, priority=EventPriority.HIGH)
     public void onSheepDyeWool(SheepDyeWoolEvent event)
     {
-        if ((!randomEventManger.randsheep())||(event.isCancelled()))
+        if ((!randomEventManger.randsheep()))
         {
             return;
         }
@@ -40,10 +40,10 @@ public final class randSheepColorListener implements Listener
         }
     }
 
-    @EventHandler(priority=EventPriority.HIGH)
+    @EventHandler(ignoreCancelled=true, priority=EventPriority.HIGH)
     public void onItemSpawn(ItemSpawnEvent event)
     {
-        if ((!randomEventManger.randsheep())||(event.isCancelled()))
+        if ((!randomEventManger.randsheep()))
         {
             return;
         }

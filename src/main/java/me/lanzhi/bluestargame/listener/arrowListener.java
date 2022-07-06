@@ -50,7 +50,7 @@ public final class arrowListener implements Listener
             Entity entity=event.getEntity().getWorld().spawnEntity(event.getProjectile().getLocation(),type,true);
             event.setProjectile(entity);
         }
-        double vv=Math.min(v,decide(vector.getX(),vector.getY(),vector.getZ()));
+        double vv=v;//Math.min(v,decide(vector.getX(),vector.getY(),vector.getZ()));
         vector.setX(vector.getX()*vv).setY(vector.getY()*vv).setZ(vector.getZ()*vv);
         event.getProjectile().setVelocity(vector);
     }
