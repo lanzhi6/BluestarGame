@@ -1,5 +1,6 @@
 package me.lanzhi.bluestargame.listener;
 
+import me.lanzhi.bluestarapi.api.GradientColor;
 import me.lanzhi.bluestarapi.api.RGBColor;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -39,7 +40,7 @@ public class setNickListener implements Listener
                 event.getPlayer().sendMessage(plugin.getErrorMessageHead()+"出现错误,请重试,或通知腐竹");
                 return;
             }
-            String nick=RGBColor.setColor(event.getMessage());
+            String nick=GradientColor.setColor(event.getMessage());
             if (nick.indexOf(' ')>=0)
             {
                 event.getPlayer().sendMessage(plugin.getErrorMessageHead()+"错误!,名称中不能饱和空格");

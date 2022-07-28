@@ -1,5 +1,6 @@
 package me.lanzhi.bluestargame;
 
+import me.lanzhi.bluestarapi.api.Bluestar;
 import me.lanzhi.bluestarapi.api.config.AutoSerialize;
 import me.lanzhi.bluestarapi.api.config.YamlFile;
 import me.lanzhi.bluestargame.Type.CompressedCoal;
@@ -15,6 +16,7 @@ import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -61,6 +63,9 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
         BluestarDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         BluestarNF=NumberFormat.getInstance();
         BluestarNF.setGroupingUsed(false);
+
+        PluginCommand pluginCommand=Bluestar.getCommandManager().newPluginCommand("test",this);
+        Bluestar.getCommandManager().registerPluginCommand(pluginCommand);
     }
 
     @Override
@@ -75,7 +80,6 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
         listenersRegister=new ListenersRegister(this);
         recipeRegister=new RecipeRegister(this);
         econ=getServer().getServicesManager().load(Economy.class);
-        System.out.println(econ==null);
         chat=getServer().getServicesManager().load(Chat.class);
 
         new Metrics(this,14294);

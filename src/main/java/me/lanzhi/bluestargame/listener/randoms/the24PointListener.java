@@ -25,7 +25,7 @@ public final class the24PointListener implements Listener
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
 
-    @EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled=true, priority=EventPriority.LOWEST)
     public void onChatFor24(AsyncPlayerChatEvent event)
     {
         new BukkitRunnable()
@@ -57,7 +57,7 @@ public final class the24PointListener implements Listener
             {
                 if (decide(event.getMessage()))
                 {
-                    String uuid=MiraiMC.getBinding(event.getSenderId());
+                    UUID uuid=MiraiMC.getBind(event.getSenderId());
                     if (uuid==null||"".equals(uuid))
                     {
                         event.getGroup().sendMessageMirai(
@@ -69,12 +69,12 @@ public final class the24PointListener implements Listener
                     {
                         org.bukkit.Bukkit.getServer().broadcastMessage(
                                 plugin.getMessageHead()+ChatColor.YELLOW+Bukkit.getOfflinePlayer(
-                                        UUID.fromString(uuid)).getName()+"答案正确!");
+                                        uuid).getName()+"答案正确!");
                         org.bukkit.Bukkit.getServer().broadcastMessage(
                                 plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
                         me.lanzhi.bluestarapi.api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
                                                                       "eco give "+Bukkit.getOfflinePlayer(
-                                                                              UUID.fromString(uuid)).getName()+" 1000",
+                                                                              uuid).getName()+" 1000",
                                                                       plugin);
                     }
                     randomEventManger.the24(false);

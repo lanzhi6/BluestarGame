@@ -1,5 +1,6 @@
 package me.lanzhi.bluestargame.commands;
 
+import me.lanzhi.bluestarapi.api.GradientColor;
 import me.lanzhi.bluestarapi.api.RGBColor;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import net.milkbowl.vault.chat.Chat;
@@ -51,7 +52,7 @@ public class setNickCommand implements CommandExecutor, TabExecutor
         player.sendMessage(plugin.getMessageHead()+"请在聊天区直接发送昵称,支持颜色");
         player.sendMessage(
                 plugin.getMessageHead()+"支持颜色符号:§1&1§2&2§3&3§4&4§5&5§6&6§7&7§8&8§9&9§0&0§a&a§b&b§c&c§d&d§e&e§f&f"+ChatColor.GOLD+",支持RGB:"+RGBColor.setColor(
-                        "#098765")+"#098765");
+                        "#098765")+"#098765"+ChatColor.GOLD+"支持渐变色: #abcdef-654321<"+GradientColor.colorText("abcdef","654321","需要染色的文本")+ChatColor.GOLD+">");
         player.sendMessage(plugin.getErrorMessageHead()+"设置昵称将花费1000,在聊天区发送需要的昵称后立即生效,概不退款。再次设置昵称可以覆盖,需要重新付款");
         player.sendMessage(plugin.getErrorMessageHead()+"若想取消此操作,请再次输入指令");
         players.add(player);

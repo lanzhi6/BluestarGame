@@ -35,7 +35,7 @@ public final class SuperSpongeManager implements SuperSpongeManagerInterface
             {
                 Location loc=sponge.getLocation();
                 int age=sponge.getAge();
-                Bluestar.setBlock(loc,Material.AIR,sponge.getPlayer());
+                loc.getBlock().setType(Material.AIR);
                 boolean iswater=sponge.getIswater();
                 boolean islava=sponge.getIslava();
                 if (age>1)
@@ -75,12 +75,14 @@ public final class SuperSpongeManager implements SuperSpongeManagerInterface
     {
         if (loc.getBlock().getType()==Material.WATER&&iswater)
         {
-            Bluestar.setBlock(loc,Material.END_STONE,player);
+            Bluestar.getMainManager().CoreLogRemoval(player,loc,Material.WATER,loc.getBlock().getBlockData());
+            loc.getBlock().setType(Material.END_STONE);
             nextSponges.add(new SuperSponge(age-1,loc,player,islava,true));
         }
         if (loc.getBlock().getType()==Material.LAVA&&islava)
         {
-            Bluestar.setBlock(loc,Material.OBSIDIAN,player);
+            Bluestar.getMainManager().CoreLogRemoval(player,loc,Material.LAVA,loc.getBlock().getBlockData());
+            loc.getBlock().setType(Material.OBSIDIAN);
             nextSponges.add(new SuperSponge(age-1,loc,player,true,iswater));
         }
     }

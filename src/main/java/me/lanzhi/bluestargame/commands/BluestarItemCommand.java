@@ -2,6 +2,7 @@ package me.lanzhi.bluestargame.commands;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
+import me.lanzhi.bluestarapi.api.GradientColor;
 import me.lanzhi.bluestarapi.api.RGBColor;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.ChatColor;
@@ -383,7 +384,52 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                     builder.append(args[i]);
                 }
                 ItemMeta itemMeta=itemStack.getItemMeta();
-                itemMeta.setDisplayName(RGBColor.setColor(builder.toString().replaceAll("\"\""," ")));
+                itemMeta.setDisplayName(GradientColor.setColor(builder.toString().replaceAll("\"\""," ")));
+                itemStack.setItemMeta(itemMeta);
+                player.getInventory().setItemInMainHand(itemStack);
+                return true;
+            }
+            case "addlore":
+            {
+                ItemStack itemStack=player.getInventory().getItemInMainHand();
+                if (itemStack==null||itemStack.getType().isAir())
+                {
+                    player.sendMessage(plugin.getErrorMessageHead()+"请手持任意物品");
+                    return true;
+                }
+                if (args.length<2)
+                {
+                    player.sendMessage(plugin.getErrorMessageHead()+"请输入物品说明");
+                    return true;
+                }
+                StringBuilder builder=new StringBuilder(args[1]);
+                for (int i=2;i<args.length;i++)
+                {
+                    builder.append(' ');
+                    builder.append(args[i]);
+                }
+                ItemMeta itemMeta=itemStack.getItemMeta();
+                List<String> lore=itemMeta.getLore();
+                if (lore==null)
+                {
+                    lore=new ArrayList<>();
+                }
+                lore.add(GradientColor.setColor(builder.toString().replaceAll("\"\""," ")));
+                itemMeta.setLore(lore);
+                itemStack.setItemMeta(itemMeta);
+                player.getInventory().setItemInMainHand(itemStack);
+                return true;
+            }
+            case "clearlore":
+            {
+                ItemStack itemStack=player.getInventory().getItemInMainHand();
+                if (itemStack==null||itemStack.getType().isAir())
+                {
+                    player.sendMessage(plugin.getErrorMessageHead()+"请手持任意物品");
+                    return true;
+                }
+                ItemMeta itemMeta=itemStack.getItemMeta();
+                itemMeta.setLore(null);
                 itemStack.setItemMeta(itemMeta);
                 player.getInventory().setItemInMainHand(itemStack);
                 return true;
@@ -396,14 +442,14 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
         }
     }
 
-    @Nullable
     @Override
+    @NotNull
     public List<String> onTabComplete(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,@NotNull String[] args)
     {
         if (args.length==1)
         {
             return Arrays.asList("watersponge","lavasponge","usedwatersponge","usedlavasponge","effect","effectEvent",
-                                 "sword","bow","setname");
+                                 "sword","bow","setname","addlore","clearlore");
         }
         if ("bow".equals(args[0]))
         {
@@ -444,6 +490,10 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
         if ("setname".equals(args[0]))
         {
             return Collections.singletonList("名字");
+        }
+        if ("addlore".equals(args[0]))
+        {
+            return Collections.singletonList("内容");
         }
         if (args.length==2)
         {
