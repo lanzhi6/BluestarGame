@@ -2,6 +2,8 @@ package me.lanzhi.bluestargame.commands;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.NBTReflectionUtil;
+import de.tr7zw.nbtapi.NBTType;
 import me.lanzhi.bluestarapi.api.GradientColor;
 import me.lanzhi.bluestarapi.api.RGBColor;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
@@ -18,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -76,7 +77,7 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
     @Override
     public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,@NotNull String[] args)
     {
-        if (!(sender instanceof Player))
+        if (!(sender instanceof Player player))
         {
             sender.sendMessage(ChatColor.RED+"此命令仅允许玩家输入!");
             return false;
@@ -86,7 +87,6 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
             sender.sendMessage(ChatColor.RED+"格式错误!");
             return false;
         }
-        Player player=(Player) sender;
         switch (args[0])
         {
             case "watersponge":
@@ -356,8 +356,7 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                 }
                 else
                 {
-                    NBTCompound nbtCompound=item.addCompound("BluestarGame").addCompound(mod.name()).addCompound(
-                            type.getName());
+                    NBTCompound nbtCompound=item.addCompound("BluestarGame").addCompound(mod.name()).addCompound(type.getName());
                     nbtCompound.setInteger("s",l);
                     nbtCompound.setInteger("time",time*20);
                 }
@@ -434,6 +433,23 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                 player.getInventory().setItemInMainHand(itemStack);
                 return true;
             }
+            case "getnbt":
+            {
+                ItemStack itemStack=player.getInventory().getItemInMainHand();
+                if (itemStack==null||itemStack.getType().isAir())
+                {
+                    player.sendMessage(plugin.getErrorMessageHead()+"请手持任意物品");
+                    return true;
+                }
+                NBTItem nbtItem=new NBTItem(itemStack);
+                player.sendMessage(plugin.getMessageHead()+"物品NBT:");
+                List<String> ls=getNBT(nbtItem,ChatColor.GOLD.toString());
+                for (String s: ls)
+                {
+                    player.sendMessage(s);
+                }
+                return true;
+            }
             default:
             {
                 player.sendMessage(plugin.getErrorMessageHead()+"格式错误");
@@ -448,8 +464,18 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
     {
         if (args.length==1)
         {
-            return Arrays.asList("watersponge","lavasponge","usedwatersponge","usedlavasponge","effect","effectEvent",
-                                 "sword","bow","setname","addlore","clearlore");
+            return Arrays.asList("watersponge",
+                                 "lavasponge",
+                                 "usedwatersponge",
+                                 "usedlavasponge",
+                                 "effect",
+                                 "effectEvent",
+                                 "sword",
+                                 "bow",
+                                 "setname",
+                                 "addlore",
+                                 "clearlore",
+                                 "getnbt");
         }
         if ("bow".equals(args[0]))
         {
@@ -518,8 +544,8 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
             NBTCompound compound=bluestarGame.getCompound("effect");
             for (String i: compound.getKeys())
             {
-                lore.add(ChatColor.GRAY+effectLang.getString(i.toLowerCase(),i.toLowerCase())+" "+compound.getInteger(
-                        i));
+                lore.add(ChatColor.GRAY+effectLang.getString(i.toLowerCase(),
+                                                             i.toLowerCase())+" "+compound.getInteger(i));
             }
         }
         for (effectEventType i: effectEventType.values())
@@ -531,8 +557,8 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                 for (String j: compound.getKeys())
                 {
                     lore.add(ChatColor.GRAY+effectLang.getString(j.toLowerCase(),
-                                                                 j.toLowerCase())+" "+compound.addCompound(
-                            j).getInteger("s")+"  时间: "+(compound.addCompound(j).getInteger("time")/20));
+                                                                 j.toLowerCase())+" "+compound.addCompound(j).getInteger(
+                            "s")+"  时间: "+(compound.addCompound(j).getInteger("time")/20));
                 }
             }
         }
@@ -567,5 +593,76 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
         meta.setLore(lore);
         itemStack.setItemMeta(meta);
         return itemStack;
+    }
+
+    private List<String> getNBT(Object object,String prefix)
+    {
+        List<String> list=new ArrayList<>();
+        if (object instanceof List<?> ls)
+        {
+            for (Object o: ls)
+            {
+                if (!(o instanceof List<?>)&&!(o instanceof NBTCompound))
+                {
+                    list.add(prefix+"- "+ChatColor.AQUA+getToString(o));
+                    continue;
+                }
+                list.add(prefix+"-");
+                list.addAll(getNBT(o,prefix+"  "));
+            }
+            return list;
+        }
+        if (object instanceof NBTCompound compound)
+        {
+            for (String s: compound.getKeys())
+            {
+                Object o=null;
+                switch (compound.getType(s))
+                {
+                    case NBTTagByte -> o=compound.getByte(s);
+                    case NBTTagInt -> o=compound.getInteger(s);
+                    case NBTTagShort -> o=compound.getShort(s);
+                    case NBTTagLong -> o=compound.getLong(s);
+                    case NBTTagFloat -> o=compound.getFloat(s);
+                    case NBTTagDouble -> o=compound.getDouble(s);
+                    case NBTTagByteArray -> o=compound.getByteArray(s);
+                    case NBTTagString -> o=compound.getString(s);
+                    case NBTTagList -> {
+                        switch (compound.getListType(s))
+                        {
+                            case NBTTagCompound -> o=compound.getCompoundList(s);
+                            case NBTTagLong -> o=compound.getLongList(s);
+                            case NBTTagInt -> o=compound.getIntegerList(s);
+                            case NBTTagDouble -> o=compound.getDoubleList(s);
+                            case NBTTagFloat -> o=compound.getFloatList(s);
+                            case NBTTagString -> o=compound.getStringList(s);
+                            case NBTTagIntArray -> o=compound.getIntArrayList(s);
+                        }
+                    }
+                    case NBTTagCompound -> o=compound.getCompound(s);
+                    case NBTTagIntArray -> o=compound.getIntArray(s);
+                    case NBTTagEnd -> o=compound.getObject(s,Object.class);
+                }
+                if (!(o instanceof List<?>)&&!(o instanceof NBTCompound))
+                {
+                    list.add(prefix+s+": "+ChatColor.AQUA+getToString(o));
+                    continue;
+                }
+                int[] is=new int[100];
+                Arrays.toString(is);
+                list.add(prefix+s+":");
+                list.addAll(getNBT(o,prefix+"  "));
+            }
+            return list;
+        }
+        return Collections.singletonList(prefix+object);
+    }
+    private String getToString(Object object)
+    {
+        if (object instanceof Object[])
+        {
+            return Arrays.toString((Object[])object);
+        }
+        return object.toString();
     }
 }

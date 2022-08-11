@@ -18,6 +18,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -106,10 +108,10 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
     @Override
     public void onDisable()
     {
+        Bukkit.getScheduler().cancelTasks(this);
         this.spongeTask.cancel();
         this.bedrockTask.cancel();
-        getBluestarGameManager().getRandomEventManger().end();
-        getBluestarGameManager().getRandomEventManger().all(false);
+        getBluestarGameManager().stop();
         recipeRegister.cancellationRecipes();
         Data.set("superSponges",getBluestarGameManager().getSuperSpongeManager().getSponges());
         Data.save();

@@ -25,7 +25,6 @@ public final class ListenersRegister
         registerlistener(new superSpongeListener(plugin));
         registerlistener(new opSwordListener(plugin));
         registerlistener(new elevatorListener(plugin));
-        registerlistener(new setNickListener(plugin));
         registerlistener(new arrowListener());
         registerlistener(new breakBedrockListener());
         registerlistener(new effectListener());

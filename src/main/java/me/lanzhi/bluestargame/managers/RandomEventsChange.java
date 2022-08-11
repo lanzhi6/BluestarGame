@@ -32,7 +32,7 @@ public final class RandomEventsChange extends BukkitRunnable
         }
         if (on==0)
         {
-            on=Bluestar.randomInt(12)+1;
+            on=Bluestar.getMainManager().randomInt(13)+1;
             if (Bukkit.getServer().getOnlinePlayers().size()<=0&&on!=4)
             {
                 randomEventManger.randomEvents=new RandomEventsChange(plugin,on);
@@ -75,7 +75,8 @@ public final class RandomEventsChange extends BukkitRunnable
             case 9 -> randomEventManger.moreemerald(b);
             case 10 -> randomEventManger.morelapis(b);
             case 11 -> randomEventManger.moreiron(b);
-            case 12 -> randomEventManger.respawn(b);
+            case 12 -> randomEventManger.moreredstone(b);
+            case 13 -> randomEventManger.oneHealth(b);
             default -> {}
         }
     }

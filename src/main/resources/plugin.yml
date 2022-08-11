@@ -6,6 +6,7 @@ website: https://github.com/lanzhi6/BluestarGame
 author: lanzhi
 commands:
   test:
+    permission: bluestargame.lanzhi
   bluestargame:
     aliases:
       - bsgame

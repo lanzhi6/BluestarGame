@@ -30,7 +30,6 @@ public final class BluestarGameManager implements BluestarGameManagerInterface
     private final RandomEventManger randomEventManger;
     private final SuperSpongeManager superSpongeManager;
     private final BukkitTask effectTask;
-    private final ArrayList<Player> settingNick;
 
     public BluestarGameManager(BluestarGamePlugin plugin)
     {
@@ -43,11 +42,6 @@ public final class BluestarGameManager implements BluestarGameManagerInterface
         this.randomEventManger=new RandomEventManger(plugin);
         this.superSpongeManager=new SuperSpongeManager(plugin);
         this.effectTask=new Effect().runTaskTimer(plugin,0,95);
-        this.settingNick=new ArrayList<>();
-    }
-    public ArrayList<Player> getSettingNickPlayer()
-    {
-        return settingNick;
     }
 
     @Override
@@ -103,6 +97,13 @@ public final class BluestarGameManager implements BluestarGameManagerInterface
     public BluestarGamePlugin getPlugin()
     {
         return plugin;
+    }
+
+    public void stop()
+    {
+        effectTask.cancel();
+        getRandomEventManger().end();
+        getRandomEventManger().all(false);
     }
 
     public static class Effect extends BukkitRunnable

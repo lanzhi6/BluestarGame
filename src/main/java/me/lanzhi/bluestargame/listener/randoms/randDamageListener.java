@@ -41,7 +41,7 @@ public final class randDamageListener implements Listener
         Entity entity=event.getEntity();
         double hurt=(Math.random()-0.3D)*event.getDamage()*5.0D;
         entity.sendMessage(plugin.getMessageHead()+"随机伤害");
-        entity.sendMessage(ChatColor.YELLOW+"原伤害:"+event.getDamage()+",随机伤害:"+hurt);
+        entity.sendMessage(ChatColor.YELLOW+"原伤害:"+event.getDamage()+",随机伤害:"+String.format("%.2f",hurt));
         if (hurt>0.0D)
         {
             event.setDamage(hurt);

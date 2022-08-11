@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 public final class elevatorListener implements Listener
 {
@@ -34,27 +34,13 @@ public final class elevatorListener implements Listener
         }
         Location loc=event.getPlayer().getLocation();
         Player player=event.getPlayer();
-        new BukkitRunnable()
+        Location to=getTeleportLocation(loc,1);
+        if (to!=null)
         {
-            @Override
-            public void run()
-            {
-                Location to=getTeleportLocation(loc,1);
-                if (to!=null)
-                {
-                    new BukkitRunnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            player.teleport(to,PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT);
-                            event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"UP UPP UPPP!"));
-                            event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                        }
-                    }.runTask(plugin);
-                }
-            }
-        }.runTaskAsynchronously(plugin);
+            player.teleport(to,PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT);
+            event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"UP UPP UPPP!"));
+            event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+        }
     }
 
     @EventHandler(priority=EventPriority.MONITOR)
@@ -66,27 +52,13 @@ public final class elevatorListener implements Listener
         }
         Location loc=event.getPlayer().getLocation();
         Player player=event.getPlayer();
-        new BukkitRunnable()
+        Location to=getTeleportLocation(loc,-1);
+        if (to!=null)
         {
-            @Override
-            public void run()
-            {
-                Location to=getTeleportLocation(loc,-1);
-                if (to!=null)
-                {
-                    new BukkitRunnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            player.teleport(to,PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT);
-                            event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"DOWN DOWWN DOWWWN!"));
-                            event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                        }
-                    }.runTask(plugin);
-                }
-            }
-        }.runTaskAsynchronously(plugin);
+            player.teleport(to,PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT);
+            event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"DOWN DOWWN DOWWWN!"));
+            event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+        }
     }
 
     private Location getTeleportLocation(Location loc,long cnt)
@@ -100,7 +72,8 @@ public final class elevatorListener implements Listener
                 locc.setY(y);
                 Location loccc=loc.clone();
                 loccc.setY(y-1);
-                if ((!locc.getBlock().getType().isSolid()||locc.getBlock().getType().name().endsWith("SIGN"))&&(loccc.getBlock().getType().isSolid()&&!loccc.getBlock().getType().name().endsWith("SIGN")))
+                if ((!locc.getBlock().getType().isSolid()||locc.getBlock().getType().name().endsWith("SIGN"))&&(loccc.getBlock().getType().isSolid()&&!loccc.getBlock().getType().name().endsWith(
+                        "SIGN")))
                 {
                     return locc;
                 }
