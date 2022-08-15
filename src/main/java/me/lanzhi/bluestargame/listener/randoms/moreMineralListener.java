@@ -21,12 +21,13 @@ public final class moreMineralListener implements Listener
         this.randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
 
-    @EventHandler(ignoreCancelled=true,priority=EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
     public void onBlockDropItem(BlockDropItemEvent event)
     {
         if (randomEventManger.morediamond())
         {
-            if ((event.getBlockState().getType()!=Material.DIAMOND_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_DIAMOND_ORE))
+            if ((event.getBlockState().getType()!=Material.DIAMOND_ORE)&&(event.getBlockState()
+                                                                               .getType()!=Material.DEEPSLATE_DIAMOND_ORE))
             {
                 return;
             }
@@ -48,7 +49,8 @@ public final class moreMineralListener implements Listener
         }
         if (randomEventManger.morecoal())
         {
-            if ((event.getBlockState().getType()!=Material.COAL_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_COAL_ORE))
+            if ((event.getBlockState().getType()!=Material.COAL_ORE)&&(event.getBlockState()
+                                                                            .getType()!=Material.DEEPSLATE_COAL_ORE))
             {
                 return;
             }
@@ -70,7 +72,8 @@ public final class moreMineralListener implements Listener
         }
         if (randomEventManger.moreredstone())
         {
-            if ((event.getBlockState().getType()!=Material.REDSTONE_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_REDSTONE_ORE))
+            if ((event.getBlockState().getType()!=Material.REDSTONE_ORE)&&(event.getBlockState()
+                                                                                .getType()!=Material.DEEPSLATE_REDSTONE_ORE))
             {
                 return;
             }
@@ -92,7 +95,8 @@ public final class moreMineralListener implements Listener
         }
         if (randomEventManger.morecopper())
         {
-            if ((event.getBlockState().getType()!=Material.COPPER_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_COPPER_ORE))
+            if ((event.getBlockState().getType()!=Material.COPPER_ORE)&&(event.getBlockState()
+                                                                              .getType()!=Material.DEEPSLATE_COPPER_ORE))
             {
                 return;
             }
@@ -114,7 +118,8 @@ public final class moreMineralListener implements Listener
         }
         if (randomEventManger.moregold())
         {
-            if ((event.getBlockState().getType()!=Material.GOLD_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_GOLD_ORE))
+            if ((event.getBlockState().getType()!=Material.GOLD_ORE)&&(event.getBlockState()
+                                                                            .getType()!=Material.DEEPSLATE_GOLD_ORE))
             {
                 return;
             }
@@ -136,7 +141,8 @@ public final class moreMineralListener implements Listener
         }
         if (randomEventManger.moreemerald())
         {
-            if ((event.getBlockState().getType()!=Material.EMERALD_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_EMERALD_ORE))
+            if ((event.getBlockState().getType()!=Material.EMERALD_ORE)&&(event.getBlockState()
+                                                                               .getType()!=Material.DEEPSLATE_EMERALD_ORE))
             {
                 return;
             }
@@ -158,7 +164,8 @@ public final class moreMineralListener implements Listener
         }
         if (randomEventManger.morelapis())
         {
-            if ((event.getBlockState().getType()!=Material.LAPIS_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_LAPIS_ORE))
+            if ((event.getBlockState().getType()!=Material.LAPIS_ORE)&&(event.getBlockState()
+                                                                             .getType()!=Material.DEEPSLATE_LAPIS_ORE))
             {
                 return;
             }
@@ -180,7 +187,8 @@ public final class moreMineralListener implements Listener
         }
         if (randomEventManger.moreiron())
         {
-            if ((event.getBlockState().getType()!=Material.IRON_ORE)&&(event.getBlockState().getType()!=Material.DEEPSLATE_IRON_ORE))
+            if ((event.getBlockState().getType()!=Material.IRON_ORE)&&(event.getBlockState()
+                                                                            .getType()!=Material.DEEPSLATE_IRON_ORE))
             {
                 return;
             }

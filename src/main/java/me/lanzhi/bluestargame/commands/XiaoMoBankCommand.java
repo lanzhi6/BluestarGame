@@ -74,12 +74,11 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
     @Override
     public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,@NotNull String[] args)
     {
-        if (!(sender instanceof Player))
+        if (!(sender instanceof Player player))
         {
             sender.sendMessage("此指令仅允许玩家输入");
             return true;
         }
-        Player player=(Player) sender;
         if (args.length<1)
         {
             sender.sendMessage(" ");
@@ -94,7 +93,9 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
             sender.sendMessage(plugin.getMessageHead()+"---------------------");
             sender.sendMessage(plugin.getMessageHead());
             sender.sendMessage(plugin.getMessageHead());
-            sender.sendMessage(plugin.getMessageHead()+"你拥有的钱: "+plugin.getNumberFormat().format(plugin.getEcon().getBalance(player)));
+            sender.sendMessage(plugin.getMessageHead()+"你拥有的钱: "+plugin.getNumberFormat()
+                                                                            .format(plugin.getEcon()
+                                                                                          .getBalance(player)));
             sender.sendMessage(plugin.getMessageHead()+"小末银行的业务:");
             sender.sendMessage(plugin.getMessageHead());
             sender.spigot().sendMessage(saveGui);
@@ -131,7 +132,9 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                 }
                 if (plugin.getData().getLong("bank.borrow."+player.getUniqueId()+".money")!=0)
                 {
-                    sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"您似乎有一笔金额为"+plugin.getData().getLong("bank.borrow."+player.getUniqueId()+".money")+"的贷款还未偿还,请向偿还再尝试贷款");
+                    sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"您似乎有一笔金额为"+plugin.getData()
+                                                                                                        .getLong(
+                                                                                                                "bank.borrow."+player.getUniqueId()+".money")+"的贷款还未偿还,请向偿还再尝试贷款");
                     return true;
                 }
                 if (money>1000000)
@@ -142,7 +145,9 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                 plugin.getEcon().depositPlayer(player,money);
                 plugin.getData().set("bank.borrow."+player.getUniqueId()+".money",money);
                 Calendar calendar=Calendar.getInstance();
-                plugin.getData().set("bank.borrow."+player.getUniqueId()+".time",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
+                plugin.getData()
+                      .set("bank.borrow."+player.getUniqueId()+".time",
+                           new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
                 player.chat("/xmbank borrowgui");
                 break;
             }
@@ -161,7 +166,10 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                 }
                 plugin.getEcon().withdrawPlayer(player,repayMoney);
                 plugin.getData().set("bank.borrow."+player.getUniqueId(),null);
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"你成功还款: "+plugin.getNumberFormat().format(repayMoney)));
+                player.spigot()
+                      .sendMessage(ChatMessageType.ACTION_BAR,
+                                   new TextComponent(ChatColor.GREEN+"你成功还款: "+plugin.getNumberFormat()
+                                                                                          .format(repayMoney)));
                 player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
                 break;
             }
@@ -184,7 +192,9 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                 }
                 if (plugin.getData().getLong("bank.save."+player.getUniqueId()+".money")!=0)
                 {
-                    sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"您似乎有一笔金额为"+plugin.getData().getLong("bank.save."+player.getUniqueId()+".money")+"的存款还未取出,请向取出再尝试存款");
+                    sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"您似乎有一笔金额为"+plugin.getData()
+                                                                                                        .getLong(
+                                                                                                                "bank.save."+player.getUniqueId()+".money")+"的存款还未取出,请向取出再尝试存款");
                     return true;
                 }
                 if (!plugin.getEcon().has(player,money))
@@ -195,7 +205,9 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                 plugin.getEcon().withdrawPlayer(player,money);
                 plugin.getData().set("bank.save."+player.getUniqueId()+".money",money);
                 Calendar calendar=Calendar.getInstance();
-                plugin.getData().set("bank.save."+player.getUniqueId()+".time",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
+                plugin.getData()
+                      .set("bank.save."+player.getUniqueId()+".time",
+                           new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
                 player.chat("/xmbank savegui");
                 break;
             }
@@ -209,7 +221,10 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                 double getMoney=bank.getShoutGet(player);
                 plugin.getEcon().depositPlayer(player,getMoney);
                 plugin.getData().set("bank.save."+player.getUniqueId(),null);
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"你成功取出存款: "+plugin.getNumberFormat().format(getMoney)));
+                player.spigot()
+                      .sendMessage(ChatMessageType.ACTION_BAR,
+                                   new TextComponent(ChatColor.GREEN+"你成功取出存款: "+plugin.getNumberFormat()
+                                                                                              .format(getMoney)));
                 player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
                 break;
             }
@@ -220,7 +235,9 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                     long money=bank.getBorrow(player);
                     double repayMoney=bank.getShoutRepay(player);
                     BaseComponent cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.RED+"还款"+ChatColor.DARK_GRAY+"]");
-                    cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("您需要还款"+plugin.getNumberFormat().format(repayMoney))));
+                    cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                                                     new Text("您需要还款"+plugin.getNumberFormat()
+                                                                                 .format(repayMoney))));
                     cmp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/cmdbag repay&gui"));
                     BaseComponent repay=new TextComponent(plugin.getMessageHead()+"      ");
                     repay.addExtra(cmp);
@@ -235,7 +252,9 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                     sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"       [小末银行]");
                     sender.sendMessage(plugin.getMessageHead()+"---------------------");
                     sender.spigot().sendMessage(back);
-                    sender.sendMessage(plugin.getMessageHead()+"你拥有的钱: "+plugin.getNumberFormat().format(plugin.getEcon().getBalance(player)));
+                    sender.sendMessage(plugin.getMessageHead()+"你拥有的钱: "+plugin.getNumberFormat()
+                                                                                    .format(plugin.getEcon()
+                                                                                                  .getBalance(player)));
                     sender.sendMessage(plugin.getMessageHead());
                     sender.sendMessage(plugin.getMessageHead()+"你在银行的贷款: "+money);
                     sender.sendMessage(plugin.getMessageHead());
@@ -258,7 +277,9 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                     sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"       [小末银行]");
                     sender.sendMessage(plugin.getMessageHead()+"---------------------");
                     sender.spigot().sendMessage(back);
-                    sender.sendMessage(plugin.getMessageHead()+"你拥有的钱: "+plugin.getNumberFormat().format(plugin.getEcon().getBalance(player)));
+                    sender.sendMessage(plugin.getMessageHead()+"你拥有的钱: "+plugin.getNumberFormat()
+                                                                                    .format(plugin.getEcon()
+                                                                                                  .getBalance(player)));
                     sender.sendMessage(plugin.getMessageHead());
                     sender.sendMessage(plugin.getMessageHead()+"你目前没有贷款(人生赢家)");
                     sender.sendMessage(plugin.getMessageHead());
@@ -277,7 +298,8 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                     long money=bank.getSave(player);
                     double getMoney=bank.getShoutGet(player);
                     BaseComponent cmp=new TextComponent(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"取款"+ChatColor.DARK_GRAY+"]");
-                    cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("您将会取出"+plugin.getNumberFormat().format(getMoney))));
+                    cmp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                                                     new Text("您将会取出"+plugin.getNumberFormat().format(getMoney))));
                     cmp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/cmdbag get&gui"));
                     BaseComponent get=new TextComponent(plugin.getMessageHead()+"      ");
                     get.addExtra(cmp);
@@ -292,7 +314,9 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                     sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"       [小末银行]");
                     sender.sendMessage(plugin.getMessageHead()+"---------------------");
                     sender.spigot().sendMessage(back);
-                    sender.sendMessage(plugin.getMessageHead()+"你拥有的钱: "+plugin.getNumberFormat().format(plugin.getEcon().getBalance(player)));
+                    sender.sendMessage(plugin.getMessageHead()+"你拥有的钱: "+plugin.getNumberFormat()
+                                                                                    .format(plugin.getEcon()
+                                                                                                  .getBalance(player)));
                     sender.sendMessage(plugin.getMessageHead());
                     sender.sendMessage(plugin.getMessageHead()+"你在银行的存款: "+money);
                     sender.sendMessage(plugin.getMessageHead());
@@ -315,7 +339,9 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                     sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"       [小末银行]");
                     sender.sendMessage(plugin.getMessageHead()+"---------------------");
                     sender.spigot().sendMessage(back);
-                    sender.sendMessage(plugin.getMessageHead()+"你拥有的钱: "+plugin.getNumberFormat().format(plugin.getEcon().getBalance(player)));
+                    sender.sendMessage(plugin.getMessageHead()+"你拥有的钱: "+plugin.getNumberFormat()
+                                                                                    .format(plugin.getEcon()
+                                                                                                  .getBalance(player)));
                     sender.sendMessage(plugin.getMessageHead());
                     sender.sendMessage(plugin.getMessageHead()+"你目前没有存款(好穷qwq)");
                     sender.sendMessage(plugin.getMessageHead());
@@ -343,7 +369,7 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
         }
         else if (args.length==2&&("borrow".equals(args[0])||"save".equals(args[0])))
         {
-            return Arrays.asList("<金额>");
+            return List.of("<金额>");
         }
         return new ArrayList<>();
     }

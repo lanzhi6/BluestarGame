@@ -1,15 +1,13 @@
 package me.lanzhi.bluestargame.listener;
 
-import me.lanzhi.bluestarapi.api.config.YamlFile;
+import me.lanzhi.api.config.YamlFile;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
-import me.lanzhi.bluestargame.managers.RandomEventManger;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -29,7 +27,8 @@ public final class HealthFixListener implements Listener
     {
         Player player=event.getPlayer();
         player.setHealthScaled(false);
-        YamlFile playerData=YamlFile.loadYamlFile(new File(plugin.getPlayerData(),event.getPlayer().getUniqueId()+".yml"));
+        YamlFile playerData=YamlFile.loadYamlFile(new File(plugin.getPlayerData(),
+                                                           event.getPlayer().getUniqueId()+".yml"));
         double health=playerData.getDouble("health");
         double maxHealth=playerData.getDouble("maxhealth");
         if (maxHealth!=0)
@@ -57,11 +56,13 @@ public final class HealthFixListener implements Listener
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event)
     {
-        YamlFile playerData=YamlFile.loadYamlFile(new File(plugin.getPlayerData(),event.getPlayer().getUniqueId()+".yml"));
+        YamlFile playerData=YamlFile.loadYamlFile(new File(plugin.getPlayerData(),
+                                                           event.getPlayer().getUniqueId()+".yml"));
         double maxhealth=event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         if (plugin.getBluestarGameManager().getRandomEventManger().oneHealth())
         {
-            maxhealth=plugin.getBluestarGameManager().getRandomEventManger().oneHealth_playerHealth.get(event.getPlayer());
+            maxhealth=plugin.getBluestarGameManager()
+                            .getRandomEventManger().oneHealth_playerHealth.get(event.getPlayer());
         }
         playerData.set("health",Math.min(event.getPlayer().getHealth(),maxhealth));
         playerData.set("maxhealth",maxhealth);

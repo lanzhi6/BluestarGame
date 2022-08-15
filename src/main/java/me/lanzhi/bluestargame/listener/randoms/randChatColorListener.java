@@ -1,20 +1,17 @@
 package me.lanzhi.bluestargame.listener.randoms;
 
-import me.lanzhi.bluestarapi.api.GradientColor;
-import me.lanzhi.bluestarapi.api.RGBColor;
+import me.lanzhi.api.GradientColor;
+import me.lanzhi.api.RGBColor;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.managers.RandomEventManger;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 public final class randChatColorListener implements Listener
 {
-    private RandomEventManger randomEventManger;
+    private final RandomEventManger randomEventManger;
 
     public randChatColorListener(BluestarGamePlugin plugin)
     {

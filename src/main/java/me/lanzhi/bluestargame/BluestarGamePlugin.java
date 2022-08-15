@@ -1,8 +1,8 @@
 package me.lanzhi.bluestargame;
 
-import me.lanzhi.bluestarapi.api.Bluestar;
-import me.lanzhi.bluestarapi.api.config.AutoSerialize;
-import me.lanzhi.bluestarapi.api.config.YamlFile;
+import me.lanzhi.api.Bluestar;
+import me.lanzhi.api.config.AutoSerialize;
+import me.lanzhi.api.config.YamlFile;
 import me.lanzhi.bluestargame.Type.CompressedCoal;
 import me.lanzhi.bluestargame.Type.Elevator;
 import me.lanzhi.bluestargame.Type.SuperSponge;
@@ -18,8 +18,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.event.server.PluginDisableEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;

@@ -1,11 +1,9 @@
 package me.lanzhi.bluestargame.commands;
 
-import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTItem;
-import de.tr7zw.nbtapi.NBTReflectionUtil;
-import de.tr7zw.nbtapi.NBTType;
-import me.lanzhi.bluestarapi.api.GradientColor;
-import me.lanzhi.bluestarapi.api.RGBColor;
+import me.lanzhi.api.GradientColor;
+import me.lanzhi.api.RGBColor;
+import me.lanzhi.api.nbt.NBTCompound;
+import me.lanzhi.api.nbt.NBTItem;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -102,7 +100,11 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                     {
                     }
                 }
-                ItemStack itemStack=plugin.getBluestarGameManager().getSuperSpongeManager().getWaterSponge().getItem().clone();
+                ItemStack itemStack=plugin.getBluestarGameManager()
+                                          .getSuperSpongeManager()
+                                          .getWaterSponge()
+                                          .getItem()
+                                          .clone();
                 itemStack.setAmount(cnt);
                 player.getInventory().addItem(itemStack);
                 player.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已为给予您 \"超级海绵\" ×"+cnt);
@@ -121,7 +123,11 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                     {
                     }
                 }
-                ItemStack itemStack=plugin.getBluestarGameManager().getSuperSpongeManager().getlavaSponge().getItem().clone();
+                ItemStack itemStack=plugin.getBluestarGameManager()
+                                          .getSuperSpongeManager()
+                                          .getlavaSponge()
+                                          .getItem()
+                                          .clone();
                 itemStack.setAmount(cnt);
                 player.getInventory().addItem(itemStack);
                 player.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已为给予您 \"岩浆海绵\" ×"+cnt);
@@ -140,7 +146,11 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                     {
                     }
                 }
-                ItemStack itemStack=plugin.getBluestarGameManager().getSuperSpongeManager().getUsedWaterSponge().getItem().clone();
+                ItemStack itemStack=plugin.getBluestarGameManager()
+                                          .getSuperSpongeManager()
+                                          .getUsedWaterSponge()
+                                          .getItem()
+                                          .clone();
                 itemStack.setAmount(cnt);
                 player.getInventory().addItem(setLore(itemStack));
                 player.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已为给予您 \"湿超级海绵\" ×"+cnt);
@@ -159,7 +169,11 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                     {
                     }
                 }
-                ItemStack itemStack=plugin.getBluestarGameManager().getSuperSpongeManager().getUsedLavaSponge().getItem().clone();
+                ItemStack itemStack=plugin.getBluestarGameManager()
+                                          .getSuperSpongeManager()
+                                          .getUsedLavaSponge()
+                                          .getItem()
+                                          .clone();
                 itemStack.setAmount(cnt);
                 player.getInventory().addItem(itemStack);
                 player.sendMessage(plugin.getMessageHead()+ChatColor.GREEN+"已为给予您 \"湿岩浆海绵\" ×"+cnt);
@@ -356,7 +370,9 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                 }
                 else
                 {
-                    NBTCompound nbtCompound=item.addCompound("BluestarGame").addCompound(mod.name()).addCompound(type.getName());
+                    NBTCompound nbtCompound=item.addCompound("BluestarGame")
+                                                .addCompound(mod.name())
+                                                .addCompound(type.getName());
                     nbtCompound.setInteger("s",l);
                     nbtCompound.setInteger("time",time*20);
                 }
@@ -557,8 +573,9 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                 for (String j: compound.getKeys())
                 {
                     lore.add(ChatColor.GRAY+effectLang.getString(j.toLowerCase(),
-                                                                 j.toLowerCase())+" "+compound.addCompound(j).getInteger(
-                            "s")+"  时间: "+(compound.addCompound(j).getInteger("time")/20));
+                                                                 j.toLowerCase())+" "+compound.addCompound(j)
+                                                                                              .getInteger("s")+"  时间: "+(compound.addCompound(
+                            j).getInteger("time")/20));
                 }
             }
         }
@@ -627,7 +644,8 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                     case NBTTagDouble -> o=compound.getDouble(s);
                     case NBTTagByteArray -> o=compound.getByteArray(s);
                     case NBTTagString -> o=compound.getString(s);
-                    case NBTTagList -> {
+                    case NBTTagList ->
+                    {
                         switch (compound.getListType(s))
                         {
                             case NBTTagCompound -> o=compound.getCompoundList(s);
@@ -657,11 +675,12 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
         }
         return Collections.singletonList(prefix+object);
     }
+
     private String getToString(Object object)
     {
         if (object instanceof Object[])
         {
-            return Arrays.toString((Object[])object);
+            return Arrays.toString((Object[]) object);
         }
         return object.toString();
     }

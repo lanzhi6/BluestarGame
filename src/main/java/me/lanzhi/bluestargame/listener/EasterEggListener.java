@@ -1,12 +1,12 @@
 package me.lanzhi.bluestargame.listener;
 
 import io.papermc.paper.event.player.PlayerNameEntityEvent;
-import me.lanzhi.bluestarapi.api.RGBColor;
+import me.lanzhi.api.RGBColor;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-public class EasterEggListener implements Listener
+public final class EasterEggListener implements Listener
 {
     @EventHandler(ignoreCancelled=true)
     public void onPlayerNameEntity(PlayerNameEntityEvent event)
@@ -15,8 +15,8 @@ public class EasterEggListener implements Listener
         {
             if (name.content().toLowerCase().contains("bluestar"))
             {
-                event.getPlayer().sendMessage(
-                        RGBColor.random()+"你好!恭喜你发现了一个隐藏的"+RGBColor.random()+"彩"+RGBColor.random()+"蛋!");
+                event.getPlayer()
+                     .sendMessage(RGBColor.random()+"你好!恭喜你发现了一个隐藏的"+RGBColor.random()+"彩"+RGBColor.random()+"蛋!");
             }
         }
     }

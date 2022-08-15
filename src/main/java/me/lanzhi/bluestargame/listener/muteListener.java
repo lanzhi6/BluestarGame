@@ -28,13 +28,19 @@ public final class muteListener implements Listener
         {
             return;
         }
-        if (plugin.getBluestarGameManager().getMuted().getKeys(false).contains(event.getPlayer().getUniqueId().toString()))
+        if (plugin.getBluestarGameManager()
+                  .getMuted()
+                  .getKeys(false)
+                  .contains(event.getPlayer().getUniqueId().toString()))
         {
             boolean isMuted=false;
             Date muted;
             try
             {
-                muted=plugin.getDateFormat().parse(plugin.getBluestarGameManager().getMuted().getString(event.getPlayer().getUniqueId().toString()));
+                muted=plugin.getDateFormat()
+                            .parse(plugin.getBluestarGameManager()
+                                         .getMuted()
+                                         .getString(event.getPlayer().getUniqueId().toString()));
             }
             catch (Throwable e)
             {

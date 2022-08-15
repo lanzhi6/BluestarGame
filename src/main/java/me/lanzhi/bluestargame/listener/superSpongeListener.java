@@ -1,7 +1,7 @@
 package me.lanzhi.bluestargame.listener;
 
-import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTItem;
+import me.lanzhi.api.nbt.NBTCompound;
+import me.lanzhi.api.nbt.NBTItem;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.Type.SuperSponge;
 import org.bukkit.event.EventHandler;
@@ -41,14 +41,24 @@ public final class superSpongeListener implements Listener
         {
             return;
         }
-        plugin.getBluestarGameManager().getSuperSpongeManager().add(new SuperSponge(plugin.getConfig().getInt("spongeR"),event.getBlock().getLocation(),event.getPlayer().getName(),bluestar.getInteger("lavaSponge")==1,bluestar.getInteger("waterSponge")==1));
+        plugin.getBluestarGameManager()
+              .getSuperSpongeManager()
+              .add(new SuperSponge(plugin.getConfig().getInt("spongeR"),
+                                   event.getBlock().getLocation(),
+                                   event.getPlayer().getName(),
+                                   bluestar.getInteger("lavaSponge")==1,
+                                   bluestar.getInteger("waterSponge")==1));
         if (bluestar.getInteger("lavaSponge")==1)
         {
-            event.getPlayer().getInventory().addItem(plugin.getBluestarGameManager().getSuperSpongeManager().getUsedLavaSponge().getItem());
+            event.getPlayer()
+                 .getInventory()
+                 .addItem(plugin.getBluestarGameManager().getSuperSpongeManager().getUsedLavaSponge().getItem());
         }
         else
         {
-            event.getPlayer().getInventory().addItem(plugin.getBluestarGameManager().getSuperSpongeManager().getUsedWaterSponge().getItem());
+            event.getPlayer()
+                 .getInventory()
+                 .addItem(plugin.getBluestarGameManager().getSuperSpongeManager().getUsedWaterSponge().getItem());
         }
     }
 }

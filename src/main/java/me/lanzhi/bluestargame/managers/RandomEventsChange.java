@@ -1,6 +1,6 @@
 package me.lanzhi.bluestargame.managers;
 
-import me.lanzhi.bluestarapi.api.Bluestar;
+import me.lanzhi.api.Bluestar;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -36,19 +36,22 @@ public final class RandomEventsChange extends BukkitRunnable
             if (Bukkit.getServer().getOnlinePlayers().size()<=0&&on!=4)
             {
                 randomEventManger.randomEvents=new RandomEventsChange(plugin,on);
-                randomEventManger.randomEventChangeTask=randomEventManger.randomEvents.runTaskLaterAsynchronously(plugin,12000);
+                randomEventManger.randomEventChangeTask=randomEventManger.randomEvents.runTaskLaterAsynchronously(plugin,
+                                                                                                                  12000);
                 return;
             }
             this.change(true);
             randomEventManger.randomEvents=new RandomEventsChange(plugin,on);
-            randomEventManger.randomEventChangeTask=randomEventManger.randomEvents.runTaskLaterAsynchronously(plugin,12000);
+            randomEventManger.randomEventChangeTask=randomEventManger.randomEvents.runTaskLaterAsynchronously(plugin,
+                                                                                                              12000);
         }
         else
         {
             this.change(false);
             on=0;
             randomEventManger.randomEvents=new RandomEventsChange(plugin,on);
-            randomEventManger.randomEventChangeTask=randomEventManger.randomEvents.runTaskLaterAsynchronously(plugin,24000);
+            randomEventManger.randomEventChangeTask=randomEventManger.randomEvents.runTaskLaterAsynchronously(plugin,
+                                                                                                              24000);
         }
     }
 
@@ -77,7 +80,9 @@ public final class RandomEventsChange extends BukkitRunnable
             case 11 -> randomEventManger.moreiron(b);
             case 12 -> randomEventManger.moreredstone(b);
             case 13 -> randomEventManger.oneHealth(b);
-            default -> {}
+            default ->
+            {
+            }
         }
     }
 

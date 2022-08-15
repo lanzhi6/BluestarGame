@@ -1,6 +1,6 @@
 package me.lanzhi.bluestargame.listener;
 
-import me.lanzhi.bluestarapi.api.Bluestar;
+import me.lanzhi.api.Bluestar;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -50,7 +50,7 @@ public final class breakBedrockListener implements Listener
         }
     };
 
-    @EventHandler(ignoreCancelled=true,priority=EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
     public void onPlayerDamageBlock(BlockDamageEvent event)
     {
         if (!event.getBlock().getType().equals(Material.BEDROCK))
@@ -61,10 +61,11 @@ public final class breakBedrockListener implements Listener
         {
             return;
         }
-        playerList.put(event.getPlayer(),new AbstractMap.SimpleEntry<>(Calendar.getInstance().getTime(),event.getBlock()));
+        playerList.put(event.getPlayer(),
+                       new AbstractMap.SimpleEntry<>(Calendar.getInstance().getTime(),event.getBlock()));
     }
 
-    @EventHandler(ignoreCancelled=true,priority=EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
     public void onPlayerDamageBlock(BlockDamageAbortEvent event)
     {
         playerList.remove(event.getPlayer());

@@ -59,7 +59,8 @@ public final class MutedCommand implements CommandExecutor, TabExecutor
                     }
                     if (mutedtime==null||mutedtime.after(date))
                     {
-                        sender.sendMessage("玩家: "+Bukkit.getOfflinePlayer(UUID.fromString(i)).getName()+" 截止日期:"+(mutedtime==null?"永远":time));
+                        sender.sendMessage("玩家: "+Bukkit.getOfflinePlayer(UUID.fromString(i))
+                                                          .getName()+" 截止日期:"+(mutedtime==null?"永远":time));
                     }
                     else
                     {

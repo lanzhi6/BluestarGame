@@ -14,7 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.jetbrains.annotations.NotNull;
 
 public final class elevatorListener implements Listener
 {
@@ -38,7 +37,9 @@ public final class elevatorListener implements Listener
         if (to!=null)
         {
             player.teleport(to,PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT);
-            event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"UP UPP UPPP!"));
+            event.getPlayer()
+                 .spigot()
+                 .sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"UP UPP UPPP!"));
             event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
         }
     }
@@ -56,7 +57,9 @@ public final class elevatorListener implements Listener
         if (to!=null)
         {
             player.teleport(to,PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT);
-            event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"DOWN DOWWN DOWWWN!"));
+            event.getPlayer()
+                 .spigot()
+                 .sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(ChatColor.GREEN+"DOWN DOWWN DOWWWN!"));
             event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
         }
     }
@@ -72,8 +75,16 @@ public final class elevatorListener implements Listener
                 locc.setY(y);
                 Location loccc=loc.clone();
                 loccc.setY(y-1);
-                if ((!locc.getBlock().getType().isSolid()||locc.getBlock().getType().name().endsWith("SIGN"))&&(loccc.getBlock().getType().isSolid()&&!loccc.getBlock().getType().name().endsWith(
-                        "SIGN")))
+                if ((!locc.getBlock().getType().isSolid()||locc.getBlock()
+                                                               .getType()
+                                                               .name()
+                                                               .endsWith("SIGN"))&&(loccc.getBlock()
+                                                                                         .getType()
+                                                                                         .isSolid()&&!loccc.getBlock()
+                                                                                                           .getType()
+                                                                                                           .name()
+                                                                                                           .endsWith(
+                                                                                                                   "SIGN")))
                 {
                     return locc;
                 }

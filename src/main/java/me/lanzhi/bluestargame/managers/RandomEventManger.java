@@ -438,7 +438,7 @@ public final class RandomEventManger implements RandomEventMangerInterface
         plugin.getData().set("oneHealth",b);
         if (b)
         {
-            for (Player player:Bukkit.getOnlinePlayers())
+            for (Player player: Bukkit.getOnlinePlayers())
             {
                 oneHealth_playerHealth.put(player,player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
                 player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1);
@@ -448,7 +448,7 @@ public final class RandomEventManger implements RandomEventMangerInterface
                     @Override
                     public void run()
                     {
-                        for (Player player:oneHealth_playerHealth.keySet())
+                        for (Player player: oneHealth_playerHealth.keySet())
                         {
                             player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1);
                         }
@@ -460,7 +460,7 @@ public final class RandomEventManger implements RandomEventMangerInterface
         else
         {
             oneHealthTask.cancel();
-            for (Map.Entry<Player,Double> i:oneHealth_playerHealth.entrySet())
+            for (Map.Entry<Player, Double> i: oneHealth_playerHealth.entrySet())
             {
                 i.getKey().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(i.getValue());
             }

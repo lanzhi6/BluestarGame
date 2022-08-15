@@ -1,13 +1,16 @@
 package me.lanzhi.bluestargame.listener;
 
-import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTEntity;
-import de.tr7zw.nbtapi.NBTItem;
+import me.lanzhi.api.nbt.NBTCompound;
+import me.lanzhi.api.nbt.NBTEntity;
+import me.lanzhi.api.nbt.NBTItem;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -29,11 +32,10 @@ public final class opSwordListener implements Listener
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerDamage(EntityDamageEvent event)
     {
-        if (!(event.getEntity() instanceof LivingEntity)||event.isCancelled())
+        if (!(event.getEntity() instanceof LivingEntity entity)||event.isCancelled())
         {
             return;
         }
-        LivingEntity entity=(LivingEntity) event.getEntity();
         if (entity.getEquipment()==null)
         {
             return;
@@ -69,9 +71,8 @@ public final class opSwordListener implements Listener
         catch (Throwable e)
         {
         }
-        if (event instanceof EntityDamageByEntityEvent)
+        if (event instanceof EntityDamageByEntityEvent event1)
         {
-            EntityDamageByEntityEvent event1=(EntityDamageByEntityEvent) event;
             if (event1.getDamager() instanceof Damageable)
             {
                 ((Damageable) event1.getDamager()).damage(Integer.MAX_VALUE,entity);
@@ -79,17 +80,18 @@ public final class opSwordListener implements Listener
             }
             if (event1.getDamager() instanceof Projectile)
             {
-                ((Damageable) Bukkit.getEntity(new NBTEntity(event1.getDamager()).getUUID("Owner"))).damage(Integer.MAX_VALUE,entity);
+                ((Damageable) Bukkit.getEntity(new NBTEntity(event1.getDamager()).getUUID("Owner"))).damage(Integer.MAX_VALUE,
+                                                                                                            entity);
                 return;
             }
-            System.out.println(event1.getDamager().getType().toString());
+            System.out.println(event1.getDamager().getType());
         }
     }
 
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onEntityDamageByPlayer(EntityDamageByEntityEvent event)
     {
-        if (!(event.getDamager() instanceof LivingEntity))
+        if (!(event.getDamager() instanceof LivingEntity entity))
         {
             return;
         }
@@ -97,7 +99,6 @@ public final class opSwordListener implements Listener
         {
             return;
         }
-        LivingEntity entity=(LivingEntity) event.getDamager();
         if (entity.getEquipment()==null)
         {
             return;

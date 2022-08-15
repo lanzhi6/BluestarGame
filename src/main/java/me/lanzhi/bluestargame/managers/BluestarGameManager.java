@@ -1,7 +1,7 @@
 package me.lanzhi.bluestargame.managers;
 
-import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTItem;
+import me.lanzhi.api.nbt.NBTCompound;
+import me.lanzhi.api.nbt.NBTItem;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.Type.Elevator;
 import me.lanzhi.bluestargame.api.BluestarGameApi;
@@ -18,7 +18,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 public final class BluestarGameManager implements BluestarGameManagerInterface
@@ -73,7 +72,8 @@ public final class BluestarGameManager implements BluestarGameManagerInterface
             {
                 continue;
             }
-            if (elevator.getWorld().equals(loc.getWorld())&&elevator.getMaxX()>=loc.getBlockX()&&elevator.getMinX()<=loc.getBlockX()&&elevator.getMaxZ()>=loc.getBlockZ()&&elevator.getMinZ()<=loc.getBlockZ()&&elevator.getMaxY()>=loc.getBlockY()&&elevator.getMinY()<=loc.getBlockY())
+            if (elevator.getWorld()
+                        .equals(loc.getWorld())&&elevator.getMaxX()>=loc.getBlockX()&&elevator.getMinX()<=loc.getBlockX()&&elevator.getMaxZ()>=loc.getBlockZ()&&elevator.getMinZ()<=loc.getBlockZ()&&elevator.getMaxY()>=loc.getBlockY()&&elevator.getMinY()<=loc.getBlockY())
             {
                 return elevator;
             }
@@ -116,7 +116,7 @@ public final class BluestarGameManager implements BluestarGameManagerInterface
             }
             NBTItem item=new NBTItem(itemStack);
             NBTCompound compound=item.addCompound("BluestarGame").addCompound("effect");
-            for (String i:compound.getKeys())
+            for (String i: compound.getKeys())
             {
                 PotionEffectType type=PotionEffectType.getByName(i);
                 if (type==null)
@@ -135,7 +135,7 @@ public final class BluestarGameManager implements BluestarGameManagerInterface
                 PlayerInventory inventory=player.getInventory();
                 set(player,inventory.getItemInMainHand());
                 set(player,inventory.getItemInOffHand());
-                for (ItemStack itemStack:inventory.getArmorContents())
+                for (ItemStack itemStack: inventory.getArmorContents())
                 {
                     set(player,itemStack);
                 }

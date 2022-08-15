@@ -1,7 +1,7 @@
 package me.lanzhi.bluestargame.listener;
 
-import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTItem;
+import me.lanzhi.api.nbt.NBTCompound;
+import me.lanzhi.api.nbt.NBTItem;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;

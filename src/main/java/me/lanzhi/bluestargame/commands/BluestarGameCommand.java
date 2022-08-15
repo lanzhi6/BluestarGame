@@ -53,9 +53,8 @@ public final class BluestarGameCommand implements CommandExecutor, TabExecutor
                 }
                 player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(Double.parseDouble(args[2]));
             }
-            else if (args.length==2&&sender instanceof Player)
+            else if (args.length==2&&sender instanceof Player player)
             {
-                Player player=(Player) sender;
                 player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(Double.parseDouble(args[1]));
             }
             else
@@ -341,8 +340,9 @@ public final class BluestarGameCommand implements CommandExecutor, TabExecutor
             r=Integer.parseInt(args[1]);
             Location locc=((Player) (sender)).getLocation();
             Location loc=new Location(locc.getWorld(),locc.getBlockX(),locc.getBlockY(),locc.getBlockZ());
-            plugin.getBluestarGameManager().getSuperSpongeManager().add(
-                    new SuperSponge(r,loc,sender.getName(),true,true));
+            plugin.getBluestarGameManager()
+                  .getSuperSpongeManager()
+                  .add(new SuperSponge(r,loc,sender.getName(),true,true));
             return true;
         }
         if ("makeboom".equals(args[0]))
@@ -401,11 +401,23 @@ public final class BluestarGameCommand implements CommandExecutor, TabExecutor
     {
         if (args.length==1)
         {
-            List<String> tablist=new ArrayList<>(
-                    Arrays.asList("randdamage","randchat","randsheep","24","morediamond","morecoal","morecopper",
-                                  "moreiron","moregold","moreemerald","morelapis","respawn","all","auto","spongeR",
-                                  "boom","onehealth"
-                                 ));
+            List<String> tablist=new ArrayList<>(Arrays.asList("randdamage",
+                                                               "randchat",
+                                                               "randsheep",
+                                                               "24",
+                                                               "morediamond",
+                                                               "morecoal",
+                                                               "morecopper",
+                                                               "moreiron",
+                                                               "moregold",
+                                                               "moreemerald",
+                                                               "morelapis",
+                                                               "respawn",
+                                                               "all",
+                                                               "auto",
+                                                               "spongeR",
+                                                               "boom",
+                                                               "onehealth"));
             if (sender.hasPermission("bluestargame.lanzhi"))
             {
                 tablist.add("newsponge");

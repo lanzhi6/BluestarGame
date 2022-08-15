@@ -1,8 +1,8 @@
 package me.lanzhi.bluestargame.commands;
 
-import me.lanzhi.bluestarapi.api.GradientColor;
-import me.lanzhi.bluestarapi.api.RGBColor;
-import me.lanzhi.bluestarapi.api.player.input.PlayerChatInput;
+import me.lanzhi.api.GradientColor;
+import me.lanzhi.api.RGBColor;
+import me.lanzhi.api.player.input.PlayerChatInput;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class setNickCommand implements CommandExecutor, TabExecutor
+public final class setNickCommand implements CommandExecutor, TabExecutor
 {
     private final BluestarGamePlugin plugin;
     private final Chat chat;
@@ -61,8 +61,8 @@ public class setNickCommand implements CommandExecutor, TabExecutor
         player.sendMessage(plugin.getMessageHead()+"请在 聊天中 直接发送昵称,支持颜色");
         player.sendMessage(plugin.getMessageHead()+"支持颜色符号:§1&1§2&2§3&3§4&4§5&5§6&6§7&7§8&8§9&9§0&0§a&a§b&b§c&c§d&d§e&e§f&f"+ChatColor.GOLD+",支持RGB:"+RGBColor.setColor(
                 "#098765")+"#098765"+ChatColor.GOLD+"支持渐变色: #abcdef-654321<"+GradientColor.colorText("abcdef",
-                                                                                                     "654321",
-                                                                                                     "需要染色的文本")+ChatColor.GOLD+">");
+                                                                                                          "654321",
+                                                                                                          "需要染色的文本")+ChatColor.GOLD+">");
         player.sendMessage(plugin.getErrorMessageHead()+"设置昵称将花费1000,在聊天区发送需要的昵称后立即生效,概不退款。再次设置昵称可以覆盖,需要重新付款");
 
         setNickInput.open(player);
@@ -83,8 +83,7 @@ public class setNickCommand implements CommandExecutor, TabExecutor
             player.sendMessage(plugin.getErrorMessageHead()+"你的钱不足1000");
             return;
         }
-        if (plugin.getEcon()
-                  .withdrawPlayer(player,1000).type!=EconomyResponse.ResponseType.SUCCESS)
+        if (plugin.getEcon().withdrawPlayer(player,1000).type!=EconomyResponse.ResponseType.SUCCESS)
         {
             player.sendMessage(plugin.getErrorMessageHead()+"出现错误,请重试,或通知腐竹");
             return;

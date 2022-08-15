@@ -35,12 +35,14 @@ public final class the24PointListener implements Listener
             {
                 if (decide(event.getMessage()))
                 {
-                    org.bukkit.Bukkit.getServer().broadcastMessage(
-                            plugin.getMessageHead()+ChatColor.YELLOW+event.getPlayer().getName()+"答案正确!");
-                    org.bukkit.Bukkit.getServer().broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
-                    me.lanzhi.bluestarapi.api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
-                                                                  "eco give "+event.getPlayer().getName()+" 1000",
-                                                                  plugin);
+                    org.bukkit.Bukkit.getServer()
+                                     .broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+event.getPlayer()
+                                                                                                     .getName()+"答案正确!");
+                    org.bukkit.Bukkit.getServer()
+                                     .broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
+                    me.lanzhi.api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
+                                                      "eco give "+event.getPlayer().getName()+" 1000",
+                                                      plugin);
                     randomEventManger.the24(false);
                 }
             }
@@ -60,22 +62,21 @@ public final class the24PointListener implements Listener
                     UUID uuid=MiraiMC.getBind(event.getSenderId());
                     if (uuid==null||"".equals(uuid))
                     {
-                        event.getGroup().sendMessageMirai(
-                                "[mirai:at:"+event.getSenderId()+"] 您可能在参与24点,且答案正确,但您还未绑定Minecraft账号,请绑定");
-                        org.bukkit.Bukkit.getServer().broadcastMessage(
-                                plugin.getMessageHead()+ChatColor.YELLOW+event.getSenderName()+"答案正确!");
+                        event.getGroup()
+                             .sendMessageMirai("[mirai:at:"+event.getSenderId()+"] 您可能在参与24点,且答案正确,但您还未绑定Minecraft账号,请绑定");
+                        org.bukkit.Bukkit.getServer()
+                                         .broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+event.getSenderName()+"答案正确!");
                     }
                     else
                     {
-                        org.bukkit.Bukkit.getServer().broadcastMessage(
-                                plugin.getMessageHead()+ChatColor.YELLOW+Bukkit.getOfflinePlayer(
-                                        uuid).getName()+"答案正确!");
-                        org.bukkit.Bukkit.getServer().broadcastMessage(
-                                plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
-                        me.lanzhi.bluestarapi.api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
-                                                                      "eco give "+Bukkit.getOfflinePlayer(
-                                                                              uuid).getName()+" 1000",
-                                                                      plugin);
+                        org.bukkit.Bukkit.getServer()
+                                         .broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+Bukkit.getOfflinePlayer(
+                                                 uuid).getName()+"答案正确!");
+                        org.bukkit.Bukkit.getServer()
+                                         .broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
+                        me.lanzhi.api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
+                                                          "eco give "+Bukkit.getOfflinePlayer(uuid).getName()+" 1000",
+                                                          plugin);
                     }
                     randomEventManger.the24(false);
                 }

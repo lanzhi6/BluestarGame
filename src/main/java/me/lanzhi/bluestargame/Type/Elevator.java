@@ -1,8 +1,8 @@
 package me.lanzhi.bluestargame.Type;
 
-import me.lanzhi.bluestarapi.api.config.AutoSerializeInterface;
-import me.lanzhi.bluestarapi.api.config.SerializeAs;
-import me.lanzhi.bluestarapi.api.config.SpecialSerialize;
+import me.lanzhi.api.config.AutoSerializeInterface;
+import me.lanzhi.api.config.SerializeAs;
+import me.lanzhi.api.config.SpecialSerialize;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 

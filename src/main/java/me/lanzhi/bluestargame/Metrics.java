@@ -14,7 +14,7 @@
  */
 package me.lanzhi.bluestargame;
 
-import me.lanzhi.bluestarapi.api.config.YamlFile;
+import me.lanzhi.api.config.YamlFile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -75,7 +75,19 @@ final public class Metrics
         boolean logErrors=config.getBoolean("bStats.logFailedRequests",false);
         boolean logSentData=config.getBoolean("bStats.logSentData",false);
         boolean logResponseStatusText=config.getBoolean("bStats.logResponseStatusText",false);
-        metricsBase=new MetricsBase("bukkit",serverUUID,14294,enabled,this::appendPlatformData,this::appendServiceData,submitDataTask->Bukkit.getScheduler().runTask(plugin,submitDataTask),plugin::isEnabled,(message,error)->this.plugin.getLogger().log(Level.WARNING,message,error),(message)->this.plugin.getLogger().log(Level.INFO,message),logErrors,logSentData,logResponseStatusText);
+        metricsBase=new MetricsBase("bukkit",
+                                    serverUUID,
+                                    14294,
+                                    enabled,
+                                    this::appendPlatformData,
+                                    this::appendServiceData,
+                                    submitDataTask->Bukkit.getScheduler().runTask(plugin,submitDataTask),
+                                    plugin::isEnabled,
+                                    (message,error)->this.plugin.getLogger().log(Level.WARNING,message,error),
+                                    (message)->this.plugin.getLogger().log(Level.INFO,message),
+                                    logErrors,
+                                    logSentData,
+                                    logResponseStatusText);
     }
 
     /**
@@ -114,7 +126,9 @@ final public class Metrics
             // This fixes java.lang.NoSuchMethodError:
             // org.bukkit.Bukkit.getOnlinePlayers()Ljava/util/Collection;
             Method onlinePlayersMethod=Class.forName("org.bukkit.Server").getMethod("getOnlinePlayers");
-            return onlinePlayersMethod.getReturnType().equals(Collection.class)?((Collection<?>) onlinePlayersMethod.invoke(Bukkit.getServer())).size():((Player[]) onlinePlayersMethod.invoke(Bukkit.getServer())).length;
+            return onlinePlayersMethod.getReturnType()
+                                      .equals(Collection.class)?((Collection<?>) onlinePlayersMethod.invoke(Bukkit.getServer())).size():((Player[]) onlinePlayersMethod.invoke(
+                    Bukkit.getServer())).length;
         }
         catch (Exception e)
         {
@@ -131,7 +145,9 @@ final public class Metrics
          */
         public static final String METRICS_VERSION="3.0.0";
 
-        private static final ScheduledExecutorService scheduler=Executors.newScheduledThreadPool(1,task->new Thread(task,"bStats-Metrics"));
+        private static final ScheduledExecutorService scheduler=Executors.newScheduledThreadPool(1,
+                                                                                                 task->new Thread(task,
+                                                                                                                  "bStats-Metrics"));
 
         private static final String REPORT_URL="https://bStats.org/api/v2/data/%s";
 
@@ -270,7 +286,12 @@ final public class Metrics
             appendPlatformDataConsumer.accept(baseJsonBuilder);
             final JsonObjectBuilder serviceJsonBuilder=new JsonObjectBuilder();
             appendServiceDataConsumer.accept(serviceJsonBuilder);
-            JsonObjectBuilder.JsonObject[] chartData=customCharts.stream().map(customChart->customChart.getRequestJsonObject(errorLogger,logErrors)).filter(Objects::nonNull).toArray(JsonObjectBuilder.JsonObject[]::new);
+            JsonObjectBuilder.JsonObject[] chartData=customCharts.stream()
+                                                                 .map(customChart->customChart.getRequestJsonObject(
+                                                                         errorLogger,
+                                                                         logErrors))
+                                                                 .filter(Objects::nonNull)
+                                                                 .toArray(JsonObjectBuilder.JsonObject[]::new);
             serviceJsonBuilder.appendField("id",serviceId);
             serviceJsonBuilder.appendField("customCharts",chartData);
             baseJsonBuilder.appendField("service",serviceJsonBuilder.build());
@@ -278,21 +299,21 @@ final public class Metrics
             baseJsonBuilder.appendField("metricsVersion",METRICS_VERSION);
             JsonObjectBuilder.JsonObject data=baseJsonBuilder.build();
             scheduler.execute(()->
-            {
-                try
-                {
-                    // Send the data
-                    sendData(data);
-                }
-                catch (Exception e)
-                {
-                    // Something went wrong! :(
-                    if (logErrors)
-                    {
-                        errorLogger.accept("Could not submit bStats metrics data",e);
-                    }
-                }
-            });
+                              {
+                                  try
+                                  {
+                                      // Send the data
+                                      sendData(data);
+                                  }
+                                  catch (Exception e)
+                                  {
+                                      // Something went wrong! :(
+                                      if (logErrors)
+                                      {
+                                          errorLogger.accept("Could not submit bStats metrics data",e);
+                                      }
+                                  }
+                              });
         }
 
         private void sendData(JsonObjectBuilder.JsonObject data) throws Exception
@@ -338,7 +359,8 @@ final public class Metrics
         private void checkRelocation()
         {
             // You can use the property to disable the check in your test environment
-            if (System.getProperty("bstats.relocatecheck")==null||!System.getProperty("bstats.relocatecheck").equals("false"))
+            if (System.getProperty("bstats.relocatecheck")==null||!System.getProperty("bstats.relocatecheck")
+                                                                         .equals("false"))
             {
                 // Maven's Relocate is clever and changes strings, too. So we have to use this little
                 // "trick" ... :D
@@ -346,7 +368,10 @@ final public class Metrics
                 final String examplePackage=new String(new byte[]{'y','o','u','r','.','p','a','c','k','a','g','e'});
                 // We want to make sure no one just copy & pastes the example and uses the wrong package
                 // names
-                if (MetricsBase.class.getPackage().getName().startsWith(defaultPackage)||MetricsBase.class.getPackage().getName().startsWith(examplePackage))
+                if (MetricsBase.class.getPackage().getName().startsWith(defaultPackage)||MetricsBase.class.getPackage()
+                                                                                                          .getName()
+                                                                                                          .startsWith(
+                                                                                                                  examplePackage))
                 {
                     throw new IllegalStateException("bStats Metrics class has not been relocated correctly!");
                 }
@@ -813,7 +838,9 @@ final public class Metrics
             {
                 throw new IllegalArgumentException("JSON values must not be null");
             }
-            String escapedValues=Arrays.stream(values).map(value->"\""+escape(value)+"\"").collect(Collectors.joining(","));
+            String escapedValues=Arrays.stream(values)
+                                       .map(value->"\""+escape(value)+"\"")
+                                       .collect(Collectors.joining(","));
             appendFieldUnescaped(key,"["+escapedValues+"]");
             return this;
         }

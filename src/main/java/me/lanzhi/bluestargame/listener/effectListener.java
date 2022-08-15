@@ -1,9 +1,9 @@
 package me.lanzhi.bluestargame.listener;
 
-import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTEntity;
-import de.tr7zw.nbtapi.NBTItem;
-import me.lanzhi.bluestarapi.api.RGBColor;
+import me.lanzhi.api.RGBColor;
+import me.lanzhi.api.nbt.NBTCompound;
+import me.lanzhi.api.nbt.NBTEntity;
+import me.lanzhi.api.nbt.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -100,9 +100,9 @@ public final class effectListener implements Listener
         NBTCompound effect=new NBTItem(itemStack).addCompound("BluestarGame").addCompound(type.name());
         for (String i: effect.getKeys())
         {
-            ((LivingEntity) entity).addPotionEffect(
-                    new PotionEffect(PotionEffectType.getByName(i),effect.addCompound(i).getInteger("time"),
-                                     effect.addCompound(i).getInteger("s")));
+            ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.getByName(i),
+                                                                     effect.addCompound(i).getInteger("time"),
+                                                                     effect.addCompound(i).getInteger("s")));
         }
     }
 

@@ -1,14 +1,11 @@
 package me.lanzhi.bluestargame.listener;
 
-import me.lanzhi.bluestarapi.api.GradientColor;
-import me.lanzhi.bluestarapi.api.RGBColor;
+import me.lanzhi.api.GradientColor;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
-import java.util.regex.Pattern;
 
 public final class ChatColorListener implements Listener
 {

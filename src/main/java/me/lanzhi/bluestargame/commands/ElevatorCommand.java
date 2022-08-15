@@ -47,7 +47,13 @@ public final class ElevatorCommand implements CommandExecutor, TabExecutor
             Elevator elevator;
             try
             {
-                elevator=new Elevator(((Player) sender).getLocation().getWorld(),Integer.parseInt(args[2]),Integer.parseInt(args[3]),Integer.parseInt(args[4]),Integer.parseInt(args[5]),Integer.parseInt(args[6]),Integer.parseInt(args[7]));
+                elevator=new Elevator(((Player) sender).getLocation().getWorld(),
+                                      Integer.parseInt(args[2]),
+                                      Integer.parseInt(args[3]),
+                                      Integer.parseInt(args[4]),
+                                      Integer.parseInt(args[5]),
+                                      Integer.parseInt(args[6]),
+                                      Integer.parseInt(args[7]));
             }
             catch (NumberFormatException e)
             {
@@ -101,7 +107,7 @@ public final class ElevatorCommand implements CommandExecutor, TabExecutor
         {
             if (args.length==2)
             {
-                return Arrays.asList("电梯名称");
+                return List.of("电梯名称");
             }
             if (args.length==3)
             {

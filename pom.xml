@@ -6,7 +6,7 @@
 
     <groupId>me.lanzhi</groupId>
     <artifactId>BluestarGame</artifactId>
-    <version>3.3.2</version>
+    <version>3.4.0</version>
     <packaging>jar</packaging>
 
     <name>BluestarGame</name>
@@ -105,17 +105,10 @@
             <version>4.11.0</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>de.tr7zw</groupId>
-            <artifactId>item-nbt-api-plugin</artifactId>
-            <version>2.9.2</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>com.github.lanzhi6</groupId>
             <artifactId>BluestarAPI</artifactId>
-            <version>2.6.3</version>
+            <version>3.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -127,7 +120,7 @@
         <dependency>
             <groupId>com.github.lanzhi6</groupId>
             <artifactId>BluestarGameAPI</artifactId>
-            <version>3.2.1</version>
+            <version>3.4.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -139,7 +132,7 @@
         <dependency>
             <groupId>io.github.dreamvoid</groupId>
             <artifactId>MiraiMC-Integration</artifactId>
-            <version>1.7-rc2</version>
+            <version>1.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

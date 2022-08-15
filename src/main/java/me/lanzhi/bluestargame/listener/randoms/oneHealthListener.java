@@ -1,6 +1,6 @@
 package me.lanzhi.bluestargame.listener.randoms;
 
-import me.lanzhi.bluestarapi.api.config.YamlFile;
+import me.lanzhi.api.config.YamlFile;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,8 +25,10 @@ public final class oneHealthListener implements Listener
         {
             return;
         }
-        double maxHealth=YamlFile.loadYamlFile(new File(plugin.getPlayerData(),event.getPlayer().getUniqueId()+".yml")).getDouble("maxhealth");
-        plugin.getBluestarGameManager().getRandomEventManger().oneHealth_playerHealth.put(event.getPlayer(),maxHealth!=0?maxHealth:20);
+        double maxHealth=YamlFile.loadYamlFile(new File(plugin.getPlayerData(),event.getPlayer().getUniqueId()+".yml"))
+                                 .getDouble("maxhealth");
+        plugin.getBluestarGameManager().getRandomEventManger().oneHealth_playerHealth.put(event.getPlayer(),
+                                                                                          maxHealth!=0?maxHealth:20);
     }
 
     @EventHandler
