@@ -1,6 +1,6 @@
 package me.lanzhi.bluestargame.listener;
 
-import me.lanzhi.api.config.YamlFile;
+import me.lanzhi.bluestargame.bluestarapi.config.YamlFile;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;

@@ -1,7 +1,7 @@
 package me.lanzhi.bluestargame.listener;
 
-import me.lanzhi.api.nbt.NBTCompound;
-import me.lanzhi.api.nbt.NBTItem;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTCompound;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTItem;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.Type.SuperSponge;
 import org.bukkit.event.EventHandler;

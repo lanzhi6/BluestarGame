@@ -1,7 +1,7 @@
 package me.lanzhi.bluestargame.listener;
 
 import io.papermc.paper.event.player.PlayerNameEntityEvent;
-import me.lanzhi.api.RGBColor;
+import me.lanzhi.bluestargame.bluestarapi.RGBColor;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

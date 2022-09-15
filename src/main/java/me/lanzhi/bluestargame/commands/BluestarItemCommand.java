@@ -1,9 +1,9 @@
 package me.lanzhi.bluestargame.commands;
 
-import me.lanzhi.api.GradientColor;
-import me.lanzhi.api.RGBColor;
-import me.lanzhi.api.nbt.NBTCompound;
-import me.lanzhi.api.nbt.NBTItem;
+import me.lanzhi.bluestargame.bluestarapi.GradientColor;
+import me.lanzhi.bluestargame.bluestarapi.RGBColor;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTCompound;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTItem;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

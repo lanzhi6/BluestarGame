@@ -1,7 +1,7 @@
 package me.lanzhi.bluestargame.managers;
 
 import me.lanzhi.bluestargame.BluestarGamePlugin;
-import me.lanzhi.bluestargameapi.managers.RandomEventMangerInterface;
+import me.lanzhi.bluestargameapi.managers.IRandomEventManger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class RandomEventManger implements RandomEventMangerInterface
+public final class RandomEventManger implements IRandomEventManger
 {
     private final BluestarGamePlugin plugin;
     public int[] fourNum=new int[4];

@@ -1,11 +1,11 @@
 package me.lanzhi.bluestargame.managers;
 
-import me.lanzhi.api.nbt.NBTCompound;
-import me.lanzhi.api.nbt.NBTItem;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.Type.Elevator;
 import me.lanzhi.bluestargame.api.BluestarGameApi;
-import me.lanzhi.bluestargameapi.managers.BluestarGameManagerInterface;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTCompound;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTItem;
+import me.lanzhi.bluestargameapi.managers.IBluestarGameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-public final class BluestarGameManager implements BluestarGameManagerInterface
+public final class BluestarGameManager implements IBluestarGameManager
 {
     private final BluestarGamePlugin plugin;
     private final ConfigurationSection muted;

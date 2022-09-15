@@ -1,7 +1,7 @@
 package me.lanzhi.bluestargame.listener.randoms;
 
-import me.lanzhi.api.GradientColor;
-import me.lanzhi.api.RGBColor;
+import me.lanzhi.bluestargame.bluestarapi.GradientColor;
+import me.lanzhi.bluestargame.bluestarapi.RGBColor;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.managers.RandomEventManger;
 import org.bukkit.ChatColor;

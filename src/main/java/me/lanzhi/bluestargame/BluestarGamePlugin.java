@@ -1,17 +1,17 @@
 package me.lanzhi.bluestargame;
 
-import me.lanzhi.api.Bluestar;
-import me.lanzhi.api.config.AutoSerialize;
-import me.lanzhi.api.config.YamlFile;
 import me.lanzhi.bluestargame.Type.CompressedCoal;
 import me.lanzhi.bluestargame.Type.Elevator;
 import me.lanzhi.bluestargame.Type.SuperSponge;
+import me.lanzhi.bluestargame.bluestarapi.Bluestar;
+import me.lanzhi.bluestargame.bluestarapi.config.AutoSerialize;
+import me.lanzhi.bluestargame.bluestarapi.config.YamlFile;
 import me.lanzhi.bluestargame.listener.breakBedrockListener;
 import me.lanzhi.bluestargame.managers.BluestarGameManager;
 import me.lanzhi.bluestargame.register.CommandRegister;
 import me.lanzhi.bluestargame.register.ListenersRegister;
 import me.lanzhi.bluestargame.register.RecipeRegister;
-import me.lanzhi.bluestargameapi.BluestarGamePluginInterface;
+import me.lanzhi.bluestargameapi.IBluestarGamePlugin;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -19,7 +19,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.ServicePriority;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +27,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public final class BluestarGamePlugin extends JavaPlugin implements BluestarGamePluginInterface
+public final class BluestarGamePlugin extends IBluestarGamePlugin
 {
     private final YamlFile config;
     private final File PlayerData;
@@ -97,7 +96,7 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
         this.spongeTask=getBluestarGameManager().getSuperSpongeManager().ctrlsponge.runTaskTimer(this,0L,2L);
         this.bedrockTask=breakBedrockListener.breakBedrock.runTaskTimer(this,0L,20L);
 
-        Bukkit.getServicesManager().register(BluestarGamePluginInterface.class,this,this,ServicePriority.Normal);
+        Bukkit.getServicesManager().register(IBluestarGamePlugin.class,this,this,ServicePriority.Normal);
 
         isEnable=true;
         System.out.println("BluestarGame已加载");
@@ -220,12 +219,6 @@ public final class BluestarGamePlugin extends JavaPlugin implements BluestarGame
     public BluestarGamePlugin getPlugin()
     {
         return this;
-    }
-
-    @Override
-    public boolean isEnable()
-    {
-        return this.isEnable;
     }
 }
 

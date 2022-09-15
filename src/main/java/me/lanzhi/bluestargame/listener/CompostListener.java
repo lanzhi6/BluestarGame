@@ -1,6 +1,6 @@
 package me.lanzhi.bluestargame.listener;
 
-import me.lanzhi.api.Bluestar;
+import me.lanzhi.bluestargame.bluestarapi.Bluestar;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.Levelled;

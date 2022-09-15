@@ -1,8 +1,8 @@
 package me.lanzhi.bluestargame.listener;
 
-import me.lanzhi.api.nbt.NBTCompound;
-import me.lanzhi.api.nbt.NBTEntity;
-import me.lanzhi.api.nbt.NBTItem;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTCompound;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTEntity;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTItem;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

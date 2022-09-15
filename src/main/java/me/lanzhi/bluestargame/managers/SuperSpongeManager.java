@@ -1,11 +1,11 @@
 package me.lanzhi.bluestargame.managers;
 
-import me.lanzhi.api.Bluestar;
-import me.lanzhi.api.nbt.NBTCompound;
-import me.lanzhi.api.nbt.NBTItem;
+import me.lanzhi.bluestargame.bluestarapi.Bluestar;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTCompound;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTItem;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.Type.SuperSponge;
-import me.lanzhi.bluestargameapi.managers.SuperSpongeManagerInterface;
+import me.lanzhi.bluestargameapi.managers.ISuperSpongeManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,7 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class SuperSpongeManager implements SuperSpongeManagerInterface
+public final class SuperSpongeManager implements ISuperSpongeManager
 {
     private final BluestarGamePlugin plugin;
     private List<SuperSponge> nextSponges=new ArrayList<>();

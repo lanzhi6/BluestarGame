@@ -1,8 +1,8 @@
 package me.lanzhi.bluestargame.commands;
 
-import me.lanzhi.api.GradientColor;
-import me.lanzhi.api.RGBColor;
-import me.lanzhi.api.player.input.PlayerChatInput;
+import me.lanzhi.bluestargame.bluestarapi.GradientColor;
+import me.lanzhi.bluestargame.bluestarapi.RGBColor;
+import me.lanzhi.bluestargame.bluestarapi.player.input.PlayerChatInput;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;

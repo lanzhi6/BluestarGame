@@ -1,7 +1,7 @@
 package me.lanzhi.bluestargame.api;
 
 import me.lanzhi.bluestargame.BluestarGamePlugin;
-import me.lanzhi.bluestargameapi.api.XiaoMoBankInterface;
+import me.lanzhi.bluestargameapi.api.IXiaoMoBank;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
-public final class xiaoMoBank implements XiaoMoBankInterface
+public final class xiaoMoBank implements IXiaoMoBank
 {
     private final BluestarGamePlugin plugin;
 

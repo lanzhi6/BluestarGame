@@ -40,7 +40,7 @@ public final class the24PointListener implements Listener
                                                                                                      .getName()+"答案正确!");
                     org.bukkit.Bukkit.getServer()
                                      .broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
-                    me.lanzhi.api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
+                    me.lanzhi.bluestargame.bluestarapi.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
                                                       "eco give "+event.getPlayer().getName()+" 1000",
                                                       plugin);
                     randomEventManger.the24(false);
@@ -74,7 +74,7 @@ public final class the24PointListener implements Listener
                                                  uuid).getName()+"答案正确!");
                         org.bukkit.Bukkit.getServer()
                                          .broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
-                        me.lanzhi.api.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
+                        me.lanzhi.bluestargame.bluestarapi.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
                                                           "eco give "+Bukkit.getOfflinePlayer(uuid).getName()+" 1000",
                                                           plugin);
                     }

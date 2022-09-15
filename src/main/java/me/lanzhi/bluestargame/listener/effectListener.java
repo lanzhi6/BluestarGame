@@ -1,9 +1,9 @@
 package me.lanzhi.bluestargame.listener;
 
-import me.lanzhi.api.RGBColor;
-import me.lanzhi.api.nbt.NBTCompound;
-import me.lanzhi.api.nbt.NBTEntity;
-import me.lanzhi.api.nbt.NBTItem;
+import me.lanzhi.bluestargame.bluestarapi.RGBColor;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTCompound;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTEntity;
+import me.lanzhi.bluestargame.bluestarapi.nbt.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;

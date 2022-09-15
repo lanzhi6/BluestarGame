@@ -65,7 +65,6 @@ permissions:
         default: op
 depend:
   - BluestarAPI
-  - NBTAPI
   - PlaceholderAPI
   - BluestarQQ
   - MiraiMC

@@ -1,6 +1,6 @@
 package me.lanzhi.bluestargame.managers;
 
-import me.lanzhi.api.Bluestar;
+import me.lanzhi.bluestargame.bluestarapi.Bluestar;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
