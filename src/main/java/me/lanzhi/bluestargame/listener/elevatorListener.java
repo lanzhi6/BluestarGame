@@ -75,16 +75,8 @@ public final class elevatorListener implements Listener
                 locc.setY(y);
                 Location loccc=loc.clone();
                 loccc.setY(y-1);
-                if ((!locc.getBlock().getType().isSolid()||locc.getBlock()
-                                                               .getType()
-                                                               .name()
-                                                               .endsWith("SIGN"))&&(loccc.getBlock()
-                                                                                         .getType()
-                                                                                         .isSolid()&&!loccc.getBlock()
-                                                                                                           .getType()
-                                                                                                           .name()
-                                                                                                           .endsWith(
-                                                                                                                   "SIGN")))
+                if ((!locc.getBlock().getType().isSolid()||locc.getBlock().getType().name().endsWith("SIGN"))&&
+                    (loccc.getBlock().getType().isSolid()&&!loccc.getBlock().getType().name().endsWith("SIGN")))
                 {
                     return locc;
                 }

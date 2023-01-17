@@ -1,7 +1,9 @@
 package me.lanzhi.bluestargame.listener.randoms;
 
-import me.dreamvoid.miraimc.api.MiraiMC;
+import me.lanzhi.bluestarbot.api.BluestarBot;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
+import me.lanzhi.bluestargame.bluestarapi.Bluestar;
+import me.lanzhi.bluestargame.bluestarapi.math.Calculator;
 import me.lanzhi.bluestargame.managers.RandomEventManger;
 import me.lanzhi.bluestarqq.events.QQChatEvent;
 import org.bukkit.Bukkit;
@@ -25,7 +27,7 @@ public final class the24PointListener implements Listener
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
 
-    @EventHandler(ignoreCancelled=true, priority=EventPriority.LOWEST)
+    @EventHandler(priority=EventPriority.LOWEST)
     public void onChatFor24(AsyncPlayerChatEvent event)
     {
         new BukkitRunnable()
@@ -36,48 +38,16 @@ public final class the24PointListener implements Listener
                 if (decide(event.getMessage()))
                 {
                     org.bukkit.Bukkit.getServer()
-                                     .broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+event.getPlayer()
-                                                                                                     .getName()+"答案正确!");
+                                     .broadcastMessage(plugin.getMessageHead()+
+                                                       ChatColor.YELLOW+
+                                                       event.getPlayer().getName()+
+                                                       "答案正确!");
                     org.bukkit.Bukkit.getServer()
                                      .broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
-                    me.lanzhi.bluestargame.bluestarapi.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
-                                                      "eco give "+event.getPlayer().getName()+" 1000",
-                                                      plugin);
-                    randomEventManger.the24(false);
-                }
-            }
-        }.runTaskAsynchronously(plugin);
-    }
-
-    @EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
-    public void onQQChatFor24(QQChatEvent event)
-    {
-        new BukkitRunnable()
-        {
-            @Override
-            public void run()
-            {
-                if (decide(event.getMessage()))
-                {
-                    UUID uuid=MiraiMC.getBind(event.getSenderId());
-                    if (uuid==null||"".equals(uuid))
-                    {
-                        event.getGroup()
-                             .sendMessageMirai("[mirai:at:"+event.getSenderId()+"] 您可能在参与24点,且答案正确,但您还未绑定Minecraft账号,请绑定");
-                        org.bukkit.Bukkit.getServer()
-                                         .broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+event.getSenderName()+"答案正确!");
-                    }
-                    else
-                    {
-                        org.bukkit.Bukkit.getServer()
-                                         .broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+Bukkit.getOfflinePlayer(
-                                                 uuid).getName()+"答案正确!");
-                        org.bukkit.Bukkit.getServer()
-                                         .broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
-                        me.lanzhi.bluestargame.bluestarapi.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
-                                                          "eco give "+Bukkit.getOfflinePlayer(uuid).getName()+" 1000",
-                                                          plugin);
-                    }
+                    Bluestar.getCommandManager()
+                            .useCommand(Bukkit.getConsoleSender(),
+                                        "eco give "+event.getPlayer().getName()+" 1000",
+                                        plugin);
                     randomEventManger.the24(false);
                 }
             }
@@ -90,42 +60,71 @@ public final class the24PointListener implements Listener
         {
             return false;
         }
-        String[] ans=RandomEventManger.mathFor24Points.yunsuan(message);
-        if (ans==null)
+        Calculator.Result result=new Calculator().calculator(message);
+        System.out.println(result);
+        if (result.hasError()||result.getAnswer()!=24)
         {
             return false;
         }
-        try
+        Number[] a=result.getItemInList().toArray(new Number[0]);
+        if (a.length!=4)
         {
-            if ((int) Double.parseDouble(ans[0])!=24)
+            return false;
+        }
+        for (int i=0;i<4;i++)
+        {
+            if (!(a[i] instanceof Double))
+            {
+                return false;
+            }
+            double x=(double) a[i];
+            if (x!=randomEventManger.fourNum[i])
             {
                 return false;
             }
         }
-        catch (NumberFormatException e)
+        return true;
+    }
+
+    @EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
+    public void onQQChatFor24(QQChatEvent event)
+    {
+        new BukkitRunnable()
         {
-            return false;
-        }
-        int[] a=randomEventManger.fourNum;
-        boolean fflag=true;
-        for (int i=1;i<=4;i++)
-        {
-            boolean flag=false;
-            for (int j=0;j<4;j++)
+            @Override
+            public void run()
             {
-                if ((ans[i].equals(a[j]+""))&&(a[j]!=-1))
+                if (decide(event.getMessage()))
                 {
-                    a[j]=-1;
-                    flag=true;
-                    break;
+                    UUID uuid=BluestarBot.getBind(event.getSenderId());
+                    if (uuid==null)
+                    {
+                        event.getGroup()
+                             .sendMessageCode("[mirai:at:"+
+                                              event.getSenderId()+
+                                              "] 您可能在参与24点,且答案正确,但您还未绑定Minecraft账号,请绑定");
+                        org.bukkit.Bukkit.getServer()
+                                         .broadcastMessage(plugin.getMessageHead()+
+                                                           ChatColor.YELLOW+
+                                                           event.getSenderName()+
+                                                           "答案正确!");
+                    }
+                    else
+                    {
+                        org.bukkit.Bukkit.getServer()
+                                         .broadcastMessage(plugin.getMessageHead()+
+                                                           ChatColor.YELLOW+
+                                                           Bukkit.getOfflinePlayer(uuid).getName()+
+                                                           "答案正确!");
+                        org.bukkit.Bukkit.getServer()
+                                         .broadcastMessage(plugin.getMessageHead()+ChatColor.YELLOW+"获得1000!");
+                        me.lanzhi.bluestargame.bluestarapi.Bluestar.useCommand(org.bukkit.Bukkit.getConsoleSender(),
+                                                          "eco give "+Bukkit.getOfflinePlayer(uuid).getName()+" 1000",
+                                                          plugin);
+                    }
+                    randomEventManger.the24(false);
                 }
             }
-            if (!flag)
-            {
-                fflag=false;
-                break;
-            }
-        }
-        return fflag;
+        }.runTaskAsynchronously(plugin);
     }
 }

@@ -46,7 +46,6 @@ public final class BluestarGamePlugin extends IBluestarGamePlugin
     private RecipeRegister recipeRegister;
     private BukkitTask spongeTask;
     private BukkitTask bedrockTask;
-    private boolean isEnable=false;
 
     public BluestarGamePlugin()
     {
@@ -91,6 +90,7 @@ public final class BluestarGamePlugin extends IBluestarGamePlugin
         {
             getBluestarGameManager().getRandomEventManger().runAuto(true);
         }
+        getBluestarGameManager().getRandomEventManger().randchat(true);
 
         getBluestarGameManager().getSuperSpongeManager().set((List<SuperSponge>) Data.getList("superSponges"));
         this.spongeTask=getBluestarGameManager().getSuperSpongeManager().ctrlsponge.runTaskTimer(this,0L,2L);
@@ -98,7 +98,6 @@ public final class BluestarGamePlugin extends IBluestarGamePlugin
 
         Bukkit.getServicesManager().register(IBluestarGamePlugin.class,this,this,ServicePriority.Normal);
 
-        isEnable=true;
         System.out.println("BluestarGame已加载");
     }
 
@@ -116,7 +115,6 @@ public final class BluestarGamePlugin extends IBluestarGamePlugin
         config.save();
         Lang.save();
         Bukkit.getServicesManager().unregisterAll(this);
-        isEnable=false;
         System.out.println("BluestarGame已卸载");
     }
 

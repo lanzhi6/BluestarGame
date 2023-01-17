@@ -21,16 +21,17 @@ public final class ListenersRegister
     public void registerListeners()
     {
         registerlistener(new muteListener(plugin));
-        registerlistener(new HealthFixListener(plugin));
+        registerlistener(new FixListener(plugin));
         registerlistener(new superSpongeListener(plugin));
         registerlistener(new opSwordListener(plugin));
         registerlistener(new elevatorListener(plugin));
-        registerlistener(new arrowListener());
+        registerlistener(new ArrowListener());
         registerlistener(new breakBedrockListener());
         registerlistener(new effectListener());
         registerlistener(new ChatColorListener());
         registerlistener(new CompostListener());
         registerlistener(new EasterEggListener());
+        registerlistener(new MenuListener());
 
         registerlistener(new moreMineralListener(plugin));
         registerlistener(new randChatColorListener(plugin));

@@ -1,11 +1,12 @@
 package me.lanzhi.bluestargame.listener;
 
-import me.lanzhi.bluestargame.bluestarapi.GradientColor;
+import me.lanzhi.bluestargame.bluestarapi.player.chat.GradientColor;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatPreviewEvent;
 
 public final class ChatColorListener implements Listener
 {
@@ -22,7 +23,6 @@ public final class ChatColorListener implements Listener
     }
 
     @EventHandler
-
     public void run(AsyncPlayerChatEvent event)
     {
         boolean canUseColor=event.getPlayer().hasPermission("bluestargame.color");

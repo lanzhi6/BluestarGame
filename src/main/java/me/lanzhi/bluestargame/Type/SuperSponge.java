@@ -1,11 +1,11 @@
 package me.lanzhi.bluestargame.Type;
 
-import me.lanzhi.bluestargame.bluestarapi.config.AutoSerializeInterface;
+import me.lanzhi.bluestargame.bluestarapi.config.AutoSerialize;
 import me.lanzhi.bluestargame.bluestarapi.config.SerializeAs;
 import org.bukkit.Location;
 
 @SerializeAs("BluestarGame.SuperSponge")
-public final class SuperSponge implements AutoSerializeInterface
+public final class SuperSponge implements AutoSerialize
 {
 
     private final int age;

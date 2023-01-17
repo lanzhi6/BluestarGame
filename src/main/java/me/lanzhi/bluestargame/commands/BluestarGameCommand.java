@@ -2,6 +2,9 @@ package me.lanzhi.bluestargame.commands;
 
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.Type.SuperSponge;
+import me.lanzhi.bluestargame.bluestarapi.Bluestar;
+import me.lanzhi.bluestargame.bluestarapi.player.gui.GuiItem;
+import me.lanzhi.bluestargame.bluestarapi.player.gui.PageGui;
 import me.lanzhi.bluestargame.managers.RandomEventManger;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -10,18 +13,18 @@ import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public final class BluestarGameCommand implements CommandExecutor, TabExecutor
 {
@@ -34,11 +37,46 @@ public final class BluestarGameCommand implements CommandExecutor, TabExecutor
         randomEventManger=plugin.getBluestarGameManager().getRandomEventManger();
     }
 
+    private GuiItem.Response on(Player player,String x)
+    {
+        player.sendMessage(x);
+        return GuiItem.Response.nothing();
+    }
+
     @Override
-    public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,@NotNull String[] args)
+    public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,
+                             @NotNull String[] args)
     {
         if ("reload".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi"))
         {
+            return true;
+        }
+        if ("kill".equals(args[0]))
+        {
+            UUID uuid=UUID.fromString(args[1]);
+            if (Bukkit.getEntity(uuid) instanceof LivingEntity entity)
+            {
+                entity.setHealth(0);
+            }
+            return true;
+        }
+        if ("menu".equals(args[0]))
+        {
+            PageGui.Builder gui;
+
+            gui=PageGui.builder(plugin);
+            for (int i=0;i<=300;i++)
+            {
+                int finalI=i;
+                ItemStack itemStack=rand();
+                gui.item(i,new GuiItem().setOnClick((gui1,clickType)->
+                                                    {
+                                                        gui1.getPlayer().sendMessage(String.valueOf(finalI));
+                                                        gui1.getPlayer().getInventory().addItem(itemStack);
+                                                        return GuiItem.Response.nothing();
+                                                    }).setItem(itemStack));
+            }
+            gui.open((Player) sender);
             return true;
         }
         if ("maxhealth".equals(args[0])&&sender.hasPermission("bluestargame.lanzhi"))
@@ -395,6 +433,11 @@ public final class BluestarGameCommand implements CommandExecutor, TabExecutor
         return false;
     }
 
+    private ItemStack rand()
+    {
+        return new ItemStack(Material.values()[Bluestar.getMainManager().randomInt(Material.values().length)],
+                             Bluestar.getMainManager().randomInt(128));
+    }
 
     @Override
     public List<String> onTabComplete(CommandSender sender,Command command,String alias,String[] args)
@@ -417,7 +460,8 @@ public final class BluestarGameCommand implements CommandExecutor, TabExecutor
                                                                "auto",
                                                                "spongeR",
                                                                "boom",
-                                                               "onehealth"));
+                                                               "onehealth",
+                                                               "menu"));
             if (sender.hasPermission("bluestargame.lanzhi"))
             {
                 tablist.add("newsponge");

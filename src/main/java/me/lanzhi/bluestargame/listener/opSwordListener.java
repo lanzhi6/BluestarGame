@@ -1,16 +1,13 @@
 package me.lanzhi.bluestargame.listener;
 
+import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.bluestarapi.nbt.NBTCompound;
 import me.lanzhi.bluestargame.bluestarapi.nbt.NBTEntity;
 import me.lanzhi.bluestargame.bluestarapi.nbt.NBTItem;
-import me.lanzhi.bluestargame.BluestarGamePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -19,6 +16,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.UUID;
 
 public final class opSwordListener implements Listener
 {
@@ -32,15 +31,35 @@ public final class opSwordListener implements Listener
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerDamage(EntityDamageEvent event)
     {
-        if (!(event.getEntity() instanceof LivingEntity entity)||event.isCancelled())
+        if (!(event.getEntity() instanceof LivingEntity entity)||event instanceof EntityDamageByEntityEvent)
         {
             return;
         }
-        if (entity.getEquipment()==null)
+        if (!hasOpSword(entity))
         {
             return;
+        }
+        event.setCancelled(true);
+        try
+        {
+            entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        }
+        catch (Throwable ignored)
+        {
+        }
+    }
+
+    private static boolean hasOpSword(Entity e)
+    {
+        if (!(e instanceof LivingEntity entity))
+        {
+            return false;
         }
         boolean flag=false;
+        if (entity.getEquipment()==null)
+        {
+            return false;
+        }
         if (!entity.getEquipment().getItemInMainHand().getType().isAir())
         {
             NBTItem item=new NBTItem(entity.getEquipment().getItemInMainHand());
@@ -59,33 +78,50 @@ public final class opSwordListener implements Listener
                 flag=true;
             }
         }
-        if (!flag)
+        return flag;
+    }
+
+    @EventHandler(priority=EventPriority.HIGHEST)
+    public void onPlayerDamage1(EntityDamageByEntityEvent event)
+    {
+        if (!hasOpSword(event.getEntity()))
         {
             return;
         }
+        if (hasOpSword(event.getDamager()))
+        {
+            return;
+        }
+        if (event.getDamager() instanceof Projectile projectile&&hasOpSword(getOwner(projectile)))
+        {
+            return;
+        }
+
         event.setCancelled(true);
-        try
+        if (event.getDamager() instanceof Damageable)
         {
-            entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+            ((Damageable) event.getDamager()).damage(Integer.MAX_VALUE,event.getEntity());
+            return;
         }
-        catch (Throwable e)
+        if (event.getDamager() instanceof Projectile projectile)
         {
-        }
-        if (event instanceof EntityDamageByEntityEvent event1)
-        {
-            if (event1.getDamager() instanceof Damageable)
+            Entity entity1=getOwner(projectile);
+            if (!(entity1 instanceof Damageable))
             {
-                ((Damageable) event1.getDamager()).damage(Integer.MAX_VALUE,entity);
                 return;
             }
-            if (event1.getDamager() instanceof Projectile)
-            {
-                ((Damageable) Bukkit.getEntity(new NBTEntity(event1.getDamager()).getUUID("Owner"))).damage(Integer.MAX_VALUE,
-                                                                                                            entity);
-                return;
-            }
-            System.out.println(event1.getDamager().getType());
+            ((Damageable) entity1).damage(Integer.MAX_VALUE,event.getEntity());
         }
+    }
+
+    private static Entity getOwner(Entity entity)
+    {
+        UUID uuid=new NBTEntity(entity).getUUID("Owner");
+        if (uuid==null)
+        {
+            return null;
+        }
+        return Bukkit.getEntity(uuid);
     }
 
     @EventHandler(priority=EventPriority.HIGHEST)
@@ -99,34 +135,11 @@ public final class opSwordListener implements Listener
         {
             return;
         }
-        if (entity.getEquipment()==null)
+        if (!hasOpSword(entity))
         {
             return;
         }
         Integer ss=null;
-        boolean flag=false;
-        if (!entity.getEquipment().getItemInMainHand().getType().isAir())
-        {
-            NBTItem item=new NBTItem(entity.getEquipment().getItemInMainHand());
-            NBTCompound bluestargame=item.getCompound("BluestarGame");
-            if (bluestargame!=null&&bluestargame.getBoolean("sword"))
-            {
-                flag=true;
-            }
-        }
-        if (!entity.getEquipment().getItemInOffHand().getType().isAir()&&!flag)
-        {
-            NBTItem item=new NBTItem(entity.getEquipment().getItemInOffHand());
-            NBTCompound bluestargame=item.getCompound("BluestarGame");
-            if (bluestargame!=null&&bluestargame.getBoolean("sword"))
-            {
-                flag=true;
-            }
-        }
-        if (!flag)
-        {
-            return;
-        }
         event.setDamage(Integer.MAX_VALUE);
         if (event.getEntity() instanceof Player)
         {

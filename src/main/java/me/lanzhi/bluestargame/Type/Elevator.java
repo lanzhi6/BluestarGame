@@ -1,13 +1,13 @@
 package me.lanzhi.bluestargame.Type;
 
-import me.lanzhi.bluestargame.bluestarapi.config.AutoSerializeInterface;
+import me.lanzhi.bluestargame.bluestarapi.config.AutoSerialize;
 import me.lanzhi.bluestargame.bluestarapi.config.SerializeAs;
 import me.lanzhi.bluestargame.bluestarapi.config.SpecialSerialize;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 @SerializeAs("BluestarGame.Elevator")
-final public class Elevator implements AutoSerializeInterface
+final public class Elevator implements AutoSerialize
 {
     final long minX;
     final long maxX;

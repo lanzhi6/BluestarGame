@@ -1,6 +1,6 @@
 package me.lanzhi.bluestargame.commands;
 
-import me.dreamvoid.miraimc.api.MiraiMC;
+import me.lanzhi.bluestarbot.api.BluestarBot;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.api.xiaoMoBank;
 import net.md_5.bungee.api.ChatMessageType;
@@ -124,7 +124,7 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                     sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"请输入正确的贷款金额");
                     return true;
                 }
-                if (MiraiMC.getBinding(player.getUniqueId().toString())==0)
+                if (BluestarBot.getBind(player.getUniqueId())==null)
                 {
                     player.sendMessage(plugin.getErrorMessageHead()+"贷款必须绑定qq");
                     player.sendMessage(plugin.getErrorMessageHead()+"使用/bindqq绑定qq");
@@ -132,9 +132,11 @@ public final class XiaoMoBankCommand implements CommandExecutor, TabExecutor
                 }
                 if (plugin.getData().getLong("bank.borrow."+player.getUniqueId()+".money")!=0)
                 {
-                    sender.sendMessage(plugin.getMessageHead()+ChatColor.RED+"您似乎有一笔金额为"+plugin.getData()
-                                                                                                        .getLong(
-                                                                                                                "bank.borrow."+player.getUniqueId()+".money")+"的贷款还未偿还,请向偿还再尝试贷款");
+                    sender.sendMessage(plugin.getMessageHead()+
+                                       ChatColor.RED+
+                                       "您似乎有一笔金额为"+
+                                       plugin.getData().getLong("bank.borrow."+player.getUniqueId()+".money")+
+                                       "的贷款还未偿还,请向偿还再尝试贷款");
                     return true;
                 }
                 if (money>1000000)

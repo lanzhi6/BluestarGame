@@ -1,10 +1,10 @@
 package me.lanzhi.bluestargame.commands;
 
-import me.lanzhi.bluestargame.bluestarapi.GradientColor;
-import me.lanzhi.bluestargame.bluestarapi.RGBColor;
+import me.lanzhi.bluestargame.BluestarGamePlugin;
 import me.lanzhi.bluestargame.bluestarapi.nbt.NBTCompound;
 import me.lanzhi.bluestargame.bluestarapi.nbt.NBTItem;
-import me.lanzhi.bluestargame.BluestarGamePlugin;
+import me.lanzhi.bluestargame.bluestarapi.player.chat.GradientColor;
+import me.lanzhi.bluestargame.bluestarapi.player.chat.RGBColor;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -12,6 +12,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -457,13 +459,27 @@ public final class BluestarItemCommand implements CommandExecutor, TabExecutor
                     player.sendMessage(plugin.getErrorMessageHead()+"请手持任意物品");
                     return true;
                 }
+
+                YamlConfiguration configuration=new YamlConfiguration();
+                try
+                {
+                    configuration.loadFromString("");
+                    configuration.set("item",itemStack);
+                    sender.sendMessage(configuration.saveToString());
+                }
+                catch (InvalidConfigurationException e)
+                {
+                    throw new RuntimeException(e);
+                }
                 NBTItem nbtItem=new NBTItem(itemStack);
+                sender.sendMessage(nbtItem.asNBTString());
+                /*
                 player.sendMessage(plugin.getMessageHead()+"物品NBT:");
                 List<String> ls=getNBT(nbtItem,ChatColor.GOLD.toString());
                 for (String s: ls)
                 {
                     player.sendMessage(s);
-                }
+                }*/
                 return true;
             }
             default:

@@ -1,7 +1,9 @@
 package me.lanzhi.bluestargame.listener;
 
-import me.lanzhi.bluestargame.bluestarapi.config.YamlFile;
 import me.lanzhi.bluestargame.BluestarGamePlugin;
+import me.lanzhi.bluestargame.bluestarapi.config.YamlFile;
+import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,15 +11,19 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
+import java.util.function.Consumer;
 
-public final class HealthFixListener implements Listener
+public final class FixListener implements Listener
 {
     private final BluestarGamePlugin plugin;
 
-    public HealthFixListener(BluestarGamePlugin plugin)
+    public FixListener(BluestarGamePlugin plugin)
     {
         this.plugin=plugin;
     }
@@ -51,6 +57,33 @@ public final class HealthFixListener implements Listener
                 }
             }
         }.runTaskLater(plugin,70);
+
+        addRecipe(player);
+    }
+
+    private void addRecipe(Player player)
+    {
+        player.getDiscoveredRecipes().forEach(player::undiscoverRecipe);
+        Bukkit.getScheduler().runTaskAsynchronously(plugin,()->
+        {
+            Consumer<Recipe> consumer=recipe->
+            {
+                if (recipe instanceof ShapedRecipe)
+                {
+                    addRecipe(player,((ShapedRecipe) recipe).getKey());
+                }
+                else if (recipe instanceof ShapelessRecipe)
+                {
+                    addRecipe(player,((ShapelessRecipe) recipe).getKey());
+                }
+            };
+            Bukkit.recipeIterator().forEachRemaining(consumer);
+        });
+    }
+
+    private void addRecipe(Player player,NamespacedKey recipe)
+    {
+        Bukkit.getScheduler().runTask(plugin,()->player.discoverRecipe(recipe));
     }
 
     @EventHandler(priority=EventPriority.HIGHEST)
@@ -58,7 +91,7 @@ public final class HealthFixListener implements Listener
     {
         YamlFile playerData=YamlFile.loadYamlFile(new File(plugin.getPlayerData(),
                                                            event.getPlayer().getUniqueId()+".yml"));
-        double maxhealth=event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        double maxhealth=event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
         if (plugin.getBluestarGameManager().getRandomEventManger().oneHealth())
         {
             maxhealth=plugin.getBluestarGameManager()
